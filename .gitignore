@@ -1,0 +1,8 @@
+web-cv-app/.gradle/
+web-cv-app/.settings/
+web-cv-app/build/
+web-cv-app/.project
+web-cv-rest/.gradle/
+web-cv-rest/.settings/
+web-cv-rest/build/
+web-cv-rest/.project

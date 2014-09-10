@@ -1,0 +1,107 @@
+<html>
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js" type="text/javascript"></script>
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
+	<script src="app/app.js" type="text/javascript"></script>
+	<script src="app/service/EmployeeService.js" type="text/javascript"></script>
+	<script src="app/service/CVService.js" type="text/javascript"></script>
+	<script src="app/controllers/EditController.js" type="text/javascript"></script>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body class="aptitude-red" >
+	<div class="grid-col" >
+	</div>
+	<div class="box shadow-box grid-col2" >
+	 <div id='content' ng-app='WebCVApplication' ng-controller='EditController'  >
+		<div class="row">
+			<div style="margin-bottom: 20px;">
+		 		<label>Select consultant</label> 	
+		 		<select ng-model='selectedEmployee' ng-options='employee.name for employee in employees'>
+		 			<option value="">-- choose --</option>
+		 		</select>
+		 		<button class="btn" ng-click="loadCV()" >Load CV</button>
+		 		<img alt="logo" class="logo" src="img/logo.jpg">
+		 	</div>
+		 </div>
+		
+		 <div class="dot-box">
+		 	<span class="dot-box-header" >Consultant info</span>
+			 <div class="row">
+			 	<div class="block" >
+				 	<label>Name</label>
+				 	<input type='text' ng-model='employeeForEdit.name' />
+				 	<label>Role</label>
+				 	<input type='text' ng-model='employeeForEdit.role' />
+				</div>
+				<div class="block" >
+				 	<label>Mail</label>
+				 	<input type='text' ng-model='employeeForEdit.mail' />
+				 	<label>Phone nr</label>
+				 	<input type='text' ng-model='employeeForEdit.phonenr' />
+				 
+			 	</div>
+			 </div>
+		 </div>
+		 <button ng-hide="showCVBox" class="btn" ng-click="createEmployee()" >Add new consultant</button>
+		 <div ng-show="showCVBox" >
+			 <div class="dot-box">
+			 	 <span class="dot-box-header" >Introduction page</span>
+				 <div class="row" >
+				 	<label>Introduction</label>
+				 	<textarea ng-model="selectedCV.introduction" rows="5" cols="70" class="text-box" ></textarea>
+				 </div>
+				  <div class="row" >
+				 	<label>Languages</label>
+				 	<textarea  rows="5" cols="70" ng-model="selectedCV.language" class="text-box" ></textarea>
+				 </div>
+				 <div class="row" >
+				 	<label>Frameworks</label>
+				 	<textarea  rows="5" cols="70" ng-model="selectedCV.framework" class="text-box" ></textarea>
+				 </div>
+				 <div class="row" >
+				 	<label>Methods</label>
+				 	<textarea  rows="5" cols="70" ng-model="selectedCV.method" class="text-box" ></textarea>
+				 </div>
+			 </div>
+			 <div class="dot-box">
+			 	 <span class="dot-box-header" >Assignments</span>
+				 <div ng-repeat="assignment in selectedCV.assignments" >
+				 	<div class="row" >
+				 	    <div class="block" >
+					 		<label>Customer</label>
+				 			<input type='text' ng-model='assignment.customer' />
+			 			</div>
+			 			<div class="block" >
+			 				<label>Role</label>
+				 			<input type='text' ng-model='assignment.role' />
+			 			</div>
+				 		<div class="block" >
+				 			<label>Date</label>
+				 			<input type='text' ng-model='assignment.date' />
+				 		</div>
+				 	</div>
+				 	<div class="row" >
+				 		<label>Techniques</label>
+				 		<textarea class="text-box" style="height: 40px;" rows="5" cols="20" ng-model="assignment.techniques"  ></textarea>
+				 	</div>	
+				 	<div class="row" >
+				 		<label>Description</label>
+				 		<textarea  rows="5" cols="70" ng-model="assignment.description" class="text-box" ></textarea>
+					</div>
+				 </div>
+			</div>
+			<button class="btn" ng-click="addAssignment()" >Add new Assignment</button>
+	 		<button class="btn" ng-click="saveChanges()" >Save changes</button>
+	 		<a href="{{endpoint}}/web-cv-rest/document?employeeid={{selectedEmployee.id}}&gentype=doc" download>Download docx</a>
+	 		<a href="{{endpoint}}/web-cv-rest/document?employeeid={{selectedEmployee.id}}&gentype=pdf" >Download pdf</a>
+	 	</div>
+	 	</div>
+	 </div>
+	 <div class="grid-col" >
+	</div>
+	 
+	 
+	 
+</body>
+</html>
