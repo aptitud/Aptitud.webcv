@@ -6,3 +6,8 @@ web-cv-rest/.gradle/
 web-cv-rest/.settings/
 web-cv-rest/build/
 web-cv-rest/.project
+/build
+
+.gradle
+.settings
+.project
