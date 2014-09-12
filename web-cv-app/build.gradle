@@ -15,6 +15,7 @@ repositories {
 def junitVersion = '4.11'
 def mockitoVersion = '1.8.4'
 
+
 configurations {
     provided
 }

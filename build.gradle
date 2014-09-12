@@ -13,5 +13,8 @@ subprojects {
 
     version = '1.0'
 
+	task stage {
+	   
+	}
     
 }
