@@ -3,6 +3,8 @@ package se.webcv.config;
 
 import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
@@ -15,12 +17,14 @@ public class DatabaseConfig extends AbstractMongoConfiguration {
 
     @Override
     protected String getDatabaseName() {
-        return "webcvdb";
+        return "web_cv";
     }
 
     @Override
     @Bean
     public Mongo mongo() throws Exception {
-        return new MongoClient("127.0.0.1");
+    	MongoClientURI uri = new MongoClientURI("mongodb://admin:Passw0rd@kahana.mongohq.com:10092/web_cv");
+    
+		return new MongoClient(uri);
     }
 }
