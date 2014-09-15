@@ -1,10 +1,10 @@
-app.controller('EditController', function($scope, EmployeeService, CVService, API_END_POINT, HOST){
+app.controller('EditController', function($scope, EmployeeService, CVService, API_END_POINT){
 	
 	$scope.selectedEmployee = null;
 	$scope.employeeForEdit = null;
 	$scope.selectedCV = null;
 	$scope.showCVBox = false;
-	$scope.endpoint= 'http://'+HOST+':'+ API_END_POINT;
+	$scope.endpoint= API_END_POINT;
 	loadEmployees();
 	
 	$scope.createEmployee = function(){

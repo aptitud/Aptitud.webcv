@@ -1,11 +1,11 @@
-app.service('EmployeeService', function($http, API_END_POINT, HOST){
+app.service('EmployeeService', function($http, API_END_POINT){
 	
 	 this.listEmployees = function(){
-		 return $http.get('http://'+HOST+':'+API_END_POINT+'/web-cv-rest/employees');
+		 return $http.get(API_END_POINT+'/employees');
 	 };
 	 
 	 this.saveEmployee = function(data){
-		 return $http.post('http://'+HOST+':'+API_END_POINT+'/web-cv-rest/employees',data);
+		 return $http.post(API_END_POINT+'/employees',data);
 	 };
 
 });

@@ -9,4 +9,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @ComponentScan(basePackages = {"se.webcv"})
 public class WebConfig {
 
+  
+	
 }

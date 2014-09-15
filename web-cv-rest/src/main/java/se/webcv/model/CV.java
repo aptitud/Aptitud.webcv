@@ -15,7 +15,7 @@ public class CV {
 	private String framework;
 	private String method;
 
-	private List<Assignment> assignments = new ArrayList<>();
+	private List<Assignment> assignments = new ArrayList<Assignment>();
 	
 	public String getEmployeeId() {
 		return employeeId;
