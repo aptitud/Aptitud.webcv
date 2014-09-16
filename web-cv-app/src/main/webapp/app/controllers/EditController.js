@@ -1,4 +1,4 @@
-app.controller('EditController', function($scope, EmployeeService, CVService, API_END_POINT){
+app.controller('EditController', function($scope, $rootScope, EmployeeService, CVService, API_END_POINT){
 	
 	$scope.selectedEmployee = null;
 	$scope.employeeForEdit = null;
@@ -6,6 +6,7 @@ app.controller('EditController', function($scope, EmployeeService, CVService, AP
 	$scope.showCVBox = false;
 	$scope.endpoint= API_END_POINT;
 	loadEmployees();
+	
 	
 	$scope.createEmployee = function(){
 		EmployeeService.saveEmployee($scope.employeeForEdit).success(loadEmployees);
@@ -19,6 +20,20 @@ app.controller('EditController', function($scope, EmployeeService, CVService, AP
 		CVService.saveCV(cv).success($scope.loadCV);
 	};
 
+	
+	$scope.$on('loadcv', function(event, args) { 
+		var employeeID = args.id;
+		$scope.showCVBox = true;
+		$scope.employeeForEdit = args;
+		CVService.getCV(employeeID).success(applyCV);
+	});
+	
+	$scope.$on('newemployee', function(event, args) { 
+		$scope.showCVBox = false;
+		$scope.employeeForEdit = null;
+		$scope.selectedCV = null;
+	});
+	
 	$scope.loadCV = function(){
 		var employeeID = $scope.selectedEmployee.id;
 		$scope.showCVBox = true;
@@ -39,6 +54,7 @@ app.controller('EditController', function($scope, EmployeeService, CVService, AP
 
 	function applyEmployees(data){
 		$scope.employees = data;
+		$rootScope.$broadcast('employeesLoaded', data);
 	}
 	
 	function applyCV(data){

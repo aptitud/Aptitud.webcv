@@ -1,5 +1,7 @@
 package se.webcv.rest;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -29,8 +31,15 @@ public class CVController {
 	
 	@RequestMapping(produces = "application/json", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void getCV(@RequestBody CV cv) {
+    public void saveCV(@RequestBody CV cv) {
          cvRepository.saveCV(cv);
+    }
+	
+	@RequestMapping(value = "/list", produces = "application/json", method = RequestMethod.GET)
+    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
+    public List<CV> getCVList() {
+        return cvRepository.ListCVs();
     }
 
 }

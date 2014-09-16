@@ -15,6 +15,7 @@ public class GlobalControllerExceptionHandler {
     @ResponseBody
     public String handleException(Exception ex, HttpServletResponse response) {
         response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        ex.printStackTrace();
         return "Det gick inte så bra!";
     }
 }

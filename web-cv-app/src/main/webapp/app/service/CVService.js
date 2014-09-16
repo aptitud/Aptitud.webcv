@@ -10,5 +10,9 @@ app.service('CVService', function($http, API_END_POINT){
 	 this.saveCV = function(data){
 		 return $http.post(API_END_POINT+'/cv',data);
 	 };
+	 
+	 this.listCVs = function(){
+		 return $http.get(API_END_POINT+'/cv/list');
+	 };
 
 });

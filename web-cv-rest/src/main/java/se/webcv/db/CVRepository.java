@@ -48,4 +48,8 @@ public class CVRepository {
 		}
 	}
 
+	public List<CV> ListCVs() {
+		return mongoTemplate.findAll(CV.class);
+	}
+
 }

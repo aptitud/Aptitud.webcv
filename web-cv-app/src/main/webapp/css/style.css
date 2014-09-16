@@ -56,3 +56,4 @@ label{font-weight: bold; display: block;}
 .block, input{display: inline-block;}
 textarea {width: 100%;}
 a{font-size: 11px; color: #EE5555;}
+.static{position: fixed; top: 8px;}
