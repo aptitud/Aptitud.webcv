@@ -1,8 +1,5 @@
 app.controller('EditController', function($scope, $rootScope, EmployeeService, CVService, API_END_POINT){
 	
-	$scope.selectedEmployee = null;
-	$scope.employeeForEdit = null;
-	$scope.selectedCV = null;
 	$scope.showCVBox = false;
 	$scope.endpoint= API_END_POINT;
 	loadEmployees();
@@ -33,13 +30,6 @@ app.controller('EditController', function($scope, $rootScope, EmployeeService, C
 		$scope.employeeForEdit = null;
 		$scope.selectedCV = null;
 	});
-	
-	$scope.loadCV = function(){
-		var employeeID = $scope.selectedEmployee.id;
-		$scope.showCVBox = true;
-		$scope.employeeForEdit = $scope.selectedEmployee;
-		CVService.getCV(employeeID).success(applyCV);
-	}
 	
 	$scope.addAssignment = function(){
 		var assignments = $scope.selectedCV.assignments;

@@ -31,7 +31,6 @@ app.controller('SearchController', function($scope, $rootScope, CVService, API_E
 	}
 	
 	$scope.$on('employeesLoaded', function(event, args) { 
-		console.log("employeesLoaded");
 		$scope.employeeList = args;
 		$scope.employeeFilterList = args;
 	});
