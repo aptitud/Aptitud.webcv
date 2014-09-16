@@ -12,3 +12,4 @@ web-cv-rest/.project
 .settings
 .project
 *.pub
+/bin

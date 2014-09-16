@@ -1,7 +1,6 @@
 package se.webcv.utils;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URL;
@@ -47,17 +46,10 @@ public class DocumentGenerator {
 	
 	public byte[] generatePDF(){
 		try {
-			
-//			WordprocessingMLPackage template = getTemplate();
-//			merge(template);
-			File temp = new File("C:/Users/Zem/CV/test.docx");
-//			FileOutputStream fout = new FileOutputStream(temp);
-//			template.save(fout);
-			
-			WordprocessingMLPackage topdf = WordprocessingMLPackage.load(new FileInputStream(temp));
-			
+			WordprocessingMLPackage template = getTemplate();
+			merge(template);		
 			FOSettings fos = Docx4J.createFOSettings();
-			fos.setWmlPackage(topdf);
+			fos.setWmlPackage(template);
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			Docx4J.toFO(fos, out, Docx4J.FLAG_NONE);
 			return out.toByteArray();
