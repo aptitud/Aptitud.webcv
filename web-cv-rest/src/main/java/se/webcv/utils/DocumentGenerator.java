@@ -83,7 +83,6 @@ public class DocumentGenerator {
 		docMapping.put(new DataFieldName(Tag.languages.name()), cv.getLanguage());
 		docMapping.put(new DataFieldName(Tag.methods.name()), cv.getMethod());
 	    int count = 1;
-	    System.out.println(cv.getIntroduction());
 	    for(Assignment assignment : cv.getAssignments()){
 	    	docMapping.put(new DataFieldName(Tag.assignemntdescription.name()+count), assignment.getDescription());
 	    	docMapping.put(new DataFieldName(Tag.assignemntrole.name()+count), assignment.getRole());
