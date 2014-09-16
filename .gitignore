@@ -11,3 +11,4 @@ web-cv-rest/.project
 .gradle
 .settings
 .project
+*.pub
