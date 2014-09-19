@@ -6,16 +6,14 @@ app.controller('FileUploadController', function($scope, $rootScope, $http, API_E
 		    };
 	
 	$scope.$on('loadcv', function(event, args) { 
-		console.log(args.img);
 		addImg(args.img);
 	});
 	
 	$scope.$on('clearimg', function(event, args) { 
-		document.getElementById("filedrag").innerHTML = "<p style=\"text-align: center; line-height: 120px;\" >Drop a picture</p>";
+		document.getElementById("filedrag").innerHTML = "<p>Drop a picture</p>";
 	});
 	
-    $scope.uploadFile = function(e){
-    	
+    $scope.uploadFile = function(e){	
 		var f = $scope.file;
 		if(acceptedTypes[f.type]){
 			var r = new FileReader();
@@ -26,19 +24,20 @@ app.controller('FileUploadController', function($scope, $rootScope, $http, API_E
 			r.readAsDataURL(f);
     	}
     }
+    
+    function addImg(img){
+    	var image = new Image();
+    	image.src = img;
+    	image.width = 150; // a fake resize
+    	document.getElementById("filedrag").innerHTML = "";
+    	document.getElementById('filedrag').appendChild(image);
+    	var adjust = document.getElementById('filedrag').clientHeight -130;
+    	if(adjust > 0){
+    		$("#consultantinfo").css('margin-bottom', adjust+'px')
+    	}
+    }
 });
 
-function addImg(img){
-	var image = new Image();
-	image.src = img;
-	image.width = 150; // a fake resize
-	document.getElementById("filedrag").innerHTML = "";
-	document.getElementById('filedrag').appendChild(image);
-	var adjust = document.getElementById('filedrag').clientHeight -130;
-	if(adjust > 0){
-		$("#consultantinfo").css('margin-bottom', adjust+'px')
-	}
-}
 
 app.directive('fileSelect', function($parse){
 	return{

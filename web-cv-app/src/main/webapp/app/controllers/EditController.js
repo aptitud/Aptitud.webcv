@@ -3,6 +3,7 @@ app.controller('EditController', function($scope, $rootScope, EmployeeService, C
 	$scope.showCVBox = false;
 	$scope.endpoint= API_END_POINT;
 	$scope.selectedLang = "SE";
+	$scope.employeeForEdit = {};
 	loadEmployees();
 	
 	
@@ -43,7 +44,7 @@ app.controller('EditController', function($scope, $rootScope, EmployeeService, C
 	
 	$scope.addNewEmployee = function(){ 
 		$scope.showCVBox = false;
-		$scope.employeeForEdit = null;
+		$scope.employeeForEdit = {};
 		$scope.selectedCV = null;
 		$rootScope.$broadcast('clearimg');
 	}

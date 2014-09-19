@@ -5,8 +5,6 @@ app.controller('SearchController', function($scope, $rootScope, CVService, API_E
 		$rootScope.$broadcast('loadcv', employee);
 	}
 	
-
-	
 	$scope.$on('employeesLoaded', function(event, args) { 
 		$scope.employeeList = args;
 	});
@@ -14,8 +12,7 @@ app.controller('SearchController', function($scope, $rootScope, CVService, API_E
 	$scope.search = function(){
 		var searchresult = getSearchResultEmployees($scope.searchAttr);
 		if(searchresult.length == 0){
-			searchresult = getSearchResult($scope.searchAttr);
-			
+			searchresult = getSearchResult($scope.searchAttr);	
 		}
 		var filteredList = getFilteredEmployeeList(searchresult);
 		if(!$scope.searchAttr || $scope.searchAttr.length == 0){

@@ -1,6 +1,6 @@
 body{font-family: sans-serif;}
 label{font-weight: bold; display: block;}
-.aptitude-red{background-color: #EE5555;}
+.aptitud-red{background-color: #EE5555;}
 .box{background-color: #FFFFFF; border: 1px solid; border-radius: 10px; padding: 5px; position: relative;}
 .shadow-box{box-shadow: 5px 5px 5px #272424; }
 .row{display: inline-block; width: 100%; margin-bottom: 10px;}
@@ -64,3 +64,7 @@ textarea {width: 100%;}
 a{font-size: 11px; color: #EE5555; text-decoration: none;}
 .static{position: fixed; top: 8px;}
 .gen-link{position: absolute; right: 10px; bottom: 10px;}
+.file-upload-box{display: inline-block; position: absolute;  width: 150px; right: 20px; top: 15px; background-color: #FFFFFF;}
+.file-upload-box div{width: 150px; min-height: 150px; border: 4px dashed; border-color: cadetblue;}
+.file-upload-box div p{text-align: center; line-height: 120px;}
+

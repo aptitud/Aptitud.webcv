@@ -12,7 +12,7 @@
 		<script src="app/controllers/FileUploadController.js" type="text/javascript"></script>
 		<link rel="stylesheet" type="text/css" href="css/style.css">
 	</head>
-	<body class="aptitude-red" >
+	<body class="aptitud-red" >
 		<div class="grid" id='content' ng-app='WebCVApplication' >
 			<div class="grid-col" >
 				<div class="box shadow-box static" style="width: 15%;" >
@@ -33,15 +33,11 @@
 						<li class="menu-last" ><a href="" ng-click="addNewEmployee()" >Add new Consultant</a></li>
 					</ul>
 					<img alt="logo" class="logo" src="img/logo.jpg">
-					<div ng-controller="FileUploadController" style="display: inline-block; position: absolute;  width: 150px; right: 20px; top: 15px; background-color: #FFFFFF; " >
-		 				<div id="filedrag" file-input="file" file-drag="uploadFile()" style="width: 150px; min-height: 150px; border: 4px dashed; border-color: cadetblue;">
-		 					<p style="text-align: center; line-height: 120px;" >Drop a picture</p>
+					<div id="fileupload" class="file-upload-box" ng-controller="FileUploadController" >
+		 				<div id="filedrag" file-input="file" file-drag="uploadFile()" >
+		 					<p>Drop a picture</p>
 		 				</div>
-		 				<!-- add if needed
-						<input type="file" id="fileselect" file-input="file" file-select="uploadFile()" name="fileselect"/>
-						 -->
-					</div>			
-					
+					</div>						
 					<div class="row" >
 		 			<div id="consultantinfo" class="dot-box" style="display: inline-block;" >
 		 				<span class="dot-box-header" >Consultant info</span>
