@@ -25,7 +25,7 @@
 		 			</div>
 		 		</div>
 			</div>
-	 		<div ng-controller='EditController' class="grid-col2" style="position: relative;"  >
+	 		<div ng-controller='EditController' class="grid-col2" >
 				<div class="box shadow-box "  >
 					<ul class="menu" >
 						<li ng-show="showCVBox" ><a href="" ng-click="changeLang('SE')" >Swedish CV</a></li>
@@ -39,7 +39,7 @@
 		 				</div>
 					</div>						
 					<div class="row" >
-		 			<div id="consultantinfo" class="dot-box" style="display: inline-block;" >
+		 			<div id="consultantinfo" class="dot-box block" >
 		 				<span class="dot-box-header" >Consultant info</span>
 			 			<div class="row">
 						 	<div class="block" >
@@ -50,32 +50,28 @@
 							 	<label>Role</label>
 							 	<input type='text' ng-model='employeeForEdit.role' />
 						 	</div>
-						 	
-			 				
 			 			</div>
-			 			
 		 			</div>
 		 			</div>
-		 				<button ng-hide="showCVBox" class="btn" ng-click="createEmployee()"  >Add new consultant</button>
-		 			
+		 			<button ng-hide="showCVBox" class="btn" ng-click="createEmployee()"  >Add new consultant</button>		 			
 		 			<div ng-show="showCVBox" >
 						<div id="introductioncontainer" class="dot-box">
 					 		<span class="dot-box-header" >Introduction page</span>
 						 	<div class="row" >
 						 		<label>Introduction</label>
-						 		<textarea ng-model="selectedCV.introduction" rows="5" cols="70" class="text-box" ></textarea>
+						 		<textarea ng-model="selectedCV.introduction" rows="5" cols="70" ></textarea>
 						 	</div>
 						  	<div class="row" >
 						 		<label>Languages</label>
-						 		<textarea  rows="5" cols="70" ng-model="selectedCV.language" class="text-box" ></textarea>
+						 		<textarea  rows="5" cols="70" ng-model="selectedCV.language" ></textarea>
 						 	</div>
 						 	<div class="row" >
 						 		<label>Frameworks</label>
-						 		<textarea  rows="5" cols="70" ng-model="selectedCV.framework" class="text-box" ></textarea>
+						 		<textarea  rows="5" cols="70" ng-model="selectedCV.framework" ></textarea>
 						 	</div>
 						 	<div class="row" >
 						 		<label>Methods</label>
-						 		<textarea  rows="5" cols="70" ng-model="selectedCV.method" class="text-box" ></textarea>
+						 		<textarea  rows="5" cols="70" ng-model="selectedCV.method" ></textarea>
 						 	</div>
 					 	</div>
 				 		<div class="dot-box">
@@ -101,11 +97,11 @@
 							 	</div>
 							 	<div class="row" >
 							 		<label>Techniques</label>
-							 		<textarea class="text-box" style="height: 40px;" rows="5" cols="20" ng-model="assignment.techniques"  ></textarea>
+							 		<textarea style="height: 40px;" rows="5" cols="20" ng-model="assignment.techniques"  ></textarea>
 							 	</div>	
 							 	<div class="row" >
 							 		<label>Description</label>
-							 		<textarea  rows="5" cols="70" ng-model="assignment.description" class="text-box" ></textarea>
+							 		<textarea  rows="5" cols="70" ng-model="assignment.description" ></textarea>
 								</div>
 							</div>
 						</div>

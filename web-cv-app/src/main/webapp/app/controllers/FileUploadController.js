@@ -6,7 +6,11 @@ app.controller('FileUploadController', function($scope, $rootScope, $http, API_E
 		    };
 	
 	$scope.$on('loadcv', function(event, args) { 
-		addImg(args.img);
+		if(validImgSrc(args.img, acceptedTypes)){
+			addImg(args.img);
+		}else{
+			document.getElementById("filedrag").innerHTML = "<p>Drop a picture</p>";
+		}
 	});
 	
 	$scope.$on('clearimg', function(event, args) { 
@@ -35,6 +39,16 @@ app.controller('FileUploadController', function($scope, $rootScope, $http, API_E
     	if(adjust > 0){
     		$("#consultantinfo").css('margin-bottom', adjust+'px')
     	}
+    }
+    
+    function validImgSrc(src, acceptedTypes){
+    	var result = false;
+    	angular.forEach(acceptedTypes, function(value, key) {
+    		if(src != null && src.indexOf(key) != -1){
+    			result = true;
+    		}
+    	});
+    	return result;
     }
 });
 
