@@ -24,7 +24,6 @@ public class DatabaseConfig extends AbstractMongoConfiguration {
     @Bean
     public Mongo mongo() throws Exception {
     	MongoClientURI uri = new MongoClientURI("mongodb://admin:Passw0rd@kahana.mongohq.com:10092/web_cv");
-    
 		return new MongoClient(uri);
     }
 }

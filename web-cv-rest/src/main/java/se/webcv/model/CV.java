@@ -9,6 +9,7 @@ public class CV {
 
 	@Id
 	private String id;
+	private String lang;
 	private String employeeId;
 	private String introduction;
 	private String language;
@@ -63,6 +64,14 @@ public class CV {
 
 	public void setAssignments(List<Assignment> assignments) {
 		this.assignments = assignments;
+	}
+
+	public String getLang() {
+		return lang;
+	}
+
+	public void setLang(String lang) {
+		this.lang = lang;
 	}
 
 }

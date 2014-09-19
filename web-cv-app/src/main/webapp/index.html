@@ -1,114 +1,126 @@
 <html>
-<head>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js" type="text/javascript"></script>
-	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
-  	<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
-    <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
-	<script src="app/app.js" type="text/javascript"></script>
-	<script src="app/service/EmployeeService.js" type="text/javascript"></script>
-	<script src="app/service/CVService.js" type="text/javascript"></script>
-	<script src="app/controllers/EditController.js" type="text/javascript"></script>
-	<script src="app/controllers/SearchController.js" type="text/javascript"></script>
-	<link rel="stylesheet" type="text/css" href="css/style.css">
-</head>
-<body class="aptitude-red" >
-	<div class="grid" id='content' ng-app='WebCVApplication' >
-	<div class="grid-col" >
-		<div class="box shadow-box static" style="width: 15%;" >
-		 <div id='searchbox'  ng-controller='SearchController'  >
-		 	<label>Text search in CV</label>
-			<input id="searchBox"  type='text' ng-model='searchAttr' ng-change="search()"  />
-			<ul>
-				<li ng-repeat="e in employeeFilterList" ><a href="#" ng-click="loadCV(e)" >{{e.name}}</a></li>
-				<li><a href="#" ng-click="addNewEmployee()" >Add new</a></li>
-			</ul>
-		 </div>
-		 </div>
-	</div>
-	<div class="box shadow-box grid-col2" >
-	 <div ng-controller='EditController'  >
-		<div class="row">
-			<div style="margin-bottom: 65px;">
-		 		
-		 		<img alt="logo" class="logo" src="img/logo.jpg">
-		 	</div>
-		 </div>
-		
-		 <div class="dot-box">
-		 	<span class="dot-box-header" >Consultant info</span>
-			 <div class="row">
-			 	<div class="block" >
-				 	<label>Name</label>
-				 	<input type='text' ng-model='employeeForEdit.name' />
-				 	<label>Role</label>
-				 	<input type='text' ng-model='employeeForEdit.role' />
-				</div>
-				<div class="block" >
-				 	<label>Mail</label>
-				 	<input type='text' ng-model='employeeForEdit.mail' />
-				 	<label>Phone nr</label>
-				 	<input type='text' ng-model='employeeForEdit.phonenr' />
-				 
-			 	</div>
-			 </div>
-		 </div>
-		 <button ng-hide="showCVBox" class="btn" ng-click="createEmployee()" >Add new consultant</button>
-		 <div ng-show="showCVBox" >
-			 <div class="dot-box">
-			 	 <span class="dot-box-header" >Introduction page</span>
-				 <div class="row" >
-				 	<label>Introduction</label>
-				 	<textarea ng-model="selectedCV.introduction" rows="5" cols="70" class="text-box" ></textarea>
-				 </div>
-				  <div class="row" >
-				 	<label>Languages</label>
-				 	<textarea  rows="5" cols="70" ng-model="selectedCV.language" class="text-box" ></textarea>
-				 </div>
-				 <div class="row" >
-				 	<label>Frameworks</label>
-				 	<textarea  rows="5" cols="70" ng-model="selectedCV.framework" class="text-box" ></textarea>
-				 </div>
-				 <div class="row" >
-				 	<label>Methods</label>
-				 	<textarea  rows="5" cols="70" ng-model="selectedCV.method" class="text-box" ></textarea>
-				 </div>
-			 </div>
-			 <div class="dot-box">
-			 	 <span class="dot-box-header" >Assignments</span>
-				 <div ng-repeat="assignment in selectedCV.assignments" >
-				 	<div class="row" >
-				 	    <div class="block" >
-					 		<label>Customer</label>
-				 			<input type='text' ng-model='assignment.customer' />
-			 			</div>
-			 			<div class="block" >
-			 				<label>Role</label>
-				 			<input type='text' ng-model='assignment.role' />
-			 			</div>
-				 		<div class="block" >
-				 			<label>Date</label>
-				 			<input type='text' ng-model='assignment.date' />
-				 		</div>
-				 	</div>
-				 	<div class="row" >
-				 		<label>Techniques</label>
-				 		<textarea class="text-box" style="height: 40px;" rows="5" cols="20" ng-model="assignment.techniques"  ></textarea>
-				 	</div>	
-				 	<div class="row" >
-				 		<label>Description</label>
-				 		<textarea  rows="5" cols="70" ng-model="assignment.description" class="text-box" ></textarea>
-					</div>
-				 </div>
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js" type="text/javascript"></script>
+		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+	  	<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+	    <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
+		<script src="app/app.js" type="text/javascript"></script>
+		<script src="app/service/EmployeeService.js" type="text/javascript"></script>
+		<script src="app/service/CVService.js" type="text/javascript"></script>
+		<script src="app/controllers/EditController.js" type="text/javascript"></script>
+		<script src="app/controllers/SearchController.js" type="text/javascript"></script>
+		<script src="app/controllers/FileUploadController.js" type="text/javascript"></script>
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+	</head>
+	<body class="aptitude-red" >
+		<div class="grid" id='content' ng-app='WebCVApplication' >
+			<div class="grid-col" >
+				<div class="box shadow-box static" style="width: 15%;" >
+		 			<div id='searchbox'  ng-controller='SearchController'  >
+		 				<label>Search</label>
+						<input id="searchBox"  type='text' ng-model='searchAttr' ng-change="search()"  />
+						<ul>
+							<li ng-repeat="e in employeeFilterList" ><a href="" ng-click="loadCV(e)" >{{e.name}}</a></li>
+						</ul>
+		 			</div>
+		 		</div>
 			</div>
-			<button class="btn" ng-click="addAssignment()" >Add new Assignment</button>
-	 		<button class="btn" ng-click="saveChanges()" >Save changes</button>
-	 		<a href="{{endpoint}}/document?employeeid={{employeeForEdit.id}}&gentype=doc" download>Download docx</a>
-	 	</div>
-	 	</div>
-	 </div>
-	 <div class="grid-col" >
-	</div>
-	 </div>
-	 
-</body>
+	 		<div ng-controller='EditController' class="grid-col2" style="position: relative;"  >
+				<div class="box shadow-box "  >
+					<ul class="menu" >
+						<li ng-show="showCVBox" ><a href="" ng-click="changeLang('SE')" >Swedish CV</a></li>
+						<li ng-show="showCVBox" ><a href="" ng-click="changeLang('EN')" >English CV</a></li>
+						<li class="menu-last" ><a href="" ng-click="addNewEmployee()" >Add new Consultant</a></li>
+					</ul>
+					<img alt="logo" class="logo" src="img/logo.jpg">
+					<div ng-controller="FileUploadController" style="display: inline-block; position: absolute;  width: 150px; right: 20px; top: 15px; background-color: #FFFFFF; " >
+		 				<div id="filedrag" file-input="file" file-drag="uploadFile()" style="width: 150px; min-height: 150px; border: 4px dashed; border-color: cadetblue;">
+		 					<p style="text-align: center; line-height: 120px;" >Drop a picture</p>
+		 				</div>
+		 				<!-- add if needed
+						<input type="file" id="fileselect" file-input="file" file-select="uploadFile()" name="fileselect"/>
+						 -->
+					</div>			
+					
+					<div class="row" >
+		 			<div id="consultantinfo" class="dot-box" style="display: inline-block;" >
+		 				<span class="dot-box-header" >Consultant info</span>
+			 			<div class="row">
+						 	<div class="block" >
+							 	<label>Name</label>
+							 	<input type='text' ng-model='employeeForEdit.name' />
+							</div>
+							<div class="block" >
+							 	<label>Role</label>
+							 	<input type='text' ng-model='employeeForEdit.role' />
+						 	</div>
+						 	
+			 				
+			 			</div>
+			 			
+		 			</div>
+		 			</div>
+		 				<button ng-hide="showCVBox" class="btn" ng-click="createEmployee()"  >Add new consultant</button>
+		 			
+		 			<div ng-show="showCVBox" >
+						<div id="introductioncontainer" class="dot-box">
+					 		<span class="dot-box-header" >Introduction page</span>
+						 	<div class="row" >
+						 		<label>Introduction</label>
+						 		<textarea ng-model="selectedCV.introduction" rows="5" cols="70" class="text-box" ></textarea>
+						 	</div>
+						  	<div class="row" >
+						 		<label>Languages</label>
+						 		<textarea  rows="5" cols="70" ng-model="selectedCV.language" class="text-box" ></textarea>
+						 	</div>
+						 	<div class="row" >
+						 		<label>Frameworks</label>
+						 		<textarea  rows="5" cols="70" ng-model="selectedCV.framework" class="text-box" ></textarea>
+						 	</div>
+						 	<div class="row" >
+						 		<label>Methods</label>
+						 		<textarea  rows="5" cols="70" ng-model="selectedCV.method" class="text-box" ></textarea>
+						 	</div>
+					 	</div>
+				 		<div class="dot-box">
+							<span class="dot-box-header" >Assignments</span>
+							<div ng-repeat="assignment in selectedCV.assignments" >
+								<div class="row" >
+							 		<div class="block" >
+								 		<label>Customer</label>
+							 			<input type='text' ng-model='assignment.customer' />
+						 			</div>
+						 			<div class="block" >
+						 				<label>Role</label>
+							 			<input type='text' ng-model='assignment.role' />
+						 			</div>
+							 		<div class="block" >
+							 			<label>Date</label>
+							 			<input type='text' ng-model='assignment.date' />
+							 		</div>
+							 		<div class="block" >
+							 			<label>Include in doc</label>
+							 			<input type="checkbox" ng-model="assignment.include" />
+							 		</div>
+							 	</div>
+							 	<div class="row" >
+							 		<label>Techniques</label>
+							 		<textarea class="text-box" style="height: 40px;" rows="5" cols="20" ng-model="assignment.techniques"  ></textarea>
+							 	</div>	
+							 	<div class="row" >
+							 		<label>Description</label>
+							 		<textarea  rows="5" cols="70" ng-model="assignment.description" class="text-box" ></textarea>
+								</div>
+							</div>
+						</div>
+						<button class="btn" ng-click="addAssignment()" >Add new Assignment</button>
+		 				<button class="btn" ng-click="saveChanges()" >Save changes</button>
+		 				<a class="gen-link" href="{{endpoint}}/document?employeeid={{employeeForEdit.id}}&lang={{selectedLang}}" download>Download docx</a>
+		 			</div>
+		 		</div>
+		 	</div>
+		 	<div class="grid-col" >
+			</div>
+		</div> 
+	</body>
 </html>

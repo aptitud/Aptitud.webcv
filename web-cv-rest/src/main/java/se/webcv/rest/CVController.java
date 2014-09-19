@@ -25,8 +25,8 @@ public class CVController {
 	@RequestMapping(produces = "application/json", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
-    public CV getCV(@RequestParam(required = true) String employeeID) {
-        return cvRepository.getCV(employeeID);
+    public CV getCV(@RequestParam(required = true) String employeeID, @RequestParam(required = false) String lang) {
+        return cvRepository.getCV(employeeID, lang);
     }
 	
 	@RequestMapping(produces = "application/json", method = RequestMethod.POST)

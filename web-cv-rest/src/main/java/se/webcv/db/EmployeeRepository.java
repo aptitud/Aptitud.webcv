@@ -29,6 +29,7 @@ public class EmployeeRepository {
 			found.setName(employee.getName());
 			found.setPhonenr(employee.getPhonenr());
 			found.setRole(employee.getRole());
+			found.setImg(employee.getImg());
 			mongoTemplate.save(found);
 		}else{
 			mongoTemplate.insert(employee);

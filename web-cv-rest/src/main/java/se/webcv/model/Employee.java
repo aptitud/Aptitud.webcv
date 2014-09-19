@@ -12,6 +12,7 @@ public class Employee {
 	private String mail;
 	private String phonenr;
 	private String role;
+	private String img;
 	
 	public String getId(){
 		return id;
@@ -52,6 +53,14 @@ public class Employee {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	public String getImg() {
+		return img;
+	}
+
+	public void setImg(String img) {
+		this.img = img;
 	}
 	
 	

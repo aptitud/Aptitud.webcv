@@ -42,7 +42,8 @@ public class DocumentServlet extends HttpServlet {
         IOException {
   		String employeeid = request.getParameter("employeeid");
   		String gentype = request.getParameter("gentype");
-  		CV cv = cvRepository.getCV(employeeid);
+  		String lang = request.getParameter("lang");
+  		CV cv = cvRepository.getCV(employeeid, lang);
   		Employee employee = employeeRepository.getEmployee(employeeid);
   		if(generatePdf(gentype)){
   			processRequestPDF(employee, cv, request, response);

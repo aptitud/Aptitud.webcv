@@ -1,9 +1,10 @@
 app.service('CVService', function($http, API_END_POINT){
 	
-	 this.getCV = function(employeeID){
+	 this.getCV = function(employeeID, lang){
 		 return $http.get(API_END_POINT+'/cv', {
 			 params: {
-				 	employeeID: employeeID
+				 	employeeID: employeeID,
+				 	lang: lang
 		        }
 		 });
 	 };

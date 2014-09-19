@@ -11,6 +11,7 @@ public class Assignment {
 	private String techniques;
 	private String description;
 	private String date;
+	private boolean include;
 	
 	public String getCustomer() {
 		return customer;
@@ -50,6 +51,14 @@ public class Assignment {
 
 	public void setDate(String date) {
 		this.date = date;
+	}
+
+	public boolean isInclude() {
+		return include;
+	}
+
+	public void setInclude(boolean include) {
+		this.include = include;
 	}
 	
 	
