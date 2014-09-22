@@ -19,13 +19,15 @@ app.controller('FileUploadController', function($scope, $rootScope, $http, API_E
 	
     $scope.uploadFile = function(e){	
 		var f = $scope.file;
-		if(acceptedTypes[f.type]){
+		if(acceptedTypes[f.type] && f.size < 500000){
 			var r = new FileReader();
 			r.onloadend = function(e){
 				addImg(e.target.result);
 		        $rootScope.$broadcast('imgloaded', e.target.result);
 			}
 			r.readAsDataURL(f);
+    	}else{
+    		alert("Only supports files of type png, jpeg or gif. Max size 0.5Mb");
     	}
     }
     
@@ -50,45 +52,5 @@ app.controller('FileUploadController', function($scope, $rootScope, $http, API_E
     	});
     	return result;
     }
-});
-
-
-app.directive('fileSelect', function($parse){
-	return{
-        restrict: 'AE',
-        link: function(scope, elem, attrs){
-            var onchange = $parse(attrs.fileSelect);
-            var modelGet = $parse(attrs.fileInput);
-            var modelSet = modelGet.assign;
-            var updateModel = function (e) {
-            	e.preventDefault();
-        		var files = e.target.files || e.dataTransfer.files;
-        		var f = files[0];
-            	modelSet(scope, f);
-                scope.$apply(onchange);                    
-            };
-            elem[0].addEventListener("change", updateModel, false);
-        }
-    };
-});
-
-app.directive('fileDrag', function($parse){
-    return{
-        restrict: 'AE',
-        link: function(scope, elem, attrs){
-            var ondrop = $parse(attrs.fileDrag);
-            var modelGet = $parse(attrs.fileInput);
-            var modelSet = modelGet.assign;
-            var updateModel = function (e) {
-            	e.preventDefault();
-        		var files = e.target.files || e.dataTransfer.files;
-        		var f = files[0];
-            	modelSet(scope, f);
-                scope.$apply(ondrop);                    
-            };
-            elem[0].addEventListener("drop", updateModel, false);
-            elem[0].addEventListener('dragover', function(e){e.preventDefault();}, false);
-        }
-    };
 });
 

@@ -5,6 +5,7 @@
 	  	<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
 	    <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
 		<script src="app/app.js" type="text/javascript"></script>
+		<script src="app/directives/Fileupload.js" type="text/javascript"></script>
 		<script src="app/service/EmployeeService.js" type="text/javascript"></script>
 		<script src="app/service/CVService.js" type="text/javascript"></script>
 		<script src="app/controllers/EditController.js" type="text/javascript"></script>
@@ -102,6 +103,15 @@
 							 	<div class="row" >
 							 		<label>Description</label>
 							 		<textarea  rows="5" cols="70" ng-model="assignment.description" ></textarea>
+								</div>
+							</div>
+						</div>
+						<div class="dot-box">
+							<span class="dot-box-header" >Additional information</span>
+							<div ng-repeat="section in selectedCV.dynamicSections" >
+								<div class="row" >
+							 		<label>{{section.headlineen}} <span style="font-size: 10px; font-weight: normal;" >(include <input type="checkbox" ng-model="section.include" />)</span> </label>
+							 		<textarea  rows="5" cols="70" ng-model="section.content" ></textarea>
 								</div>
 							</div>
 						</div>

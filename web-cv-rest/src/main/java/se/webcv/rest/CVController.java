@@ -39,7 +39,8 @@ public class CVController {
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
     public List<CV> getCVList() {
-        return cvRepository.ListCVs();
+		cvRepository.backupCVList();
+        return cvRepository.listCVs();
     }
 
 }

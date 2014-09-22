@@ -48,4 +48,5 @@ dependencies {
     compile 'com.itextpdf:itextpdf:5.5.2'
     compile 'commons-codec:commons-codec:1.9'
     compile 'org.docx4j:docx4j:3.2.0'
+    compile 'joda-time:joda-time:2.4'
 }

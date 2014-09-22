@@ -117,7 +117,8 @@ public class DocumentGenerator {
 
 	private void addhtml(WordprocessingMLPackage template) throws InvalidFormatException {
 		AssignmentHtmlBuilder ahb = new AssignmentHtmlBuilder();
-		ahb.addAll(cv.getAssignments());
+		ahb.addAllAssignments(cv.getAssignments());
+		ahb.addAllSections(cv.getDynamicSections());
 		AlternativeFormatInputPart afiPart = new AlternativeFormatInputPart(new PartName("/hw.html"));
 		afiPart.setBinaryData(ahb.build().getBytes());
 		afiPart.setContentType(new ContentType("text/html"));

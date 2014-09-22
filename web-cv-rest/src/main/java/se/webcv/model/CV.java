@@ -3,6 +3,7 @@ package se.webcv.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.joda.time.LocalDate;
 import org.springframework.data.annotation.Id;
 
 public class CV {
@@ -15,8 +16,17 @@ public class CV {
 	private String language;
 	private String framework;
 	private String method;
-
+    private LocalDate modified;
+	private List<DynamicSection> dynamicSections =new ArrayList<DynamicSection>();
 	private List<Assignment> assignments = new ArrayList<Assignment>();
+	
+	public LocalDate getModified(){
+		return modified;
+	}
+	
+	public void setModified(LocalDate modified){
+		this.modified = modified;
+	}
 	
 	public String getEmployeeId() {
 		return employeeId;
@@ -72,6 +82,14 @@ public class CV {
 
 	public void setLang(String lang) {
 		this.lang = lang;
+	}
+
+	public List<DynamicSection> getDynamicSections() {
+		return dynamicSections;
+	}
+
+	public void setDynamicSections(List<DynamicSection> dynamicSections) {
+		this.dynamicSections = dynamicSections;
 	}
 
 }

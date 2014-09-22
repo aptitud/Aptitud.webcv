@@ -1,11 +1,8 @@
 package se.webcv.model;
 
-import org.springframework.data.annotation.Id;
 
 public class Assignment {
 
-	@Id
-	private String id;
 	private String customer;
 	private String role;
 	private String techniques;
