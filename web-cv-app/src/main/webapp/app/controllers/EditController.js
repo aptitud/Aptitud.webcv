@@ -6,7 +6,6 @@ app.controller('EditController', function($scope, $rootScope, EmployeeService, C
 	$scope.employeeForEdit = {};
 	loadEmployees();
 	
-	
 	$scope.createEmployee = function(){
 		EmployeeService.saveEmployee($scope.employeeForEdit).success(loadEmployees);
 	}

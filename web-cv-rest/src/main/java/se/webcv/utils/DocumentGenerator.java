@@ -16,6 +16,7 @@ import org.apache.commons.lang.StringUtils;
 import org.docx4j.Docx4J;
 import org.docx4j.XmlUtils;
 import org.docx4j.convert.out.FOSettings;
+import org.docx4j.dml.wordprocessingDrawing.Inline;
 import org.docx4j.jaxb.Context;
 import org.docx4j.model.fields.merge.DataFieldName;
 import org.docx4j.model.fields.merge.MailMerger;
@@ -26,10 +27,13 @@ import org.docx4j.openpackaging.exceptions.InvalidFormatException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.PartName;
 import org.docx4j.openpackaging.parts.WordprocessingML.AlternativeFormatInputPart;
+import org.docx4j.openpackaging.parts.WordprocessingML.BinaryPartAbstractImage;
 import org.docx4j.relationships.Relationship;
 import org.docx4j.wml.CTAltChunk;
 import org.docx4j.wml.ContentAccessor;
+import org.docx4j.wml.Drawing;
 import org.docx4j.wml.P;
+import org.docx4j.wml.R;
 import org.docx4j.wml.Text;
 
 import se.webcv.model.CV;
@@ -77,6 +81,14 @@ public class DocumentGenerator {
 				}
 			}
 		}
+
+		
+//		String img = employee.getImg();
+//		String substringAfter = StringUtils.substringAfter(img, "data:image/jpeg;base64,");
+//		Base64.decodeBase64(substringAfter);
+//		P newImage = newImage(template, Base64.decodeBase64(substringAfter),"hintname","alt name", 0, 1);
+//		((ContentAccessor) toReplace.getParent()).getContent().add(newImage);
+		
 		// we now have the paragraph that contains our placeholder: toReplace
 		// 2. split into seperate lines
 		String as[] = StringUtils.splitPreserveAllTokens(textToAdd, '\n');
@@ -95,6 +107,21 @@ public class DocumentGenerator {
 		// remove the original one
 		((ContentAccessor)toReplace.getParent()).getContent().remove(toReplace);
 	}
+	
+	public static P newImage( WordprocessingMLPackage wordMLPackage, byte[] bytes, 
+            String filenameHint, String altText, int id1, int id2) throws Exception {
+        BinaryPartAbstractImage imagePart = BinaryPartAbstractImage.createImagePart(wordMLPackage, bytes);
+        Inline inline = imagePart.createImageInline(filenameHint, altText, id1, id2,2000L, false);
+       
+        P  p = new P();
+        R  run = new R();
+
+        p.getContent().add(run);        
+        Drawing drawing = new Drawing();     
+        run.getContent().add(drawing);       
+        drawing.getAnchorOrInline().add(inline);
+        return p;
+    }   
 	
 	private static List<Object> getAllElementFromObject(Object obj, Class<?> toSearch) {
 		List<Object> result = new ArrayList<Object>();
@@ -115,7 +142,7 @@ public class DocumentGenerator {
 	}
 
 
-	private void addhtml(WordprocessingMLPackage template) throws InvalidFormatException {
+	private void addhtml(WordprocessingMLPackage template) throws Exception {
 		AssignmentHtmlBuilder ahb = new AssignmentHtmlBuilder();
 		ahb.addAllAssignments(cv.getAssignments());
 		ahb.addAllSections(cv.getDynamicSections());

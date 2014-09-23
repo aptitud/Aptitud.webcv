@@ -8,7 +8,7 @@ import se.webcv.model.DynamicSection;
 public class AssignmentHtmlBuilder {
 
 	private String html = "";
-	private static final String start = "<html><head><title></title></head><body>";
+	private static final String start = "<html><head><title></title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=ISO-8859-1\" /></head><body>";
 	private static final String end = "</body></html>";
 	
 	
@@ -53,8 +53,6 @@ public class AssignmentHtmlBuilder {
 			 add(section);
 		 }
 	}
-	
-	
 	
 	public String build(){
 		return start + html + end;

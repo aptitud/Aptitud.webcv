@@ -78,7 +78,6 @@ public class CVRepository {
 	
 	public void backupCVList(){
 		if(isCreateBackup()){
-			System.out.println("backup");
 			mongoTemplate.dropCollection("cvbackup");
 			mongoTemplate.createCollection("cvbackup");;
 			for(CV cv : listCVs()){

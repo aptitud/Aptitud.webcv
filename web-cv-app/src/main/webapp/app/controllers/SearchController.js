@@ -56,10 +56,14 @@ app.controller('SearchController', function($scope, $rootScope, CVService, API_E
 	}
 	
 	function loadCVList(){
+		$("#loadtext").attr('class','overlay');
+		$("#loadtext").find('span').html('Loading.....')
 		CVService.listCVs().success(applyCVList);
 	}
 	
 	function applyCVList(data){
+		$("#loadtext").removeAttr('class');
+		$("#loadtext").find('span').html('')
 		$scope.cvlist = data;
 	}
 	
