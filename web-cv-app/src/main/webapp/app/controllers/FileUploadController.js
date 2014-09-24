@@ -10,11 +10,13 @@ app.controller('FileUploadController', function($scope, $rootScope, $http, API_E
 			addImg(args.img);
 		}else{
 			document.getElementById("filedrag").innerHTML = "<p>Drop a picture</p>";
+			$("#filedrag").removeClass('uploaded');
 		}
 	});
 	
 	$scope.$on('clearimg', function(event, args) { 
 		document.getElementById("filedrag").innerHTML = "<p>Drop a picture</p>";
+		$("#filedrag").removeClass('uploaded');
 	});
 	
     $scope.uploadFile = function(e){	
@@ -37,10 +39,8 @@ app.controller('FileUploadController', function($scope, $rootScope, $http, API_E
     	image.width = 150; // a fake resize
     	document.getElementById("filedrag").innerHTML = "";
     	document.getElementById('filedrag').appendChild(image);
-    	var adjust = document.getElementById('filedrag').clientHeight -130;
-    	if(adjust > 0){
-    		$("#consultantinfo").css('margin-bottom', adjust+'px')
-    	}
+    	$("#filedrag").addClass('uploaded');
+    	
     }
     
     function validImgSrc(src, acceptedTypes){

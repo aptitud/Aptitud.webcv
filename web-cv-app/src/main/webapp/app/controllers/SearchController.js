@@ -18,6 +18,7 @@ app.controller('SearchController', function($scope, $rootScope, CVService, API_E
 		if(!$scope.searchAttr || $scope.searchAttr.length == 0){
 			 filteredList = [];
 		}
+		console.log(filteredList);
 		$scope.employeeFilterList = filteredList;
 	}
 	
@@ -34,11 +35,13 @@ app.controller('SearchController', function($scope, $rootScope, CVService, API_E
 	function getSearchResultEmployees(searchquery){
 		var searchresult = [];
 		angular.forEach($scope.employeeList, function(employee) {
-			var employeeToSearch = employee.name.toLowerCase();
-			var searchFor = searchquery.toLowerCase();
-		    if(employeeToSearch.indexOf(searchFor) != -1){
-		    	this.push(employee.id);
-		    }
+			if(employee.name != null){
+				var employeeToSearch = employee.name.toLowerCase();
+				var searchFor = searchquery.toLowerCase();
+			    if(employeeToSearch.indexOf(searchFor) != -1){
+			    	this.push(employee.id);
+			    }
+			}
 		 }, searchresult);
 		return searchresult;
 	}

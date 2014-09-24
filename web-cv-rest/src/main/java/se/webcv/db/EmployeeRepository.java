@@ -2,6 +2,7 @@ package se.webcv.db;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -21,6 +22,9 @@ public class EmployeeRepository {
     }
 
     public void saveEmployee(Employee employee) {
+    	if(StringUtils.isEmpty(employee.getName())){
+    		throw new IllegalArgumentException("Employee name can not be null");
+    	}
 		Query query = new Query();
 		query.addCriteria(Criteria.where("name").is(employee.getName()));
 		Employee found = mongoTemplate.findOne(query , Employee.class);

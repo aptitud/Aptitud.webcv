@@ -1,5 +1,5 @@
-body{font-family: sans-serif;}
-label{
+body{font-family: sans-serif; padding: 1em;}
+#cvcontent label{
 	font-weight: bold; 
 	display: block;}
 .aptitud-red{background-color: #EE5555;}
@@ -10,40 +10,15 @@ label{
 	padding: 5px; 
 	position: relative;}
 .shadow-box{box-shadow: 5px 5px 5px #272424;}
-.row{
-	display: inline-block; 
-	width: 100%; 
-	margin-bottom: 10px;}
-.grid-col{
-	width: 25%; 
-	display: inline-block;
-	position: relative;}
-.grid-col2{
-	width: 50%; 
-	display: inline-block;
-	position: relative;}
-.grid-col3{
-	width: 75%; 
-	display: inline-block;
-	position: relative;}
-.grid-col4{
-	width: 100%; 
-	display: inline-block;
-	position: relative;}
-.logo{
-	position: absolute; 
-	top: 0; 
-	right: 170px; 
-	width: 100px; 
-	border-radius: 10px;}
+.logo{width: 100px}
 .dot-box{
 	border: 1px dashed; 
-	padding-right: 10px; 
-	padding-left: 10px; 
-	padding-top: 15px; 
+	padding: 15px 10px 15px 10px; 
 	border-radius: 10px; 
 	position: relative; 
-	margin-bottom: 20px;}
+	margin-bottom: 20px;
+	width: 100%;
+	display: inline-block;}
 .dot-box .dot-box-header{
 	font-weight: bold; 
 	position: absolute; 
@@ -94,55 +69,29 @@ label{
 	position:relative;
 	top:1px;
 }
-ul.menu{
-	display: inline-block; 
-	margin-left: -6px;
-	margin-top: -6px;
-	background-color: #EE5555; 
-	margin-bottom: 30px; 
-	padding: 0;}
-ul.menu li{
-	display: inline-block; 
-	background-color: #FFFFFF;
-	text-align: center;
-	padding: 10px;
-	border-top: 1px solid;
-	border-radius: 10px 10px 0 0;
-	line-height: 30px;
-	z-index: 100;
-	border-left: 1px solid;
-	border-right: 1px solid;}
-ul.menu li a{
-	font-size: 15px; 
-	font-weight: bold;}
-ul.menu li.menu-last{
-	border-radius: 10px 0 0 0; 
-	border-right: 0px;}
 .block, input{display: inline-block;}
 textarea {width: 100%;}
-a{
+.row-spacing{margin-bottom: 10px;}
+#cvcontent a{
 	font-size: 11px; 
 	color: #EE5555; 
 	text-decoration: none;}
-.static{
-	position: fixed; 
-	top: 8px;}
 .gen-link{
 	position: absolute; 
 	right: 10px; 
 	bottom: 10px;}
 .file-upload-box{
 	display: inline-block; 
-	position: absolute;  
 	width: 150px; 
-	right: 20px; 
-	top: 15px; 
 	background-color: #FFFFFF;}
 .file-upload-box div{
 	width: 150px; 
 	min-height: 150px; 
 	border: 4px dashed; 
 	border-color: cadetblue;}
+.file-upload-box div.uploaded{
+	border: none;
+}
 .file-upload-box div p{
 	text-align: center; 
 	line-height: 120px;}
