@@ -18,7 +18,6 @@ app.controller('SearchController', function($scope, $rootScope, CVService, API_E
 		if(!$scope.searchAttr || $scope.searchAttr.length == 0){
 			 filteredList = [];
 		}
-		console.log(filteredList);
 		$scope.employeeFilterList = filteredList;
 	}
 	

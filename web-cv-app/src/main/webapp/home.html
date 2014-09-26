@@ -1,0 +1,102 @@
+<div class="col-md-2 box shadow-box" >
+	<div id='searchbox'  ng-controller='SearchController'  >
+		<label>Search</label>
+		<input class="row-spacing" id="searchBox" style="width: 100%;" type='text' ng-model='searchAttr' ng-change="search()"  />
+		<div ng-repeat="e in employeeFilterList" >
+			<a href="" ng-click="loadCV(e)" >{{e.name}}</a>
+		</div>
+		<div id="loadtext" class="overlay" ><span>Loading...</span></div>
+	</div>
+</div>
+<div class="col-md-1" ></div>
+<div class="col-md-6 box shadow-box" ng-controller='EditController'>
+	<nav class="navbar navbar-default" role="navigation" style="background-color: #FFFFFF; border: none;" >
+	  <div class="container-fluid">
+	    <div class="navbar-header">
+	      <button type="button" style="margin-right: 0;" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-menu-navbar-collapse-1">
+	        <span class="sr-only">Toggle navigation</span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
+	      <img alt="logo" class="logo" src="img/logo.jpg">
+	    </div>
+	    <div class="collapse navbar-collapse" id="bs-menu-navbar-collapse-1">
+	      <ul class="nav navbar-nav">
+	        <li ng-show="showCVBox"  ><a href="" ng-click="changeLang('SE')" >Swedish CV</a></li>
+	        <li ng-show="showCVBox"  ><a href="" ng-click="changeLang('EN')" >English CV</a></li>
+	        <li><a href="" ng-click="addNewEmployee()" >Add new Consultant</a></li>
+	      </ul>
+	    </div>
+	  </div>
+	</nav>
+	<div id="consultantinfo" class="dot-box " >
+			<span class="dot-box-header" >Consultant info</span>
+			<div class="block" style="float: left" >
+				<div id="fileupload" class="file-upload-box" ng-controller="FileUploadController" >
+ 				<div id="filedrag" file-input="file" file-drag="uploadFile()" >
+ 					<p>Drop a picture</p>
+ 				</div>
+			</div>	
+		</div>
+		<div class="block" style="padding-left: 10px;" >
+		 	<label style="display: block;" >Name</label>
+		 	<input type='text' ng-model='employeeForEdit.name' />
+		 	<label style="display: block;" >Role</label>
+		 	<input type='text' ng-model='employeeForEdit.role' />
+		 </div>
+		 <div class="block"  >
+			 <button ng-hide="showCVBox" style="position: absolute; right: 10px; bottom: 15px;" class="btn" ng-click="createEmployee()"  >Add new consultant</button>	
+		 </div>
+		</div>
+		<div ng-show="showCVBox" >
+			<div id="introductioncontainer" class="dot-box">
+	 		<span class="dot-box-header" >Introduction page</span>
+	 		<label>Introduction</label>
+	 		<textarea class="row-spacing" ng-model="selectedCV.introduction" rows="5" cols="70" ></textarea>
+	 		<label>Languages</label>
+	 		<textarea  class="row-spacing" rows="5" cols="70" ng-model="selectedCV.language" ></textarea>
+	 		<label>Frameworks</label>
+	 		<textarea  class="row-spacing" rows="5" cols="70" ng-model="selectedCV.framework" ></textarea>
+	 		<label>Methods</label>
+	 		<textarea  class="row-spacing" rows="5" cols="70" ng-model="selectedCV.method" ></textarea>
+	 	</div>
+	 	<div class="dot-box">
+			<span class="dot-box-header" >Assignments</span>
+			<div ng-repeat="assignment in selectedCV.assignments" >
+		 		<div class="block" >
+			 		<label>Customer</label>
+		 			<input type='text' ng-model='assignment.customer' />
+	 			</div>
+	 			<div class="block" >
+	 				<label>Role</label>
+		 			<input type='text' ng-model='assignment.role' />
+	 			</div>
+		 		<div class="block" >
+		 			<label>Date</label>
+		 			<input type='text' ng-model='assignment.date' />
+		 		</div>
+		 		<div class="block" >
+		 			<label>Include in doc</label>
+		 			<input type="checkbox" ng-model="assignment.include" />
+		 		</div>
+		 		<label>Techniques</label>
+		 		<textarea class="row-spacing"  style="height: 40px;" rows="5" cols="20" ng-model="assignment.techniques"  ></textarea>
+		 		<label>Description</label>
+		 		<textarea class="row-spacing"  rows="5" cols="70" ng-model="assignment.description" ></textarea>
+			</div>
+			<a href="" style="float: right;" ng-click="addAssignment()" >Add new Assignment</a>
+		</div>
+		<div class="dot-box">
+			<span class="dot-box-header" >Additional information</span>
+			<div ng-repeat="section in selectedCV.dynamicSections" >
+		 		<label>{{section.headlineen}} <span style="font-size: 10px; font-weight: normal;" >(include <input type="checkbox" ng-model="section.include" />)</span> </label>
+		 		<textarea  class="row-spacing"  rows="5" cols="70" ng-model="section.content" ></textarea>
+			</div>
+		</div>
+		<button class="btn" ng-click="saveChanges()" >Save changes</button>
+		<a class="gen-link" id="msdoclink" onclick="alert('The document generation will take a few sec. Click ok to start the download')" href="{{endpoint}}/document?employeeid={{employeeForEdit.id}}&lang={{selectedLang}}" download>Download docx</a>	
+	</div>
+</div>
+<div class="col-md-3 " ></div>
+		
