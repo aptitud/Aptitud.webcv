@@ -25,9 +25,14 @@ public class EmployeeRepository {
     	if(StringUtils.isEmpty(employee.getName())){
     		throw new IllegalArgumentException("Employee name can not be null");
     	}
-		Query query = new Query();
-		query.addCriteria(Criteria.where("name").is(employee.getName()));
-		Employee found = mongoTemplate.findOne(query , Employee.class);
+    	Employee found = null;
+    	if(StringUtils.isEmpty(employee.getId())){
+    		Query query = new Query();
+			query.addCriteria(Criteria.where("name").is(employee.getName()));
+			found = mongoTemplate.findOne(query , Employee.class);
+    	}else{
+    		found = mongoTemplate.findById(employee.getId(), Employee.class);
+    	}
 		if(found != null){
 			found.setMail(employee.getMail());
 			found.setName(employee.getName());
@@ -36,7 +41,11 @@ public class EmployeeRepository {
 			found.setImg(employee.getImg());
 			mongoTemplate.save(found);
 		}else{
-			mongoTemplate.insert(employee);
+			Employee newEmployee = new Employee();
+			newEmployee.setImg(employee.getImg());
+			newEmployee.setName(employee.getName());
+			newEmployee.setRole(employee.getRole());
+			mongoTemplate.insert(newEmployee);
 		}
        
     }

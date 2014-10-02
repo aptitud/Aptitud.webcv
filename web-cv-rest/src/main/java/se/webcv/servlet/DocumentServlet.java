@@ -58,16 +58,16 @@ public class DocumentServlet extends HttpServlet {
 
 	public void processRequestPDF(Employee employee, CV cv, final HttpServletRequest request,
         final HttpServletResponse response) throws ServletException, IOException {
-		DocumentGenerator generator = new DocumentGenerator(employee, cv);
-    	  byte[] pdf = generator.generatePDF();
-        if (pdf != null) {
-            response.setContentType("application/pdf");
-            response.addHeader("Content-Disposition", "attachment; filename=test.pdf");
-            response.setContentLength(pdf.length);
-            ServletOutputStream outputStream = response.getOutputStream();
-            outputStream.write(pdf);
-            
-        }
+//		TODO impl
+//    	  byte[] pdf = generator.generatePDF();
+//        if (pdf != null) {
+//            response.setContentType("application/pdf");
+//            response.addHeader("Content-Disposition", "attachment; filename=test.pdf");
+//            response.setContentLength(pdf.length);
+//            ServletOutputStream outputStream = response.getOutputStream();
+//            outputStream.write(pdf);
+//            
+//        }
     }
 	
 	public void processRequestMS(Employee employee, CV cv,  final HttpServletRequest request,

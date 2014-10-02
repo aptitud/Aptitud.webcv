@@ -15,11 +15,30 @@ app.config(['$routeProvider', function($routeProvider) {
            redirectTo: '/login'
        });
 }]);
-app.run( function($rootScope, $location) {
+
+app.run( function($rootScope, $location, AuthService) {
     $rootScope.$on( "$routeChangeStart", function(event, next, current) {
-    	console.log(sessionStorage.signedIn);
-      if (!sessionStorage.signedIn) {
-    	  $location.path( "/login" );
-      }         
+    	if (sessionStorage.signedIn) {
+    		var user = sessionStorage.user;
+    		AuthService.auth(user, function(data){
+    			if(!data.authenticated){
+   				 	gapi.auth.signOut();
+   				 	$location.path("/login"); 
+    			}
+    		});
+    	}else{
+		 	$location.path("/login"); 
+    	}         
     });
+});
+
+app.factory('Loader', function(){
+	var loader = {};
+	loader.start = function(){
+		$("#loader").addClass('overlay');
+	}
+	loader.end = function(){
+		$("#loader").removeClass('overlay');
+	}
+	return loader;
 });

@@ -31,7 +31,7 @@ public class EmployeeController {
     @RequestMapping(produces = "application/json", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.CREATED)
     public void creatEmployee(@RequestBody Employee employee) {
-    	employeeRepository.saveEmployee(employee);
+    	 employeeRepository.saveEmployee(employee);
     }
 	
 }

@@ -1,4 +1,4 @@
-app.service('GoogleService', function(CLIENT_ID){	
+app.service('GoogleService', function($http, $location, CLIENT_ID, API_END_POINT){	
 	
 	this.signIn = function(callback){
 		return gapi.auth.signIn({
@@ -19,5 +19,4 @@ app.service('GoogleService', function(CLIENT_ID){
 		});
 	}
 	
-
 });

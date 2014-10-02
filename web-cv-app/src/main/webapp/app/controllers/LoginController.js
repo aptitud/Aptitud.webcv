@@ -1,28 +1,43 @@
-app.controller('LoginController', function($scope, $location, GoogleService, CLIENT_ID){
+app.controller('LoginController', function($scope, $location, $http, GoogleService, AuthService, Loader, CLIENT_ID){
 	
-
-	 
     $scope.processAuth = function(authResult) {
+    	$scope.changeAccount = false;
         if(authResult['status']['signed_in']) {
-        	console.log('success');
-            GoogleService.getUserInfo($scope.processUserInfo);
-        } else if(authResult['error']) {
-        	console.log('fail');
-        	 sessionStorage.removeItem('signedIn');
-        	 alert("Need a aptitud domain to login");
+        	Loader.start();
+            GoogleService.getUserInfo(authUser);
+        } else if(authResult['error'] == 'user_signed_out'){
+        	$scope.changeAccount = true;
+        }else if(authResult['error']) {
+        	resetUserSession();
+        	console.log(authResult);
+        	console.log("google auth fail");
         }
     }
     
-    $scope.processUserInfo = function(userInfo) {
-        //TODO put this in backend
-        if(userInfo['domain'] == 'aptitud.se'){
-        	 sessionStorage.setItem('signedIn', true);
-        	 $scope.$apply(function() { $location.path("/home"); });
-        }else{
-        	sessionStorage.removeItem('signedIn');
-        	 gapi.auth.signOut();
-        }
+    
+    function resetUserSession(){
+    	sessionStorage.removeItem('signedIn');
+    	sessionStorage.removeItem('user');
+    	gapi.auth.signOut();
     }
+    
+    function authUser(userinfo){
+    	sessionStorage.setItem('user',JSON.stringify(userinfo));
+    	AuthService.auth(userinfo, $scope.applySignIn);
+    }
+
+    $scope.applySignIn = function(data){
+		if(data.authenticated){
+			sessionStorage.setItem('signedIn',true);
+			$location.path("/home"); 
+			console.log("applySignIn success");
+		}else{
+			resetUserSession();
+			$location.path("/login"); 
+			console.log("applySignIn fail");
+		}
+		Loader.end();
+	}
     
     $scope.renderSigin = function(){
     	gapi.signin.render('signinButton',{

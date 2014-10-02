@@ -1,3 +1,9 @@
-<div ng-controller="LoginController" >
-  <span ng-hide="signedIn" id="signinButton"></span>
+<div class="col-md-4" ></div>
+<div class="col-md-4 box shadow-box"  ng-controller="LoginController" >
+	<div id="loader" ></div>
+	<img style="margin-left: auto; margin-right: auto; display: block;" alt="logo" class="logo" src="img/logo.jpg">
+	<p style="text-align: center;"  >Aptitud domain is required</p>
+	<p ng-show="changeAccount" style="text-align: center;"  >You are logged in to another google account. Log out 211or add your aptitud account</p>
+ 	<div style="text-align: center;" ><span ng-hide="signedIn" id="signinButton"></span></div>
 </div>
+<div class="col-md-4" ></div>

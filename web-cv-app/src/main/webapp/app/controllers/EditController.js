@@ -1,4 +1,4 @@
-app.controller('EditController', function($scope, $rootScope, EmployeeService, CVService, API_END_POINT){
+app.controller('EditController', function($scope, $rootScope, EmployeeService, CVService, Loader, API_END_POINT){
 	
 	$scope.showCVBox = false;
 	$scope.endpoint= API_END_POINT;
@@ -7,17 +7,49 @@ app.controller('EditController', function($scope, $rootScope, EmployeeService, C
 	loadEmployees();
 	
 	$scope.createEmployee = function(){
-		EmployeeService.saveEmployee($scope.employeeForEdit).success(loadEmployees);
+		var employeeExists = getEmployee($scope.employeeForEdit.name);
+		if(!employeeExists){
+			Loader.start();
+			EmployeeService.saveEmployee($scope.employeeForEdit).success(openCreatedEmployee);
+		}else{
+			alert("Employee already exists");
+		}
+	}
+	
+	function openCreatedEmployee(){
+		EmployeeService.listEmployees().success(function(data){
+			$scope.employees = data;
+			var createdEmployee = getEmployee($scope.employeeForEdit.name);
+			$scope.employeeForEdit = createdEmployee;
+			$scope.showCVBox = true;
+			CVService.getCV(createdEmployee.id, "SE").success(applyCV);
+			Loader.end();
+			$rootScope.$broadcast('employeesLoaded', data);
+		});
+	}
+	
+	function getEmployee(name){
+		var searchresult = {};
+		angular.forEach($scope.employees, function(employee) {
+			if(employee.name != null){
+				var employeeToSearch = employee.name.toLowerCase();
+				var searchFor = name.toLowerCase();
+			    if(employeeToSearch == searchFor){
+			    	this.result = employee;
+			    }
+			}
+		 }, searchresult);
+		return searchresult.result;
 	}
 	
 	$scope.saveChanges = function(){
 		var employee = $scope.employeeForEdit;
-		console.log("save" + employee.img);
 		var cv = $scope.selectedCV;
 		cv.lang = $scope.selectedLang;
 		cv.employeeId = employee.id;
+		Loader.start();
 		EmployeeService.saveEmployee(employee).success(loadEmployees);
-		CVService.saveCV(cv).success(function (){console.log("success")});
+		CVService.saveCV(cv).success(Loader.end);
 	};
 
 	$scope.changeLang = function(lang){
@@ -50,7 +82,7 @@ app.controller('EditController', function($scope, $rootScope, EmployeeService, C
 	
 	$scope.addAssignment = function(){
 		var assignments = $scope.selectedCV.assignments;
-		var assignment = {'customer':'edit','role':'edit','techniques':'edit','description':'edit'};
+		var assignment = {'customer':'','role':'','techniques':'','description':''};
 		assignments.push(assignment);
 		$scope.selectedCV.assignments = assignments;
 	}
