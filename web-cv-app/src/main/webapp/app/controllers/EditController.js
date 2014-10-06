@@ -100,6 +100,4 @@ app.controller('EditController', function($scope, $rootScope, EmployeeService, C
 		$scope.selectedCV = data;
 	}
 	
-	
-	
 });

@@ -26,15 +26,15 @@
 		<script type="text/javascript">
 		//<![CDATA[
 			function pasteSort(element){
+				//Should find a pure angular way to do this!
 				var box = $(element);
-				console.log(box);
-					setTimeout(function(){
+				setTimeout(function(){
 					var str = box.val();
 					str = str.replace(/(?:\r\n|\r|\n)/g, " ");
 					box.val(str);
-					 console.log(str);
-					},100);
-			    }
+					angular.element(box).triggerHandler('input')
+				},100);
+		    }
 				
 			
 		//]]>
