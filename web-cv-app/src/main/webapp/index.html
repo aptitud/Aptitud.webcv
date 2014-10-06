@@ -23,7 +23,22 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 	</head>
 	<body id="cvcontent" class="aptitud-red"  ng-app='WebCVApplication' >
+		<script type="text/javascript">
+		//<![CDATA[
+			function pasteSort(element){
+				var box = $(element);
+				console.log(box);
+					setTimeout(function(){
+					var str = box.val();
+					str = str.replace(/(?:\r\n|\r|\n)/g, " ");
+					box.val(str);
+					 console.log(str);
+					},100);
+			    }
+				
 			
+		//]]>
+		</script>	
 		<div ng-view></div>
 	</body>
 </html>

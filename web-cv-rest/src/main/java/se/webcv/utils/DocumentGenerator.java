@@ -101,6 +101,7 @@ public class DocumentGenerator {
 		while(itr.hasNext()){
 			Object tableToUse = XmlUtils.deepCopy(tableTemplate);
 			Assignment a = itr.next();
+			modifyTableLayout(tableToUse, a);
 			tableToUse  = populateAssignmentTable(tableToUse, a);
 			mainDocument.getContent().add(tableToUse);
 			Object space = XmlUtils.deepCopy(emptyParagraph);
@@ -108,6 +109,22 @@ public class DocumentGenerator {
 		}
 	}
 
+	private void modifyTableLayout(Object tableCopy, Assignment a){
+		List<Object> rows = getAllElementFromObject(tableCopy, Tr.class);
+		List<Tr> rowsToRemove = new ArrayList<Tr>();
+		if(StringUtils.isEmpty(a.getDescription())){
+			rowsToRemove.add((Tr)rows.get(1));
+		}
+		if(StringUtils.isEmpty(a.getRole())){
+			rowsToRemove.add((Tr)rows.get(2));
+		}
+		if(StringUtils.isEmpty(a.getTechniques())){
+			rowsToRemove.add((Tr)rows.get(3));
+		}
+		for(Tr row : rowsToRemove){
+			((ContentAccessor) row.getParent()).getContent().remove(row); 
+		}
+	}
 
 	private void populateIntroText(WordprocessingMLPackage template) throws JAXBException,
 			XPathBinderAssociationIsPartialException {
@@ -161,19 +178,23 @@ public class DocumentGenerator {
 		return table;
 	}
 
-
 	private void replacePlaceHolder(String placeholder, List<Object> paragraphs, String... insert) {
 		P toReplace = getPlaceHolder(paragraphs, placeholder);
-		for (String ptext : insert) {
+		if(toReplace != null && insert != null && insert.length != 0){
+			StringBuilder sb= new StringBuilder();
+			for (String ptext : insert) {
+				sb.append(ptext);
+			}
 			P copy = (P) XmlUtils.deepCopy(toReplace);
 			List<?> texts = getAllElementFromObject(copy, Text.class);
 			if (texts.size() > 0) {
 				Text textToReplace = (Text) texts.get(0);
-				textToReplace.setValue(ptext);
+				textToReplace.setValue(sb.toString());
 			}
 			((ContentAccessor) toReplace.getParent()).getContent().add(copy);
+			
+			((ContentAccessor)toReplace.getParent()).getContent().remove(toReplace);
 		}
-		((ContentAccessor)toReplace.getParent()).getContent().remove(toReplace);
 	}
 	
 	private Tbl getAssignemnTable( WordprocessingMLPackage template)throws Exception{

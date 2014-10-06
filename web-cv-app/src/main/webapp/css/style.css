@@ -111,3 +111,8 @@ textarea {width: 100%;}
     font-weight: bold;
     border-radius: 10px;
 }
+ul.search-result{
+	padding: 0;
+}
+ul.search-result > li{display: block; padding: 5px 5px 0 5px;}
+ul.search-result > li.active{background-color: #AAB5B9;}

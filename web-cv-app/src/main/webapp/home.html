@@ -1,15 +1,17 @@
-<div class="col-md-2 box shadow-box" >
-	<div id='searchbox'  ng-controller='SearchController'  >
-		<label>Search</label>
-		<input placeholder="Text search" class="row-spacing" id="searchBox" style="width: 100%;" type='text' ng-model='searchAttr' ng-change="search()"  />
-		<div ng-repeat="e in employeeFilterList" >
-			<a href="" ng-click="loadCV(e)" >{{e.name}}</a>
-		</div>
+<div class="col-lg-2 col-xs-12 col-sm-12 box shadow-box" >
+	<div id='searchbox' class="test"   ng-controller='SearchController'  >
+		<label >Search</label>
+		<input placeholder="Text search" class="" id="searchBox" style="width: 100%;" type='text' ng-model='searchAttr' ng-change="search()" ng-keydown="toggle($event)"  />
+		<ul class="search-result" >
+			<li ng-repeat="e in employeeFilterList" >
+				<a href="" ng-click="loadCV(e)" >{{e.name}}</a>
+			</li>
+		</ul>
 		<div id="loadtext" class="overlay" ><span>Loading...</span></div>
 	</div>
 </div>
-<div class="col-md-1" ></div>
-<div class="col-md-6 box shadow-box" ng-controller='EditController'>
+<div class="col-lg-1" ></div>
+<div class="col-lg-6 col-xs-12 col-sm-12 box shadow-box container-sm" ng-controller='EditController'>
 	<div id="loader" ></div>
 	<nav class="navbar navbar-default" role="navigation" style="background-color: #FFFFFF; border: none;" >
 	  <div class="container-fluid">
@@ -54,13 +56,13 @@
 			<div id="introductioncontainer" class="dot-box">
 	 		<span class="dot-box-header" >Introduction page</span>
 	 		<label>Introduction</label>
-	 		<textarea placeholder="Edit" class="row-spacing" ng-model="selectedCV.introduction" rows="5" cols="70" ></textarea>
+	 		<textarea placeholder="Edit" onpaste="pasteSort(this)"onpaste="pasteSort(this)" class="row-spacing" ng-model="selectedCV.introduction" rows="5" cols="70" ></textarea>
 	 		<label>Languages</label>
-	 		<textarea placeholder="Edit"  class="row-spacing" rows="5" cols="70" ng-model="selectedCV.language" ></textarea>
+	 		<textarea placeholder="Edit" onpaste="pasteSort(this)"  class="row-spacing" rows="5" cols="70" ng-model="selectedCV.language" ></textarea>
 	 		<label>Frameworks</label>
-	 		<textarea placeholder="Edit"  class="row-spacing" rows="5" cols="70" ng-model="selectedCV.framework" ></textarea>
+	 		<textarea placeholder="Edit" onpaste="pasteSort(this)" class="row-spacing" rows="5" cols="70" ng-model="selectedCV.framework" ></textarea>
 	 		<label>Methods</label>
-	 		<textarea placeholder="Edit"  class="row-spacing" rows="5" cols="70" ng-model="selectedCV.method" ></textarea>
+	 		<textarea placeholder="Edit" onpaste="pasteSort(this)" class="row-spacing" rows="5" cols="70" ng-model="selectedCV.method" ></textarea>
 	 	</div>
 	 	<div class="dot-box">
 			<span class="dot-box-header" >Assignments</span>
@@ -82,9 +84,9 @@
 		 			<input type="checkbox" ng-model="assignment.include" />
 		 		</div>
 		 		<label>Techniques</label>
-		 		<textarea placeholder="Edit" class="row-spacing"  style="height: 40px;" rows="5" cols="20" ng-model="assignment.techniques"  ></textarea>
+		 		<textarea placeholder="Edit" onpaste="pasteSort(this)"class="row-spacing"  style="height: 40px;" rows="5" cols="20" ng-model="assignment.techniques"  ></textarea>
 		 		<label>Description</label>
-		 		<textarea placeholder="Edit" placeholder="Edit" class="row-spacing"  rows="5" cols="70" ng-model="assignment.description" ></textarea>
+		 		<textarea placeholder="Edit" onpaste="pasteSort(this)"placeholder="Edit" class="row-spacing"  rows="5" cols="70" ng-model="assignment.description" ></textarea>
 			</div>
 			<a href="" style="float: right;" ng-click="addAssignment()" >Add new Assignment</a>
 		</div>
@@ -92,12 +94,13 @@
 			<span class="dot-box-header" >Additional information</span>
 			<div ng-repeat="section in selectedCV.dynamicSections" >
 		 		<label>{{section.headlineen}} <span style="font-size: 10px; font-weight: normal;" >(include <input type="checkbox" ng-model="section.include" />)</span> </label>
-		 		<textarea placeholder="Edit"  class="row-spacing"  rows="5" cols="70" ng-model="section.content" ></textarea>
+		 		<textarea placeholder="Edit" onpaste="pasteSort(this)" class="row-spacing"  rows="5" cols="70" ng-model="section.content" ></textarea>
 			</div>
 		</div>
 		<button class="btn" ng-click="saveChanges()" >Save changes</button>
 		<a class="gen-link" id="msdoclink" onclick="alert('The document generation will take a few sec. Click ok to start the download')" href="{{endpoint}}/document?employeeid={{employeeForEdit.id}}&lang={{selectedLang}}" download>Download docx</a>	
 	</div>
 </div>
-<div class="col-md-3 " ></div>
+<div class="col-lg-3 " ></div>
+
 		
