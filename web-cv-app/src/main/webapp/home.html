@@ -1,6 +1,6 @@
 <div class="col-lg-2 col-xs-12 col-sm-12 box shadow-box" >
 	<div id='searchbox' class="test"   ng-controller='SearchController'  >
-		<label >Search</label>
+		<label >Sök</label>
 		<input placeholder="Text search" class="" id="searchBox" style="width: 100%;" type='text' ng-model='searchAttr' ng-change="search()" ng-keydown="toggle($event)"  />
 		<ul class="search-result" >
 			<li ng-repeat="e in employeeFilterList" >
@@ -26,15 +26,15 @@
 	    </div>
 	    <div class="collapse navbar-collapse" id="bs-menu-navbar-collapse-1">
 	      <ul class="nav navbar-nav">
-	        <li ng-show="showCVBox"  ><a href="" ng-click="changeLang('SE')" >Swedish CV</a></li>
-	        <li ng-show="showCVBox"  ><a href="" ng-click="changeLang('EN')" >English CV</a></li>
+	        <li ng-show="showCVBox"  ><a href="" ng-click="changeLang('SE')" >Svenskt CV</a></li>
+	        <li ng-show="showCVBox"  ><a href="" ng-click="changeLang('EN')" >Engelskt CV</a></li>
 	        <li><a href="" ng-click="addNewEmployee()" >Add new Consultant</a></li>
 	      </ul>
 	    </div>
 	  </div>
 	</nav>
 	<div id="consultantinfo" class="dot-box " >
-			<span class="dot-box-header" >Consultant info</span>
+			<span class="dot-box-header" >Konsult info</span>
 			<div class="block" style="float: left" >
 				<div id="fileupload" class="file-upload-box" ng-controller="FileUploadController" >
  				<div id="filedrag" file-input="file" file-drag="uploadFile()" >
@@ -43,62 +43,64 @@
 			</div>	
 		</div>
 		<div class="block" style="padding-left: 10px;" >
-		 	<label style="display: block;" >Name</label>
+		 	<label style="display: block;" >Namn</label>
 		 	<input placeholder="Input full name"  type='text' ng-model='employeeForEdit.name' />
-		 	<label style="display: block;" >Role</label>
+		 	<label style="display: block;" >Roll</label>
 		 	<input placeholder="Input role" type='text' ng-model='employeeForEdit.role' />
 		 </div>
 		 <div class="block"  >
-			 <button ng-hide="showCVBox" style="position: absolute; right: 10px; bottom: 15px;" class="btn" ng-click="createEmployee()"  >Add new consultant</button>	
+			 <button ng-hide="showCVBox" style="position: absolute; right: 10px; bottom: 15px;" class="btn" ng-click="createEmployee()"  >Lägg till konsult</button>	
 		 </div>
 		</div>
 		<div ng-show="showCVBox" >
 			<div id="introductioncontainer" class="dot-box">
-	 		<span class="dot-box-header" >Introduction page</span>
-	 		<label>Introduction</label>
+	 		<span class="dot-box-header" >Introduktionssida</span>
+	 		<label>Introduktion</label>
 	 		<textarea placeholder="Edit" onpaste="pasteSort(this)" class="row-spacing" ng-model="selectedCV.introduction" rows="5" cols="70" ></textarea>
-	 		<label>Languages</label>
+	 		<label>Språk</label>
 	 		<textarea placeholder="Edit" onpaste="pasteSort(this)"  class="row-spacing" rows="5" cols="70" ng-model="selectedCV.language" ></textarea>
-	 		<label>Frameworks</label>
+	 		<label>Produkter, Verktyg, Ramverk</label>
 	 		<textarea placeholder="Edit" onpaste="pasteSort(this)" class="row-spacing" rows="5" cols="70" ng-model="selectedCV.framework" ></textarea>
-	 		<label>Methods</label>
+	 		<label>Metoder</label>
 	 		<textarea placeholder="Edit" onpaste="pasteSort(this)" class="row-spacing" rows="5" cols="70" ng-model="selectedCV.method" ></textarea>
 	 	</div>
 	 	<div class="dot-box">
-			<span class="dot-box-header" >Assignments</span>
+			<span class="dot-box-header" >Uppdrag</span>
 			<div ng-repeat="assignment in selectedCV.assignments" >
 		 		<div class="block" >
-			 		<label>Customer</label>
+			 		<label>Kund</label>
 		 			<input placeholder="Edit"  type='text' ng-model='assignment.customer' />
 	 			</div>
 	 			<div class="block" >
-	 				<label>Role</label>
+	 				<label>Roller</label>
 		 			<input placeholder="Edit" type='text' ng-model='assignment.role' />
 	 			</div>
 		 		<div class="block" >
-		 			<label>Date</label>
+		 			<label>Datum</label>
 		 			<input placeholder="Edit"  type='text' ng-model='assignment.date' />
 		 		</div>
 		 		<div class="block" >
-		 			<label>Include in doc</label>
-		 			<input type="checkbox" ng-model="assignment.include" />
+		 			<input type="checkbox" ng-model="assignment.include" /> (Inkludera)
 		 		</div>
-		 		<label>Techniques</label>
-		 		<textarea placeholder="Edit" onpaste="pasteSort(this)"class="row-spacing"  style="height: 40px;" rows="5" cols="20" ng-model="assignment.techniques"  ></textarea>
-		 		<label>Description</label>
+		 		<div class="block" style="float: right;" >
+		 			<a href="" ng-click="removeAssignment(assignment)" >Ta bort</a>
+		 		</div>
+		 		<label>Beskrivning</label>
 		 		<textarea placeholder="Edit" onpaste="pasteSort(this)"placeholder="Edit" class="row-spacing"  rows="5" cols="70" ng-model="assignment.description" ></textarea>
+		 		<label>Tekniker</label>
+		 		<textarea placeholder="Edit" onpaste="pasteSort(this)"class="row-spacing"  style="height: 40px;" rows="5" cols="20" ng-model="assignment.techniques"  ></textarea>
 			</div>
-			<a href="" style="float: right;" ng-click="addAssignment()" >Add new Assignment</a>
+			<a href="" style="float: right;" ng-click="addAssignment()" >Lägg till uppdrag</a>
 		</div>
 		<div class="dot-box">
-			<span class="dot-box-header" >Additional information</span>
+			<span class="dot-box-header" >Ytterligare information</span>
 			<div ng-repeat="section in selectedCV.dynamicSections" >
-		 		<label>{{section.headlineen}} <span style="font-size: 10px; font-weight: normal;" >(include <input type="checkbox" ng-model="section.include" />)</span> </label>
+		 		<label>{{section.headlinese}} <span style="font-size: 10px; font-weight: normal;" >(inkludera <input type="checkbox" ng-model="section.include" />)</span> </label>
 		 		<textarea placeholder="Edit" onpaste="pasteSort(this)" class="row-spacing"  rows="5" cols="70" ng-model="section.content" ></textarea>
 			</div>
 		</div>
-		<button class="btn" ng-click="saveChanges()" >Save changes</button>
-		<a class="gen-link" id="msdoclink" onclick="alert('The document generation will take a few sec. Click ok to start the download')" href="{{endpoint}}/document?employeeid={{employeeForEdit.id}}&lang={{selectedLang}}" download>Download docx</a>	
+		<button class="btn" ng-click="saveChanges()" >Spara ändringarna</button>
+		<a class="gen-link" id="msdoclink" onclick="alert('The document generation will take a few sec. Click ok to start the download')" href="{{endpoint}}/document?employeeid={{employeeForEdit.id}}&lang={{selectedLang}}" download>Download docx  <img alt="logo"  src="img/download.png"></a>	
 	</div>
 </div>
 <div class="col-lg-3 " ></div>

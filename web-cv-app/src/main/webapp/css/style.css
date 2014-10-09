@@ -76,7 +76,7 @@ textarea {width: 100%;}
 	font-size: 11px; 
 	color: #EE5555; 
 	text-decoration: none;}
-.gen-link{
+#cvcontent a.gen-link, a.gen-link{
 	position: absolute; 
 	right: 10px; 
 	bottom: 10px;}

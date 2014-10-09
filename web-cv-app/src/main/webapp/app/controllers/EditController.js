@@ -87,6 +87,17 @@ app.controller('EditController', function($scope, $rootScope, EmployeeService, C
 		$scope.selectedCV.assignments = assignments;
 	}
 	
+	$scope.removeAssignment = function(assignemntToremove){
+		var assignments = [];
+		for(var i=0; i<$scope.selectedCV.assignments.length; i++){
+			var assignemnt = $scope.selectedCV.assignments[i];
+			if(assignemntToremove != assignemnt){
+				assignments.push(assignemnt);
+			}
+		}
+		$scope.selectedCV.assignments = assignments;
+	}
+	
 	function loadEmployees(){
 		EmployeeService.listEmployees().success(applyEmployees);
 	}

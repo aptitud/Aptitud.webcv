@@ -17,6 +17,11 @@ public class DynamicSection {
 		return headline != null ? headline.getEn() : "";
 	}
 	
+
+	public String getHeadlinese(){
+		return headline != null ? headline.getSe() : "";
+	}
+	
 	public DynamicSection(HeadLines headline){
 		this.headline = headline;
 	}
