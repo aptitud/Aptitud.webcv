@@ -64,9 +64,9 @@
 	 		<label>Metoder</label>
 	 		<textarea placeholder="Edit" onpaste="pasteSort(this)" class="row-spacing" rows="5" cols="70" ng-model="selectedCV.method" ></textarea>
 	 	</div>
-	 	<div class="dot-box">
-			<span class="dot-box-header" >Uppdrag</span>
-			<div ng-repeat="assignment in selectedCV.assignments" >
+	 	<div ng-repeat="assignment in selectedCV.assignments" >
+	 		<div class="dot-box">
+				<span class="dot-box-header" >Uppdrag - {{assignment.customer}}</span>
 		 		<div class="block" >
 			 		<label>Kund</label>
 		 			<input placeholder="Edit"  type='text' ng-model='assignment.customer' />
@@ -90,6 +90,9 @@
 		 		<label>Tekniker</label>
 		 		<textarea placeholder="Edit" onpaste="pasteSort(this)"class="row-spacing"  style="height: 40px;" rows="5" cols="20" ng-model="assignment.techniques"  ></textarea>
 			</div>
+		</div>
+		<div class="dot-box">
+			<span class="dot-box-header" >Uppdrag</span>
 			<a href="" style="float: right;" ng-click="addAssignment()" >Lägg till uppdrag</a>
 		</div>
 		<div class="dot-box">

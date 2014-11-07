@@ -181,18 +181,15 @@ public class DocumentGenerator {
 	private void replacePlaceHolder(String placeholder, List<Object> paragraphs, String... insert) {
 		P toReplace = getPlaceHolder(paragraphs, placeholder);
 		if(toReplace != null && insert != null && insert.length != 0){
-			StringBuilder sb= new StringBuilder();
 			for (String ptext : insert) {
-				sb.append(ptext);
+				P copy = (P) XmlUtils.deepCopy(toReplace);
+				List<?> texts = getAllElementFromObject(copy, Text.class);
+				if (texts.size() > 0) {
+					Text textToReplace = (Text) texts.get(0);
+					textToReplace.setValue(ptext);
+				}
+				((ContentAccessor) toReplace.getParent()).getContent().add(copy);
 			}
-			P copy = (P) XmlUtils.deepCopy(toReplace);
-			List<?> texts = getAllElementFromObject(copy, Text.class);
-			if (texts.size() > 0) {
-				Text textToReplace = (Text) texts.get(0);
-				textToReplace.setValue(sb.toString());
-			}
-			((ContentAccessor) toReplace.getParent()).getContent().add(copy);
-			
 			((ContentAccessor)toReplace.getParent()).getContent().remove(toReplace);
 		}
 	}

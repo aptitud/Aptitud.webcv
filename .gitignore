@@ -7,7 +7,7 @@ web-cv-rest/.settings/
 web-cv-rest/build/
 web-cv-rest/.project
 /build
-
+.idea
 .gradle
 .settings
 .project
