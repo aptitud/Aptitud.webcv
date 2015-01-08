@@ -44,9 +44,9 @@
 		</div>
 		<div class="block" style="padding-left: 10px;" >
 		 	<label style="display: block;" >Namn</label>
-		 	<input placeholder="Input full name"  type='text' ng-model='employeeForEdit.name' />
-		 	<label style="display: block;" >Roll</label>
-		 	<input placeholder="Input role" type='text' ng-model='employeeForEdit.role' />
+		 	<input placeholder="Input full name"  type='text' ng-model='employeeForEdit.name' size="30"/>
+		 	<label style="margin-top:0.5em;display: block;">Roll</label>
+		 	<input placeholder="Input role" type='text' ng-model='employeeForEdit.role' size="40"/>
 		 </div>
 		 <div class="block"  >
 			 <button ng-hide="showCVBox" style="position: absolute; right: 10px; bottom: 15px;" class="btn" ng-click="createEmployee()"  >Lägg till konsult</button>	
@@ -83,7 +83,9 @@
 		 			<input type="checkbox" ng-model="assignment.include" /> (Inkludera)
 		 		</div>
 		 		<div class="block" style="float: right;" >
-		 			<a href="" ng-click="removeAssignment(assignment)" >Ta bort</a>
+					<a ng-if="!$first" href="" ng-click="moveUp(assignment)" >Flytta upp</a>
+					<a ng-if="!$last" href="" ng-click="moveDown(assignment)" >Flytta ner</a>
+					<a href="" ng-click="removeAssignment(assignment)" >Ta bort</a>
 		 		</div>
 		 		<label>Beskrivning</label>
 		 		<textarea placeholder="Edit" onpaste="pasteSort(this)"placeholder="Edit" class="row-spacing"  rows="5" cols="70" ng-model="assignment.description" ></textarea>
