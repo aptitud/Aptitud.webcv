@@ -1,4 +1,4 @@
-angular.module('configuration', [])
+angular.module('configuration', ['ui.select'])
        //.constant('API_END_POINT','http://afternoon-river-5325.herokuapp.com')
 	   .constant('API_END_POINT','http://localhost:8000')
        .constant('CLIENT_ID','57103926862-ktsb4791lhv5fp42tista6jhocosc3rg.apps.googleusercontent.com');
