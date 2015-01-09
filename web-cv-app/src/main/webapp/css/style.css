@@ -7,15 +7,14 @@ body {
 }
 .file-upload-box {
     display: inline-block;
-    width: 150px;
     background-color: #FFFFFF;
 }
 
 .file-upload-box div {
     padding-top: 2em;
-    width: 150px;
-    min-height: 150px;
-    border: 4px dashed;
+    width: 11em;
+    min-height: 11em;
+    border: 0.3em dashed;
     border-color: cadetblue;
     text-align: center;
 }
