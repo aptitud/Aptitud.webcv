@@ -60,6 +60,14 @@
                       ng-model="selectedCV.method"></textarea>
                 </div>
             </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">Uppdrag</div>
+                <div class="panel-body">
+                    <button class="btn btn-default pull-right" ng-click="addAssignmentFirst()"><i class="fa fa-plus"></i>&nbsp;Lägg
+                        till uppdrag
+                    </button>
+                </div>
+            </div>
             <div ng-repeat="assignment in selectedCV.assignments">
                 <div class="panel panel-default form-group">
                     <div class="panel-heading" style="line-height: 2em;">

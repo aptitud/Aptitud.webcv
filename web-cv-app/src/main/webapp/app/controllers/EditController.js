@@ -68,6 +68,10 @@ app.controller('EditController', function ($scope, $rootScope, EmployeeService, 
         $scope.$broadcast('clearimg');
     }
 
+    $scope.addAssignmentFirst = function () {
+        $scope.selectedCV.assignments.unshift({'customer': '', 'role': '', 'techniques': '', 'description': ''});
+    }
+
     $scope.addAssignment = function () {
         $scope.selectedCV.assignments.push({'customer': '', 'role': '', 'techniques': '', 'description': ''});
     }
