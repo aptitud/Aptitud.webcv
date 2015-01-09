@@ -76,7 +76,7 @@ app.controller('EditController', function ($scope, $rootScope, EmployeeService, 
         cv.employeeId = employee.id;
         Loader.start();
         EmployeeService.saveEmployee(employee).success(function () {
-            $rootScope.broadcast('employeeChanged', employee);
+            $rootScope.$broadcast('employeeChanged', employee);
         });
         CVService.saveCV(cv).success(Loader.end);
     };

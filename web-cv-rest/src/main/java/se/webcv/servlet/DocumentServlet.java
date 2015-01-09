@@ -21,43 +21,43 @@ import se.webcv.utils.DocumentGenerator;
 
 public class DocumentServlet extends HttpServlet {
 
-	private static final long serialVersionUID = 1L;
-	
-	@Autowired
-	private CVRepository cvRepository; 
-	
-	@Autowired
-	private EmployeeRepository employeeRepository;
+    private static final long serialVersionUID = 1L;
 
-	@Override
-	public void init(ServletConfig config) throws ServletException {
-		super.init(config);
-	    SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
-	      config.getServletContext());
-	}
+    @Autowired
+    private CVRepository cvRepository;
 
-	@Override
-    protected void doGet(final HttpServletRequest request,
-        final HttpServletResponse response) throws ServletException,
-        IOException {
-  		String employeeid = request.getParameter("employeeid");
-  		String gentype = request.getParameter("gentype");
-  		String lang = request.getParameter("lang");
-  		CV cv = cvRepository.getCV(employeeid, lang);
-  		Employee employee = employeeRepository.getEmployee(employeeid);
-  		if(generatePdf(gentype)){
-  			processRequestPDF(employee, cv, request, response);
-  		}else{
-  			processRequestMS(employee, cv, request, response);
-  		}
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
+                config.getServletContext());
     }
-	
-	private boolean generatePdf(String gentype) {
-		return "pdf".equalsIgnoreCase(gentype);
-	}
 
-	public void processRequestPDF(Employee employee, CV cv, final HttpServletRequest request,
-        final HttpServletResponse response) throws ServletException, IOException {
+    @Override
+    protected void doGet(final HttpServletRequest request,
+                         final HttpServletResponse response) throws ServletException,
+            IOException {
+        String employeeid = request.getParameter("employeeid");
+        String gentype = request.getParameter("gentype");
+        String lang = request.getParameter("lang");
+        CV cv = cvRepository.getCV(employeeid, lang);
+        Employee employee = employeeRepository.getEmployee(employeeid);
+        if (generatePdf(gentype)) {
+            processRequestPDF(employee, cv, request, response);
+        } else {
+            processRequestMS(employee, cv, request, response);
+        }
+    }
+
+    private boolean generatePdf(String gentype) {
+        return "pdf".equalsIgnoreCase(gentype);
+    }
+
+    public void processRequestPDF(Employee employee, CV cv, final HttpServletRequest request,
+                                  final HttpServletResponse response) throws ServletException, IOException {
 //		TODO impl
 //    	  byte[] pdf = generator.generatePDF();
 //        if (pdf != null) {
@@ -69,17 +69,12 @@ public class DocumentServlet extends HttpServlet {
 //            
 //        }
     }
-	
-	public void processRequestMS(Employee employee, CV cv,  final HttpServletRequest request,
-		final HttpServletResponse response) throws ServletException, IOException {
-    	 DocumentGenerator generator = new DocumentGenerator(employee, cv);
-    	  byte[] doc = generator.generateMSdoc();
-        if (doc != null) {
-            response.setContentType("application/docx");
-            response.addHeader("Content-Disposition", "attachment; filename=cv.docx");
-            response.setContentLength(doc.length);
-            ServletOutputStream outputStream = response.getOutputStream();
-            outputStream.write(doc);
-        }
+
+    public void processRequestMS(Employee employee, CV cv, final HttpServletRequest request,
+                                 final HttpServletResponse response) throws ServletException, IOException {
+        DocumentGenerator generator = new DocumentGenerator(employee, cv);
+        response.setContentType("application/docx");
+        response.addHeader("Content-Disposition", String.format("attachment; filename=%s-cv.docx", employee.getName()));
+        generator.generateMSdoc(response.getOutputStream());
     }
 }

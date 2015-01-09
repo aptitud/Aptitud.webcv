@@ -15,9 +15,11 @@ app.controller('NavbarController', function ($scope, $rootScope, $location) {
         $scope.isAuthenticated = false;
     });
 
-    function resetUserSession() {
+    $scope.logout = function () {
         sessionStorage.removeItem('signedIn');
         sessionStorage.removeItem('user');
         gapi.auth.signOut();
+        $rootScope.$broadcast('logout');
+        $location.path('/login')
     }
 });
