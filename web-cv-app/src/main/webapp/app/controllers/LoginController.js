@@ -1,4 +1,4 @@
-app.controller('LoginController', function($scope, $location, $http, GoogleService, AuthService, Loader, CLIENT_ID){
+app.controller('LoginController', function($scope, $rootScope, $location, $http, GoogleService, AuthService, Loader, CLIENT_ID){
 	
     $scope.processAuth = function(authResult) {
     	$scope.changeAccount = false;
@@ -18,7 +18,8 @@ app.controller('LoginController', function($scope, $location, $http, GoogleServi
     function resetUserSession(){
     	sessionStorage.removeItem('signedIn');
     	sessionStorage.removeItem('user');
-    	gapi.auth.signOut();
+		$rootScope.$broadcast('logout');
+		gapi.auth.signOut();
     }
     
     function authUser(userinfo){
@@ -29,6 +30,7 @@ app.controller('LoginController', function($scope, $location, $http, GoogleServi
     $scope.applySignIn = function(data){
 		if(data.authenticated){
 			sessionStorage.setItem('signedIn',true);
+			$rootScope.$broadcast('authenticated');
 			$location.path("/home"); 
 			console.log("applySignIn success");
 		}else{

@@ -1,45 +1,76 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js" type="text/javascript"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.min.js"></script>
-		<script src="https://plus.google.com/js/client:plusone.js"></script>
-		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
-	  	<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
-	    <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
-		<script src="app/app.js" type="text/javascript"></script>
-		<script src="app/directives/Fileupload.js" type="text/javascript"></script>
-		<script src="app/service/EmployeeService.js" type="text/javascript"></script>
-		<script src="app/service/CVService.js" type="text/javascript"></script>
-		<script src="app/service/GoogleService.js" type="text/javascript"></script>
-		<script src="app/service/AuthService.js" type="text/javascript"></script>
-		<script src="app/controllers/EditController.js" type="text/javascript"></script>
-		<script src="app/controllers/SearchController.js" type="text/javascript"></script>
-		<script src="app/controllers/FileUploadController.js" type="text/javascript"></script>
-		<script src="app/controllers/LoginController.js" type="text/javascript"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-		<link rel="stylesheet" type="text/css" href="css/style.css">
-		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-	</head>
-	<body id="cvcontent" class="aptitud-red"  ng-app='WebCVApplication' >
-		<script type="text/javascript">
-		//<![CDATA[
-			function pasteSort(element){
-				//Should find a pure angular way to do this!
-				var box = $(element);
-				setTimeout(function(){
-					var str = box.val();
-					str = str.replace(/(?:\r\n|\r|\n)/g, " ");
-					box.val(str);
-					angular.element(box).triggerHandler('input')
-				},100);
-		    }
-				
-			
-		//]]>
-		</script>	
-		<div ng-view></div>
-	</body>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.min.js"></script>
+    <script src="https://plus.google.com/js/client:plusone.js"></script>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+    <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
+    <script src="app/app.js" type="text/javascript"></script>
+    <script src="app/directives/Fileupload.js" type="text/javascript"></script>
+    <script src="app/service/EmployeeService.js" type="text/javascript"></script>
+    <script src="app/service/CVService.js" type="text/javascript"></script>
+    <script src="app/service/GoogleService.js" type="text/javascript"></script>
+    <script src="app/service/AuthService.js" type="text/javascript"></script>
+    <script src="app/controllers/EditController.js" type="text/javascript"></script>
+    <script src="app/controllers/SearchController.js" type="text/javascript"></script>
+    <script src="app/controllers/FileUploadController.js" type="text/javascript"></script>
+    <script src="app/controllers/LoginController.js" type="text/javascript"></script>
+    <script src="app/controllers/NavbarController.js" type="text/javascript"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body ng-app='WebCVApplication'>
+<script type="text/javascript">
+    //<![CDATA[
+    function pasteSort(element) {
+        //Should find a pure angular way to do this!
+        var box = $(element);
+        setTimeout(function () {
+            var str = box.val();
+            str = str.replace(/(?:\r\n|\r|\n)/g, " ");
+            box.val(str);
+            angular.element(box).triggerHandler('input')
+        }, 100);
+    }
+    //]]>
+</script>
+<div ng-controller="NavbarController">
+    <nav class="navbar navbar-default" ng-if="isAuthenticated">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">
+                    <img alt="Aptitud" width="30px" height="30px" src="img/logo.jpg">
+                </a>
+            </div>
+            <form class="navbar-form navbar-left" role="search" ng-controller='SearchController'>
+                <div class="form-group">
+                    <input placeholder="Sök konsult" class="form-control" id="searchBox" type='text'
+                           ng-model='searchAttr' ng-change="search()" ng-keydown="toggle($event)"/>
+                </div>
+                <div class="list-group search-result" style="z-index: 1; position: absolute;">
+                    <a class="list-group-item" href="/#/edit/{{e.id}}"
+                       ng-repeat="e in employeeFilterList">{{e.name}}</a>
+                </div>
+                <div id="loadtext" style="display: none;" class="overlay"><h3><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Laddar...
+                </h3></div>
+            </form>
+            <ul class="nav navbar-nav">
+                <li>
+                    <button type="button" class="btn btn-default navbar-btn" onclick="window.location.href='#/new'">
+                        <i class="fa fa-user"></i>&nbsp;Ny konsult
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+<div ng-view class="container"></div>
+</body>
 </html>

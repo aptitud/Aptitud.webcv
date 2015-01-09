@@ -1,0 +1,132 @@
+<div class="col-lg-offset-2 col-lg-6" ng-controller='EditController'>
+    <div id="loader"></div>
+    <div id="consultantinfo" class="panel panel-default">
+        <div class="panel-heading">
+            <h4 style="display: inline">Konsult info</h4>
+            <span ng-show="showCVBox" class="pull-right">
+                Språk
+                <select ng-change="changeLang()" ng-model="selectedLang">
+                    <option value="SE">Svenskt CV</option>
+                    <option value="EN">Engelskt CV</option>
+                </select>
+            </span>
+        </div>
+        <div class="panel-body">
+            <form>
+                <div class="row">
+                    <div class="form-group col-sm-4">
+                        <div id="fileupload" class="file-upload-box" ng-controller="FileUploadController">
+                            <div id="filedrag" file-input="file" file-drag="uploadFile()">
+                                <p>Drop a picture</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-8">
+                        <label>Namn</label>
+                        <input class="form-control" placeholder="Namn" type='text'
+                               ng-model='employeeForEdit.name'
+                                />
+                        <label style="margin-top: 0.5em;">Roll</label>
+                        <input class="form-control" placeholder="Övergripande roll" type='text'
+                               ng-model='employeeForEdit.role'
+                                />
+                    </div>
+                    <div class="col-sm-12">
+                        <button ng-hide="showCVBox"
+                                class="btn btn-primary pull-right"
+                                ng-click="createEmployee()"><i class="fa fa-plus"></i>&nbsp;Lägg till konsult
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div ng-show="showCVBox">
+        <form>
+            <div id="introductioncontainer" class="panel panel-default form-group">
+                <div class="panel-heading">Introduktionssida</div>
+                <div class="panel-body">
+                    <label>Introduktion</label>
+            <textarea placeholder="Edit" onpaste="pasteSort(this)" class="form-control"
+                      ng-model="selectedCV.introduction" rows="5" cols="70"></textarea>
+                    <label>Språk</label>
+            <textarea placeholder="Edit" onpaste="pasteSort(this)" class="form-control" rows="5" cols="70"
+                      ng-model="selectedCV.language"></textarea>
+                    <label>Produkter, Verktyg, Ramverk</label>
+            <textarea placeholder="Edit" onpaste="pasteSort(this)" class="form-control" rows="5" cols="70"
+                      ng-model="selectedCV.framework"></textarea>
+                    <label>Metoder</label>
+            <textarea placeholder="Edit" onpaste="pasteSort(this)" class="form-control" rows="5" cols="70"
+                      ng-model="selectedCV.method"></textarea>
+                </div>
+            </div>
+            <div ng-repeat="assignment in selectedCV.assignments">
+                <div class="panel panel-default form-group">
+                    <div class="panel-heading" style="line-height: 2em;">
+                        Uppdrag - {{assignment.customer}}
+                        <span class="include-text">
+                            (Inkludera <input type="checkbox" ng-model="assignment.include"/> )
+                        </span>
+                        <span class="pull-right">
+                            <a ng-if="!$first" href="" ng-click="moveUp(assignment)" class="btn btn-default"><i
+                                    class="fa fa-arrow-up" title="Flytta upp"></i></a>
+                            <a ng-if="!$last" href="" ng-click="moveDown(assignment)" class="btn btn-default"><i
+                                    class="fa fa-arrow-down" title="Flytta ner"></i></a>
+                            <a href="" ng-click="removeAssignment(assignment)" class="btn btn-default"><i
+                                    class="fa fa-remove" title="Ta bort"></i></a>
+                        </span>
+                    </div>
+                    <div class="panel-body">
+                        <div class="block">
+                            <label>Kund</label>
+                            <input placeholder="Edit" class="form-control" type='text' ng-model='assignment.customer'/>
+                        </div>
+                        <div class="block">
+                            <label>Roller</label>
+                            <input placeholder="Edit" class="form-control" type='text' ng-model='assignment.role'/>
+                        </div>
+                        <div class="block">
+                            <label>Datum</label>
+                            <input placeholder="Edit" class="form-control" type='text' ng-model='assignment.date'/>
+                        </div>
+                        <label>Beskrivning</label>
+                <textarea placeholder="Edit" onpaste="pasteSort(this)" placeholder="Edit"
+                          class="form-control row-spacing" rows="5"
+                          cols="70" ng-model="assignment.description"></textarea>
+                        <label>Tekniker</label>
+                <textarea placeholder="Edit" onpaste="pasteSort(this)" class="form-control row-spacing"
+                          style="height: 40px;"
+                          rows="5" cols="20" ng-model="assignment.techniques"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">Uppdrag</div>
+                <div class="panel-body">
+                    <button class="btn btn-default pull-right" ng-click="addAssignment()"><i class="fa fa-plus"></i>&nbsp;Lägg
+                        till uppdrag
+                    </button>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">Ytterligare information</div>
+                <div class="panel-body">
+
+                    <div ng-repeat="section in selectedCV.dynamicSections" class="form-group">
+                        <label>{{section.headlinese}} <span class="include-text">(inkludera <input
+                                type="checkbox" ng-model="section.include"/>)</span> </label>
+                <textarea placeholder="Skriv text" onpaste="pasteSort(this)" class="form-control row-spacing" rows="5"
+                          cols="70"
+                          ng-model="section.content"></textarea>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-primary" ng-click="saveChanges()"><i class="fa fa-save"></i>&nbsp;Spara ändringarna
+            </button>
+            <a class="btn btn-default pull-right" id="msdoclink"
+               onclick="alert('The document generation will take a few sec. Click ok to start the download')"
+               href="{{endpoint}}/document?employeeid={{employeeForEdit.id}}&lang={{selectedLang}}" download>
+                <i class="fa fa-download"></i>&nbsp;Download docx</a>
+        </form>
+    </div>
+</div>

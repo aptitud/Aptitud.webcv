@@ -1,14 +1,10 @@
-app.controller('SearchController', function($scope, $rootScope, CVService, API_END_POINT){
+app.controller('SearchController', function($scope, $rootScope, CVService, EmployeeService){
 	loadCVList();
-	
-	$scope.loadCV = function(employee){
-		$rootScope.$broadcast('loadcv', employee);
-	}
-	
-	$scope.$on('employeesLoaded', function(event, args) { 
-		$scope.employeeList = args;
+
+	$rootScope.$on('employeeChanged', function(event, data) {
+		loadEmployees();
 	});
-	
+
 	$scope.search = function(){
 		var searchresult = getSearchResultEmployees($scope.searchAttr);
 		if(searchresult.length == 0){
@@ -58,17 +54,22 @@ app.controller('SearchController', function($scope, $rootScope, CVService, API_E
 	}
 	
 	function loadCVList(){
-		$("#loadtext").attr('class','overlay');
-		$("#loadtext").find('span').html('Loading.....')
-		CVService.listCVs().success(applyCVList);
+		$("#loadtext").show();
+		CVService.listCVs().success(function(data) {
+			$scope.cvlist = data;
+			$rootScope.$broadcast('cvsLoaded', data);
+			loadEmployees();
+		});
 	}
-	
-	function applyCVList(data){
-		$("#loadtext").removeAttr('class');
-		$("#loadtext").find('span').html('')
-		$scope.cvlist = data;
+
+	function loadEmployees() {
+		EmployeeService.listEmployees().success(function(data) {
+			$scope.employeeList = data;
+			$rootScope.$broadcast('employeesLoaded', data);
+			$("#loadtext").hide();
+		});
 	}
-	
+
 	$scope.toggle = function(event){
 		if(event.keyCode == 40){
 			var activeIndex = $(".search-result").find("li[class*='active']").index()

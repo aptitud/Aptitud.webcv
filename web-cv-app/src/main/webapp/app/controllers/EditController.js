@@ -1,45 +1,37 @@
-app.controller('EditController', function ($scope, $rootScope, EmployeeService, CVService, Loader, API_END_POINT) {
+app.controller('EditController', function ($scope, $rootScope, EmployeeService, CVService, Loader, API_END_POINT, $routeParams) {
 
     $scope.showCVBox = false;
     $scope.endpoint = API_END_POINT;
     $scope.selectedLang = "SE";
     $scope.employeeForEdit = {};
-    loadEmployees();
 
-    $scope.createEmployee = function () {
-        var employeeExists = getEmployee($scope.employeeForEdit.name);
-        if (!employeeExists) {
-            Loader.start();
-            EmployeeService.saveEmployee($scope.employeeForEdit).success(openCreatedEmployee);
-        } else {
-            alert("Employee already exists");
-        }
-    }
-
-    function openCreatedEmployee() {
-        EmployeeService.listEmployees().success(function (data) {
-            $scope.employees = data;
-            var createdEmployee = getEmployee($scope.employeeForEdit.name);
-            $scope.employeeForEdit = createdEmployee;
-            $scope.showCVBox = true;
-            CVService.getCV(createdEmployee.id, "SE").success(applyCV);
-            Loader.end();
-            $rootScope.$broadcast('employeesLoaded', data);
+    if (!angular.isUndefined($routeParams.id)) {
+        $scope.showCVBox = true;
+        $scope.employeeIdForEdit = $routeParams.id;
+        EmployeeService.getEmployeeById($routeParams.id).success(function (data) {
+            $scope.employeeForEdit = data;
+            $scope.$broadcast('loadimg', data);
+        })
+        CVService.getCV($routeParams.id, "SE").success(function (data) {
+            $scope.selectedCV = data;
         });
     }
 
-    function getEmployee(name) {
-        var searchresult = {};
-        angular.forEach($scope.employees, function (employee) {
-            if (employee.name != null) {
-                var employeeToSearch = employee.name.toLowerCase();
-                var searchFor = name.toLowerCase();
-                if (employeeToSearch == searchFor) {
-                    this.result = employee;
-                }
-            }
-        }, searchresult);
-        return searchresult.result;
+    $scope.createEmployee = function () {
+        Loader.start();
+        EmployeeService.saveEmployee($scope.employeeForEdit).success(openCreatedEmployee);
+    }
+
+    function openCreatedEmployee(data, status, headers) {
+        var location = headers('location');
+        var createdId = headers('X-createdId');
+        EmployeeService.getEmployeeById(createdId).success(function (data) {
+            $scope.employeeForEdit = data;
+            $scope.$broadcast('loadimg', data);
+            $scope.showCVBox = true;
+            CVService.getCV($scope.employeeForEdit.id, "SE").success(applyCV);
+            Loader.end();
+        });
     }
 
     $scope.saveChanges = function () {
@@ -48,26 +40,22 @@ app.controller('EditController', function ($scope, $rootScope, EmployeeService, 
         cv.lang = $scope.selectedLang;
         cv.employeeId = employee.id;
         Loader.start();
-        EmployeeService.saveEmployee(employee).success(loadEmployees);
+        EmployeeService.saveEmployee(employee).success(function () {
+            $rootScope.broadcast('employeeChanged', employee);
+        });
         CVService.saveCV(cv).success(Loader.end);
     };
 
     $scope.changeLang = function (lang) {
-        $scope.selectedLang = lang;
-        var employeeID = $scope.employeeForEdit.id;
-        $scope.showCVBox = true;
-        CVService.getCV(employeeID, lang).success(applyCV);
-        if ($scope.selectedCV.lang != lang) {
-            $scope.selectedCV = {};
+        $scope.selectedLang = lang || $scope.selectedLang;
+        if ($scope.selectedCV.lang != $scope.selectedLang) {
+            var employeeID = $scope.employeeForEdit.id;
+            $scope.showCVBox = true;
+            CVService.getCV(employeeID, $scope.selectedLang).success(function (data) {
+                $scope.selectedCV = data;
+            });
         }
     }
-
-    $scope.$on('loadcv', function (event, args) {
-        var employeeID = args.id;
-        $scope.showCVBox = true;
-        $scope.employeeForEdit = args;
-        CVService.getCV(employeeID, "SE").success(applyCV);
-    });
 
     $scope.$on('imgloaded', function (event, args) {
         $scope.employeeForEdit.img = args;
@@ -77,7 +65,7 @@ app.controller('EditController', function ($scope, $rootScope, EmployeeService, 
         $scope.showCVBox = false;
         $scope.employeeForEdit = {};
         $scope.selectedCV = null;
-        $rootScope.$broadcast('clearimg');
+        $scope.$broadcast('clearimg');
     }
 
     $scope.addAssignment = function () {
@@ -123,18 +111,4 @@ app.controller('EditController', function ($scope, $rootScope, EmployeeService, 
         array[pos1] = v2;
         array[pos2] = v1;
     }
-    
-    function loadEmployees() {
-        EmployeeService.listEmployees().success(applyEmployees);
-    }
-
-    function applyEmployees(data) {
-        $scope.employees = data;
-        $rootScope.$broadcast('employeesLoaded', data);
-    }
-
-    function applyCV(data) {
-        $scope.selectedCV = data;
-    }
-
 });

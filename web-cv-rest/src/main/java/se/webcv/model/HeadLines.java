@@ -4,8 +4,8 @@ public enum HeadLines {
 
 	EDUCATION("Utbildning","Education"),
 	COURSES("Kurser", "Courses"),
-	LECTIURES("Föreläsningar","Lectures"),
-	OTHER("Övrigt","Other");
+	LECTIURES("FÃ¶relÃ¤sningar","Lectures"),
+	OTHER("Ã–vrigt","Other");
 	
 	private String se;
 	private String en;
