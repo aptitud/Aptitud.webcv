@@ -48,15 +48,18 @@
                 <div class="panel-body">
                     <label>Introduktion</label>
             <textarea placeholder="Edit" onpaste="pasteSort(this)" class="form-control"
-                      ng-model="selectedCV.introduction" rows="5" cols="70"></textarea>
+                      ng-model="selectedCV.introduction" rows="{{textBoxLayout.introduction}}" cols="70"></textarea>
                     <label>Språk</label>
-            <textarea placeholder="Edit" onpaste="pasteSort(this)" class="form-control" rows="5" cols="70"
+            <textarea placeholder="Edit" onpaste="pasteSort(this)" class="form-control"
+                      rows="{{textBoxLayout.language}}" cols="70"
                       ng-model="selectedCV.language"></textarea>
                     <label>Produkter, Verktyg, Ramverk</label>
-            <textarea placeholder="Edit" onpaste="pasteSort(this)" class="form-control" rows="5" cols="70"
+            <textarea placeholder="Edit" onpaste="pasteSort(this)" class="form-control"
+                      rows="{{textBoxLayout.framework}}" cols="70"
                       ng-model="selectedCV.framework"></textarea>
                     <label>Metoder</label>
-            <textarea placeholder="Edit" onpaste="pasteSort(this)" class="form-control" rows="5" cols="70"
+            <textarea placeholder="Edit" onpaste="pasteSort(this)" class="form-control"
+                      rows="{{textBoxLayout.method}}" cols="70"
                       ng-model="selectedCV.method"></textarea>
                 </div>
             </div>
@@ -99,12 +102,13 @@
                         </div>
                         <label>Beskrivning</label>
                 <textarea placeholder="Edit" onpaste="pasteSort(this)" placeholder="Edit"
-                          class="form-control row-spacing" rows="5"
+                          class="form-control row-spacing"
+                          rows="{{textBoxLayout.forAssignment(assignment, 'description')}}"
                           cols="70" ng-model="assignment.description"></textarea>
                         <label>Tekniker</label>
                 <textarea placeholder="Edit" onpaste="pasteSort(this)" class="form-control row-spacing"
-                          style="height: 40px;"
-                          rows="5" cols="20" ng-model="assignment.techniques"></textarea>
+                          rows="{{textBoxLayout.forAssignment(assignment, 'techniques')}}"
+                          cols="70" ng-model="assignment.techniques"></textarea>
                     </div>
                 </div>
             </div>

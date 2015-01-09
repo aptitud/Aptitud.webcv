@@ -14,6 +14,41 @@ app.controller('EditController', function ($scope, $rootScope, EmployeeService, 
         })
         CVService.getCV($routeParams.id, "SE").success(function (data) {
             $scope.selectedCV = data;
+            updateTextBoxLayoutData();
+        });
+    }
+
+    $scope.textBoxLayout = {
+        introduction: 5,
+        language: 5,
+        framework: 5,
+        method: 5,
+        forAssignment: function (a, property) {
+            var layout = this.assignments[a.id];
+            return (layout && layout[property]) || 5;
+        },
+        assignments: {}
+    };
+
+    function updateTextBoxLayoutData() {
+        function toTextBoxRows(string) {
+            // max 70 chars in width => 65 chars in avg per line rounded upwards plus one extra line at least 2
+            return (string && string.length && Math.max(2, Math.ceil(string.length / 65) + 1)) || 5;
+        }
+
+        $scope.textBoxLayout.introduction = toTextBoxRows($scope.selectedCV.introduction);
+        $scope.textBoxLayout.language = toTextBoxRows($scope.selectedCV.language);
+        $scope.textBoxLayout.framework = toTextBoxRows($scope.selectedCV.framework);
+        $scope.textBoxLayout.method = toTextBoxRows($scope.selectedCV.method);
+        $scope.selectedCV.assignments.forEach(function (a) {
+            // no real id on a, but fake one if needed
+            if (!a.id) {
+                a.id = Math.floor(Math.random() * 100000000000);
+            }
+            $scope.textBoxLayout.assignments[a.id] = {
+                'description': toTextBoxRows(a.description),
+                'techniques': toTextBoxRows(a.techniques)
+            };
         });
     }
 
