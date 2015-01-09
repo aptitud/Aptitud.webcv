@@ -1,7 +1,7 @@
 app.service('EmployeeService', function($http, API_END_POINT){
 	
-	 this.listEmployees = function(){
-		 return $http.get(API_END_POINT+'/employees');
+	 this.listEmployees = function(searchText){
+		 return $http.get(API_END_POINT+'/employees' + (searchText && '?searchText=' + encodeURI(searchText)));
 	 };
 
 	this.getEmployeeById = function(id){

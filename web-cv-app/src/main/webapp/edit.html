@@ -2,9 +2,9 @@
     <div id="loader"></div>
     <div id="consultantinfo" class="panel panel-default">
         <div class="panel-heading">
-            <h4 style="display: inline">Konsult info</h4>
+            <h4 style="display: inline"><i class="fa fa-user"></i>&nbsp;Konsult info</h4>
             <span ng-show="showCVBox" class="pull-right">
-                Språk
+                <i class="fa fa-language"></i>&nbsp;Språk
                 <select ng-change="changeLang()" ng-model="selectedLang">
                     <option value="SE">Svenskt CV</option>
                     <option value="EN">Engelskt CV</option>
@@ -17,7 +17,8 @@
                     <div class="form-group col-sm-4">
                         <div id="fileupload" class="file-upload-box" ng-controller="FileUploadController">
                             <div id="filedrag" file-input="file" file-drag="uploadFile()">
-                                <p>Drop a picture</p>
+                                <h3><i class="fa fa-file-image-o"></i></h3>
+                                <p>Släpp en bild</p>
                             </div>
                         </div>
                     </div>
@@ -44,7 +45,7 @@
     <div ng-show="showCVBox">
         <form>
             <div id="introductioncontainer" class="panel panel-default form-group">
-                <div class="panel-heading">Introduktionssida</div>
+                <div class="panel-heading"><i class="fa fa-edit"></i>&nbsp;Introduktionssida</div>
                 <div class="panel-body">
                     <label>Introduktion</label>
             <textarea placeholder="Edit" onpaste="pasteSort(this)" class="form-control"
@@ -64,7 +65,7 @@
                 </div>
             </div>
             <div class="panel panel-default">
-                <div class="panel-heading">Uppdrag</div>
+                <div class="panel-heading"><i class="fa fa-edit"></i>&nbsp;Uppdrag</div>
                 <div class="panel-body">
                     <button class="btn btn-default pull-right" ng-click="addAssignmentFirst()"><i class="fa fa-plus"></i>&nbsp;Lägg
                         till uppdrag
@@ -74,7 +75,7 @@
             <div ng-repeat="assignment in selectedCV.assignments">
                 <div class="panel panel-default form-group">
                     <div class="panel-heading" style="line-height: 2em;">
-                        Uppdrag - {{assignment.customer}}
+                        <i class="fa fa-edit"></i>&nbsp;Uppdrag - {{assignment.customer}}
                         <span class="include-text">
                             (Inkludera <input type="checkbox" ng-model="assignment.include"/> )
                         </span>
@@ -113,7 +114,7 @@
                 </div>
             </div>
             <div class="panel panel-default">
-                <div class="panel-heading">Uppdrag</div>
+                <div class="panel-heading"><i class="fa fa-edit"></i>&nbsp;Uppdrag</div>
                 <div class="panel-body">
                     <button class="btn btn-default pull-right" ng-click="addAssignment()"><i class="fa fa-plus"></i>&nbsp;Lägg
                         till uppdrag
@@ -121,7 +122,7 @@
                 </div>
             </div>
             <div class="panel panel-default">
-                <div class="panel-heading">Ytterligare information</div>
+                <div class="panel-heading"><i class="fa fa-edit"></i>&nbsp;Ytterligare information</div>
                 <div class="panel-body">
 
                     <div ng-repeat="section in selectedCV.dynamicSections" class="form-group">

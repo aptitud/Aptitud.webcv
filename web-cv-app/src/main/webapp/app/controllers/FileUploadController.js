@@ -9,13 +9,13 @@ app.controller('FileUploadController', function ($scope, $rootScope) {
         if (validImgSrc(args.img, acceptedTypes)) {
             addImg(args.img);
         } else {
-            document.getElementById("filedrag").innerHTML = "<p>Drop a picture</p>";
+            $("#filedrag").html('<h3><i class="fa fa-file-image-o"></i></h3><p>Släpp en bild</p>');
             $("#filedrag").removeClass('uploaded');
         }
     });
 
     $scope.$on('clearimg', function (event, args) {
-        document.getElementById("filedrag").innerHTML = "<p>Drop a picture</p>";
+        $("#filedrag").html('<h3><i class="fa fa-file-image-o"></i></h3><p>Släpp en bild</p>');
         $("#filedrag").removeClass('uploaded');
     });
 

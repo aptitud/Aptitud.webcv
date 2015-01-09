@@ -1,6 +1,7 @@
 package se.webcv.rest;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -21,8 +22,12 @@ public class EmployeeController {
     @RequestMapping(produces = "application/json", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
-    public List<Employee> getEmployees() {
-        return employeeRepository.getEmployees();
+    public List<Employee> getEmployees(@RequestParam(required = false) String searchText) {
+        return employeeRepository.getEmployees(asOptional(searchText));
+    }
+
+    private Optional<String> asOptional(String searchText) {
+        return Optional.ofNullable(searchText == null || searchText.trim().length() == 0 ? null : searchText.trim());
     }
 
     @RequestMapping(value = "/{id}", produces = "application/json", method = RequestMethod.GET)

@@ -47,7 +47,7 @@
     //]]>
 </script>
 <div ng-controller="NavbarController">
-    <nav class="navbar navbar-default" ng-if="isAuthenticated">
+    <nav class="navbar navbar-default navbar-fixed-top" ng-if="isAuthenticated">
         <div class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand" href="#">
@@ -61,8 +61,8 @@
                         <ui-select-match placeholder="Sök konsult....">
                             {{$select.selected.name}}
                         </ui-select-match>
-                        <ui-select-choices
-                                repeat="e in search($select.search)">
+                        <ui-select-choices refresh="load($select.search)" refresh-delay="100"
+                                repeat="e in employees">
                             <div>{{e.name}}</div>
                             <small>
                                 roll: {{e.role}}
@@ -76,14 +76,21 @@
             </form>
             <ul class="nav navbar-nav">
                 <li>
-                    <button type="button" class="btn btn-default navbar-btn" onclick="window.location.href='#/new'">
+                    <button type="button" class="btn btn-default navbar-btn" ng-click="newConsultant()">
                         <i class="fa fa-user"></i>&nbsp;Ny konsult
+                    </button>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right" style="margin-right: 1em;">
+                <li>
+                    <button type="button" class="btn btn-default navbar-btn" ng-click="newConsultant()">
+                        <i class="fa fa-times-circle"></i>&nbsp;Logga ut
                     </button>
                 </li>
             </ul>
         </div>
     </nav>
 </div>
-<div ng-view class="container"></div>
+<div ng-view class="container" style="margin-top: 5em;"></div>
 </body>
 </html>

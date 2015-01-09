@@ -12,10 +12,12 @@ body {
 }
 
 .file-upload-box div {
+    padding-top: 2em;
     width: 150px;
     min-height: 150px;
     border: 4px dashed;
     border-color: cadetblue;
+    text-align: center;
 }
 
 .file-upload-box div.uploaded {
@@ -24,7 +26,6 @@ body {
 
 .file-upload-box div p {
     text-align: center;
-    line-height: 120px;
 }
 
 .panel-body > label {
