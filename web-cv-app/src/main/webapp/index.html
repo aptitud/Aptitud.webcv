@@ -50,45 +50,54 @@
     <nav class="navbar navbar-default navbar-fixed-top" ng-if="isAuthenticated">
         <div class="container-fluid">
             <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
                 <a class="navbar-brand" href="#">
                     <img alt="Aptitud" width="30px" height="30px" src="img/logo.jpg">
                 </a>
             </div>
-            <form class="navbar-form navbar-left" style="padding-top: 0.3em;" role="search"
-                  ng-controller='SearchController'>
-                <div class="form-group">
-                    <ui-select ng-model="selected.employee" theme="select2"
-                               style="min-width: 20em;" ng-change="onSelect()">
-                        <ui-select-match placeholder="Sök konsult....">
-                            {{$select.selected.name}}
-                        </ui-select-match>
-                        <ui-select-choices refresh="load($select.search)" refresh-delay="100"
-                                           repeat="e in employees">
-                            <div>{{e.name}}</div>
-                            <small>
-                                roll: {{e.role}}
-                            </small>
-                        </ui-select-choices>
-                    </ui-select>
-                </div>
-                <div id="loadtext" style="display: none;" class="overlay"><h3><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Laddar...
-                </h3>
-                </div>
-            </form>
-            <ul class="nav navbar-nav">
-                <li>
-                    <button type="button" class="btn btn-default navbar-btn" ng-click="newConsultant()">
-                        <i class="fa fa-user"></i>&nbsp;Ny konsult
-                    </button>
-                </li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right" style="margin-right: 1em;">
-                <li>
-                    <button type="button" class="btn btn-default navbar-btn" ng-click="logout()">
-                        <i class="fa fa-times-circle"></i>&nbsp;Logga ut
-                    </button>
-                </li>
-            </ul>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <form class="navbar-form navbar-left" style="padding-top: 0.3em;" role="search"
+                      ng-controller='SearchController'>
+                    <div class="form-group">
+                        <ui-select ng-model="selected.employee" theme="select2"
+                                   style="min-width: 20em;" ng-change="onSelect()">
+                            <ui-select-match placeholder="Sök konsult....">
+                                {{$select.selected.name}}
+                            </ui-select-match>
+                            <ui-select-choices refresh="load($select.search)" refresh-delay="100"
+                                               repeat="e in employees">
+                                <div>{{e.name}}</div>
+                                <small>
+                                    roll: {{e.role}}
+                                </small>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <div id="loadtext" style="display: none;" class="overlay"><h3><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Laddar...
+                    </h3>
+                    </div>
+                </form>
+                <ul class="nav navbar-nav">
+                    <li>
+                        <button type="button" class="btn btn-default navbar-btn" ng-click="newConsultant()">
+                            <i class="fa fa-user"></i>&nbsp;Ny konsult
+                        </button>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right" style="margin-right: 1em;">
+                    <li>
+                        <button type="button" class="btn btn-default navbar-btn" ng-click="logout()">
+                            <i class="fa fa-times-circle"></i>&nbsp;Logga ut
+                        </button>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
 </div>
