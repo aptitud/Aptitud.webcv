@@ -91,7 +91,23 @@
                             <i class="fa fa-user"></i>&nbsp;Ny konsult
                         </button>
                     </li>
+                    <li class="dropdown" ng-controller="AlertController" ng-show="alerts.length > 0">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                           aria-expanded="false"><span class="text-danger"><i class="fa  fa-exclamation-circle"></i>&nbsp;Alerts <span
+                                class="caret"></span></span> </a>
+                        <ul class="dropdown-menu" style="width: 25em;" role="menu">
+                            <li ng-repeat="a in alerts">
+                                <div style="margin:0.5em" class="alert alert-danger alert-dismissible" role="alert">
+                                    {{a.status}} {{a.reason}} - {{a.message}}
+                                    <button type="button" class="close pull-right" aria-label="Close" ng-click="dismiss(a)">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
+
                 <ul class="nav navbar-nav navbar-right" style="margin-right: 1em;">
                     <li>
                         <p class="navbar-text">

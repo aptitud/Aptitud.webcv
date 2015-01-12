@@ -15,7 +15,7 @@ app.controller('EditController', function ($scope, $rootScope, EmployeeService, 
         CVService.getCV($routeParams.id, "SE").success(function (data) {
             $scope.selectedCV = data;
             updateTextBoxLayoutData();
-        });
+        })
     }
 
     $scope.textBoxLayout = {

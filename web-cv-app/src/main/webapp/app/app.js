@@ -27,7 +27,7 @@ app.config(['$routeProvider', function ($routeProvider) {
 // 1. add token header bearer 'token' if token set
 // response interceptor
 // 2. Check 401 unauthorized or 410 gone, then send to login with param auth=unauthorized or auth=gone
-app.factory('authInterceptor', function ($q, $location) {
+app.factory('authInterceptor', function ($q, $location, Alerts) {
     return {
         request: function (config) {
             config.withCredentials = true;
@@ -49,7 +49,40 @@ app.factory('authInterceptor', function ($q, $location) {
                 deferred.reject(response);
                 return deferred.promise;
             }
-            return $q.reject(response);
+
+            Alerts.handleError(response);
+
+            return response;
+        }
+    };
+});
+
+app.controller('AlertController', function ($scope, Alerts) {
+    $scope.alerts = Alerts.alerts();
+    $scope.dismiss = function (a) {
+        Alerts.dismiss(a);
+    };
+});
+
+app.factory('Alerts', function () {
+    var alerts = [];
+    return {
+        handleError: function (response) {
+            alerts.push({
+                type: 'ERROR',
+                status: response.status,
+                reason: response.data && response.data.reason,
+                message: response.data && response.data.message
+            });
+        },
+        alerts: function () {
+            return alerts;
+        },
+        dismiss: function(alert) {
+            var i = alerts.indexOf(alert);
+            if (i > -1) {
+                alerts.splice(i, 1);
+            }
         }
     };
 });
