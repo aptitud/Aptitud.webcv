@@ -10,20 +10,33 @@
 
         <p>Användaren måste tillhöra Aptitud domänen</p>
 
-        <p ng-show="hasState('changeAccount')">Du ser ut att vara inloggad med ett annat konto än ditt Aptitud-konto.</p>
-
         <p ng-show="error && ! hasState('signedOut')">{{error}}</p>
 
-        <p ng-show="hasState('signedOut')">Logged out</p>
-        <button class="btn btn-primary" ng-show="hasState('signedOut')" ng-click="showLogin()">
-            <i class="fa fa-arrow-circle-right"></i>&nbsp;Fortsätt till inloggning</button>
+        <div ng-show="hasState('changeAccount')">
+            <p>Du ser ut att vara inloggad med ett annat konto än ditt Aptitud-konto. Logga ut och pröva att logga med
+                ett annat konto</p>
+            <button class="btn btn-primary" ng-click="logout()">
+                <i class="fa fa-times-circle"></i>&nbsp;Logga ut
+            </button>
+        </div>
 
-        <p ng-show="hasState('unauth')">Du är inte authenticerad. Logga ut och pröva att logga in igen.</p>
-        <button class="btn btn-primary" ng-show="hasState('unauth')" ng-click="logout()">
-            <i class="fa fa-times-circle"></i>&nbsp;Logga ut</button>
+        <div ng-show="hasState('signedOut')">
+            <h3>Utloggad</h3>
+            <button class="btn btn-primary" ng-click="showLogin()">
+                <i class="fa fa-arrow-circle-right"></i>&nbsp;Fortsätt till inloggning
+            </button>
+        </div>
 
-        <span ng-hide="hasState('signedIn') && !hasState('unauth')" id="signinButton"></span>
-        <a class="btn btn-primary" ng-show="hasState('signedIn') && !hasState('unauth')" href="/home">
+        <div ng-show="hasState('unauth')">
+            <p>Du är inte authenticerad. Logga ut och pröva att logga in igen.</p>
+            <button class="btn btn-primary" ng-click="logout()">
+                <i class="fa fa-times-circle"></i>&nbsp;Logga ut
+            </button>
+        </div>
+
+        <span ng-hide="hasState('signedIn') || hasState('changeAccount') || hasState('signedOut')" id="signinButton"></span>
+
+        <a class="btn btn-primary" ng-show="hasState('signedIn') && !hasState('unauth') && !hasState('changeAccount')" href="/home">
             <i class="fa fa-arrow-circle-right"></i>&nbsp;Forsätt till applikationen</a>
     </div>
 

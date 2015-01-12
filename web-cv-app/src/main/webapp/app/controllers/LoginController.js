@@ -16,8 +16,10 @@ app.controller('LoginController', function ($scope, $rootScope, $routeParams, $l
                 .error(function (data, status) {
                     if (status == 401 || status == 410) {
                         resetUserSession();
+                        $scope.error = 'not_authenticated';
+                    } else {
+                        $scope.error = status;
                     }
-                    $scope.error = status;
                     Loader.end();
                 });
         } else if (authResult['error']) {
@@ -47,7 +49,7 @@ app.controller('LoginController', function ($scope, $rootScope, $routeParams, $l
             return !angular.isUndefined(sessionStorage.access_token);
         }
         if ('changeAccount' == state) {
-            return sessionStorage.domain && sessionStorage.domain != 'aptitud.se';
+            return $scope.error == 'not_authenticated';
         }
         if ('signedOut' == state) {
             return $scope.isLogout || ($scope.error && $scope.error == 'user_signed_out');
@@ -65,11 +67,14 @@ app.controller('LoginController', function ($scope, $rootScope, $routeParams, $l
         $rootScope.$broadcast('logout');
         $scope.isLogout = true;
         $scope.isUnauth = false;
+        $scope.error = undefined;
         gapi.auth.signOut();
     }
 
     $scope.showLogin = function () {
         $scope.isLogout = false;
+        $scope.isUnauth = false;
+        $scope.error = undefined;
         startLogin();
     };
 
