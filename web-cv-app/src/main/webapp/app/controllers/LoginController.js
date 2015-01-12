@@ -1,60 +1,98 @@
-app.controller('LoginController', function($scope, $rootScope, $location, $http, GoogleService, AuthService, Loader, CLIENT_ID){
-	
-    $scope.processAuth = function(authResult) {
-    	$scope.changeAccount = false;
-        if(authResult['status']['signed_in']) {
-        	Loader.start();
-            GoogleService.getUserInfo(authUser);
-        } else if(authResult['error'] == 'user_signed_out'){
-        	$scope.changeAccount = true;
-        }else if(authResult['error']) {
-        	resetUserSession();
-        	console.log(authResult);
-        	console.log("google auth fail");
+app.controller('LoginController', function ($scope, $rootScope, $routeParams, $location, $http, AuthService, Loader, CLIENT_ID) {
+
+    $scope.processAuth = function (authResult) {
+        if (authResult['status']['signed_in']) {
+            Loader.start();
+            var token = authResult.access_token;
+            AuthService.auth(token)
+                .success(function (data) {
+                    sessionStorage.setItem('access_token', token);
+                    sessionStorage.setItem('domain', data.domain);
+                    sessionStorage.setItem('user', data.displayName);
+                    $rootScope.$broadcast('authenticated', data);
+                    $location.url("/home");
+                    Loader.end();
+                })
+                .error(function (data, status) {
+                    if (status == 401 || status == 410) {
+                        resetUserSession();
+                    }
+                    $scope.error = status;
+                    Loader.end();
+                });
+        } else if (authResult['error']) {
+            resetUserSession();
+            $scope.error = authResult['error'];
+            if (authResult['error'] == 'user_signed_out') {
+                Loader.start();
+                AuthService.logout()
+                    .then(function () {
+                        Loader.end();
+                    });
+            }
+//            console.log(authResult);
+//            console.log("google auth fail");
         }
     }
-    
-    
-    function resetUserSession(){
-    	sessionStorage.removeItem('signedIn');
-    	sessionStorage.removeItem('user');
-		$rootScope.$broadcast('logout');
-		gapi.auth.signOut();
-    }
-    
-    function authUser(userinfo){
-    	sessionStorage.setItem('user',JSON.stringify(userinfo));
-    	AuthService.auth(userinfo, $scope.applySignIn);
+
+    function resetUserSession() {
+        sessionStorage.removeItem('access_token');
+        sessionStorage.removeItem('domain');
+        sessionStorage.removeItem('user');
+        $rootScope.$broadcast('logout');
     }
 
-    $scope.applySignIn = function(data){
-		if(data.authenticated){
-			sessionStorage.setItem('signedIn',true);
-			$rootScope.$broadcast('authenticated');
-			$location.path("/home"); 
-			console.log("applySignIn success");
-		}else{
-			resetUserSession();
-			$location.path("/login"); 
-			console.log("applySignIn fail");
-		}
-		Loader.end();
-	}
-    
-    $scope.renderSigin = function(){
-    	gapi.signin.render('signinButton',{
-			clientid: CLIENT_ID,
-            cookiepolicy: "single_host_origin",
-            requestvisibleactions: "http://schemas.google.com/AddActivity",
-            scope: "https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.profile.emails.read",
-            callback: $scope.processAuth,
-            accesstype: 'online',
-            width: 'wide'
-    	});
+    $scope.hasState = function (state) {
+        if ('signedIn' == state) {
+            return !angular.isUndefined(sessionStorage.access_token);
+        }
+        if ('changeAccount' == state) {
+            return sessionStorage.domain && sessionStorage.domain != 'aptitud.se';
+        }
+        if ('signedOut' == state) {
+            return $scope.isLogout || ($scope.error && $scope.error == 'user_signed_out');
+        }
+        if ('unauth' == state) {
+            return $scope.isUnauth;
+        }
+        return false;
+    };
+
+    $scope.logout = function () {
+        sessionStorage.removeItem('access_token');
+        sessionStorage.removeItem('domain');
+        sessionStorage.removeItem('user');
+        $rootScope.$broadcast('logout');
+        $scope.isLogout = true;
+        $scope.isUnauth = false;
+        gapi.auth.signOut();
     }
-    
-    $scope.start = function(){
-    	$scope.renderSigin();
+
+    $scope.showLogin = function () {
+        $scope.isLogout = false;
+        startLogin();
+    };
+
+    $scope.isLogout = $routeParams.state == 'logout';
+    $scope.isUnauth = $routeParams.state == 'auth';
+
+    function startLogin() {
+        if (!sessionStorage.access_token) {
+            gapi.signin.render('signinButton', {
+                clientid: CLIENT_ID,
+                cookiepolicy: "single_host_origin",
+                requestvisibleactions: "http://schemas.google.com/AddActivity",
+                scope: "https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.profile.emails.read",
+                callback: $scope.processAuth,
+                accesstype: 'online',
+                width: 'wide'
+            });
+        } else {
+            $location.url('/home');
+        }
     }
-    $scope.start();
+
+    if (!$scope.isLogout && !$scope.isUnauth) {
+        startLogin();
+    }
 });

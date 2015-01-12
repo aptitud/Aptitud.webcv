@@ -1,9 +1,27 @@
-<div class="col-md-4" ></div>
-<div class="col-md-4 box shadow-box"  ng-controller="LoginController" >
-	<div id="loader" ></div>
-	<img style="margin-left: auto; margin-right: auto; display: block;" alt="logo" class="logo" src="img/logo.jpg">
-	<p style="text-align: center;"  >Aptitud domain is required</p>
-	<p ng-show="changeAccount" style="text-align: center;"  >You are logged in to another google account. Log out 211or add your aptitud account</p>
- 	<div style="text-align: center;" ><span ng-hide="signedIn" id="signinButton"></span></div>
+<div class="col-md-offset-4 col-md-4 box shadow-box" ng-controller="LoginController">
+    <div id="loader"></div>
+    <img style="margin-left: auto; margin-right: auto; display: block;" alt="logo" class="logo" src="img/logo.jpg">
+
+    <div style="text-align: center;">
+
+        <p>Aptitud domain is required</p>
+
+        <p ng-show="hasState('changeAccount')">You are logged in to another google account.
+            Log out or add your aptitud account</p>
+
+        <p ng-show="error && ! hasState('signedOut')">{{error}}</p>
+
+        <p ng-show="hasState('signedOut')">Logged out</p>
+        <button class="btn btn-primary" ng-show="hasState('signedOut')" ng-click="showLogin()">
+            <i class="fa fa-arrow-circle-right"></i>&nbsp;Proceed to login</button>
+
+        <p ng-show="hasState('unauth')">Your are not longer authenticated. Please logout.</p>
+        <button class="btn btn-primary" ng-show="hasState('unauth')" ng-click="logout()">
+            <i class="fa fa-arrow-circle-right"></i>&nbsp;Logout</button>
+
+        <span ng-hide="hasState('signedIn') && !hasState('unauth')" id="signinButton"></span>
+        <a class="btn btn-primary" ng-show="hasState('signedIn') && !hasState('unauth')" href="/home">
+            <i class="fa fa-arrow-circle-right"></i>&nbsp;Proceed to application</a>
+    </div>
+
 </div>
-<div class="col-md-4" ></div>

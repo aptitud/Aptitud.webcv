@@ -1,6 +1,7 @@
 app.controller('NavbarController', function ($scope, $rootScope, $location) {
 
-    $scope.isAuthenticated = !angular.isUndefined(sessionStorage.getItem('signedIn'));
+    $scope.isAuthenticated = !angular.isUndefined(sessionStorage.user);
+    $scope.user = sessionStorage.user;
 
     $scope.newConsultant = function () {
         $scope.$broadcast("resetSelected");
@@ -9,6 +10,7 @@ app.controller('NavbarController', function ($scope, $rootScope, $location) {
 
     $rootScope.$on('authenticated', function (event, data) {
         $scope.isAuthenticated = true;
+        $scope.user = sessionStorage.user;
     });
 
     $rootScope.$on('logout', function (event, data) {
@@ -16,10 +18,11 @@ app.controller('NavbarController', function ($scope, $rootScope, $location) {
     });
 
     $scope.logout = function () {
-        sessionStorage.removeItem('signedIn');
+        sessionStorage.removeItem('access_token');
+        sessionStorage.removeItem('domain');
         sessionStorage.removeItem('user');
-        gapi.auth.signOut();
         $rootScope.$broadcast('logout');
-        $location.path('/login')
+        gapi.auth.signOut();
+        $location.url('/login?state=logout')
     }
 });

@@ -31,7 +31,7 @@
     <link rel="stylesheet" href="css/3party/ui-select/select.min.css">
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css">
 </head>
-<body ng-app='WebCVApplication'>
+<body ng-app='WebCVApplication' ng-cloak>
 <script type="text/javascript">
     //<![CDATA[
     function pasteSort(element) {
@@ -91,6 +91,9 @@
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right" style="margin-right: 1em;">
+                    <li>
+                        <p class="navbar-text"><small>Logged in as: {{user}}</small></p>
+                    </li>
                     <li>
                         <button type="button" class="btn btn-default navbar-btn" ng-click="logout()">
                             <i class="fa fa-times-circle"></i>&nbsp;Logga ut
