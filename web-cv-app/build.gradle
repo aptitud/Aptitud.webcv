@@ -28,3 +28,7 @@ dependencies {
      compile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.0.1'
   
 }
+
+task stage(dependsOn: war) {
+
+}
