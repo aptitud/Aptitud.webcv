@@ -71,6 +71,21 @@ heroku {
     apiKey = herokuApiKey
 }
 
-task stage(dependsOn: war) {
+configurations {
+    jettyrunner
+}
+
+dependencies {
+    jettyrunner 'org.eclipse.jetty:jetty-runner:9.2.6.v20141205'
+}
+
+task copyJetty(type: Copy) {
+    from configurations.jettyrunner
+    include '**/jetty-runner*.jar'
+    rename 'jetty-runner(.*).jar', 'jetty-runner.jar'
+    into "$buildDir/jetty"
+}
+
+task stage(dependsOn: [war, copyJetty]) {
 
 }
