@@ -16,6 +16,8 @@ apply plugin: 'heroku'
 
 sourceCompatibility = 1.8
 
+compileJava.options.encoding = 'UTF-8'
+
 repositories {
     mavenCentral()
 }
@@ -87,5 +89,4 @@ task copyJetty(type: Copy) {
 }
 
 task stage(dependsOn: [war, copyJetty]) {
-
 }
