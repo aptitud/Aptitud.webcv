@@ -23,6 +23,10 @@ configurations {
     provided
 }
 
+heroku {
+    appName = 'aptitudrestcv'
+}
+
 dependencies {
 
     compile(
@@ -51,5 +55,9 @@ dependencies {
     compile 'org.docx4j:docx4j:3.2.0'
     compile 'joda-time:joda-time:2.4'
     compile 'com.google.code.gson:gson:2.3'
+
+}
+
+task stage(dependsOn: war) {
 
 }

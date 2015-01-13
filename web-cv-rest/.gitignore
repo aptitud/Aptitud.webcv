@@ -4,6 +4,4 @@
 .idea
 gradle
 /build
-/.settings
-/gradlew.bat
-/gradlew.bat
+*.iml

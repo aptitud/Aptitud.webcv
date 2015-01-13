@@ -1,2 +1,0 @@
-web: ./web-cv-rest/build/libs/
-web: ./web-cv-app/build/libs/
