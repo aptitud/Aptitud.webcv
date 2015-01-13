@@ -16,6 +16,8 @@ subprojects {
     apply plugin: 'eclipse'
     apply plugin: 'heroku'
 
+    compileJava.options.encoding = 'UTF-8'
+
     repositories {
         mavenCentral()
     }
