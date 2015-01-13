@@ -1,0 +1,76 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url 'http://dl.bintray.com/vermeulen-mp/gradle-plugins' }
+    }
+
+    dependencies {
+        classpath 'com.wiredforcode:gradle-heroku-plugin:1.0.0'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'eclipse-wtp'
+apply plugin: 'heroku'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+def jerseyVersion = '2.5.1'
+def springVersion = '4.0.2.RELEASE'
+def aspectjVersion = '1.7.4'
+def junitVersion = '4.11'
+def jacksonVersion = '1.9.13'
+def mockitoVersion = '1.8.4'
+
+configurations {
+    provided
+}
+
+dependencies {
+
+    compile(
+            [group: 'org.springframework', name: 'spring-core', version: springVersion],
+            [group: 'org.springframework', name: 'spring-beans', version: springVersion],
+            [group: 'org.springframework', name: 'spring-context', version: springVersion],
+            [group: 'org.springframework', name: 'spring-web', version: springVersion],
+            [group: 'org.springframework', name: 'spring-aop', version: springVersion],
+            [group: 'org.springframework', name: 'spring-webmvc', version: springVersion],
+            [group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.3.6'],
+
+
+            [group: 'org.codehaus.jackson', name: 'jackson-mapper-asl', version: jacksonVersion],
+            [group: 'javax.validation', name: 'validation-api', version: '1.0.0.GA'],
+    )
+    compile 'org.mongodb:mongo-java-driver:2.12.3'
+    compile 'org.springframework.data:spring-data-mongodb:1.5.2.RELEASE'
+    testCompile(
+            [group: 'junit', name: 'junit', version: junitVersion],
+            [group: 'org.springframework', name: 'spring-test', version: springVersion],
+            [group: 'org.mockito', name: 'mockito-all', version: mockitoVersion]
+    )
+    compile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.0.1'
+    compile 'com.itextpdf:itextpdf:5.5.2'
+    compile 'commons-codec:commons-codec:1.9'
+    compile 'org.docx4j:docx4j:3.2.0'
+    compile 'joda-time:joda-time:2.4'
+    compile 'com.google.code.gson:gson:2.3'
+
+}
+
+heroku {
+    buildpack = 'https://github.com/heroku/heroku-buildpack-gradle.git'
+
+    appName = 'aptitudrestcv'
+
+    //get this from heroku
+    apiKey = herokuApiKey
+}
+
+task stage(dependsOn: war) {
+
+}
