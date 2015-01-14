@@ -3,3 +3,4 @@
 *.iml
 /.gradle
 gradle.properties
+/node_modues

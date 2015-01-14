@@ -20,10 +20,14 @@ public class DatabaseConfig extends AbstractMongoConfiguration {
         return "web_cv";
     }
 
+    private String url() {
+        return System.getProperty("mongodb.url", "mongodb://admin:Passw0rd@kahana.mongohq.com:10092/web_cv");
+    }
+
     @Override
     @Bean
     public Mongo mongo() throws Exception {
-    	MongoClientURI uri = new MongoClientURI("mongodb://admin:Passw0rd@kahana.mongohq.com:10092/web_cv");
+    	MongoClientURI uri = new MongoClientURI(url());
 		return new MongoClient(uri);
     }
 }

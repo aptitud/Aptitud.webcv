@@ -1,0 +1,43 @@
+<div class="col-md-offset-4 col-md-4 box shadow-box" ng-controller="LoginController">
+    <div id="loader" style="display: none">
+        <h3>
+            <i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Loading...
+        </h3>
+    </div>
+    <img style="margin-left: auto; margin-right: auto; display: block;" alt="logo" class="logo" src="img/logo.jpg">
+
+    <div style="text-align: center;">
+
+        <p>Användaren måste tillhöra Aptitud domänen</p>
+
+        <p ng-show="error && ! hasState('signedOut')">{{error}}</p>
+
+        <div ng-show="hasState('changeAccount')">
+            <p>Du ser ut att vara inloggad med ett annat konto än ditt Aptitud-konto. Logga ut och pröva att logga med
+                ett annat konto</p>
+            <button class="btn btn-primary" ng-click="logout()">
+                <i class="fa fa-times-circle"></i>&nbsp;Logga ut
+            </button>
+        </div>
+
+        <div ng-show="hasState('signedOut')">
+            <h3>Utloggad</h3>
+            <button class="btn btn-primary" ng-click="showLogin()">
+                <i class="fa fa-arrow-circle-right"></i>&nbsp;Fortsätt till inloggning
+            </button>
+        </div>
+
+        <div ng-show="hasState('unauth')">
+            <p>Du är inte authenticerad. Logga ut och pröva att logga in igen.</p>
+            <button class="btn btn-primary" ng-click="logout()">
+                <i class="fa fa-times-circle"></i>&nbsp;Logga ut
+            </button>
+        </div>
+
+        <span ng-hide="hasState('signedIn') || hasState('changeAccount') || hasState('signedOut')" id="signinButton"></span>
+
+        <a class="btn btn-primary" ng-show="hasState('signedIn') && !hasState('unauth') && !hasState('changeAccount')" href="/home">
+            <i class="fa fa-arrow-circle-right"></i>&nbsp;Forsätt till applikationen</a>
+    </div>
+
+</div>

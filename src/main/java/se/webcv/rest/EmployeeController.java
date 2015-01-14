@@ -42,7 +42,7 @@ public class EmployeeController {
     public HttpHeaders createEmployee(@RequestBody Employee employee) {
         employeeRepository.saveEmployee(employee);
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("location", "/exployees/" + employee.getId());
+        httpHeaders.add("location", "/app/employees/" + employee.getId());
         httpHeaders.add("X-createdId", employee.getId());
         return httpHeaders;
     }
