@@ -6,8 +6,10 @@ app.service('AuthService', function ($http, API_END_POINT) {
             });
         },
 
-        logout: function () {
-            return $http.post(API_END_POINT + "/auth/logout");
+        logout: function (accessToken) {
+            return $http.post(API_END_POINT + "/auth/logout", {
+                accessToken: accessToken
+            });
         }
     }
 });

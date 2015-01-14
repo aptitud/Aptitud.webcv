@@ -23,11 +23,12 @@ app.controller('LoginController', function ($scope, $rootScope, $routeParams, $l
                     Loader.end();
                 });
         } else if (authResult['error']) {
+            var token = sessionStorage.access_token;
             resetUserSession();
             $scope.error = authResult['error'];
             if (authResult['error'] == 'user_signed_out') {
                 Loader.start();
-                AuthService.logout()
+                AuthService.logout(token)
                     .then(function () {
                         Loader.end();
                     });

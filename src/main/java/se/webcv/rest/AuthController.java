@@ -45,9 +45,9 @@ public class AuthController {
 
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.OK)
-    public void logout(@RequestHeader("Authorization") String authorization) {
-        if (authorization != null) {
-            logoutHandler.logout(authorization.substring("bearer ".length()));
+    public void logout(@RequestBody(required = true) JsonNode body) {
+        if (body.get("accessToken") != null && body.get("accessToken").asText() != null) {
+            logoutHandler.logout(body.get("accessToken").asText());
         }
     }
 }
