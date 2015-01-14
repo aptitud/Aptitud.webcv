@@ -14,7 +14,7 @@ public class SimpleHttpsRestrictFilter implements Filter {
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
         HttpServletResponse response = (HttpServletResponse) res;
         HttpServletRequest request = (HttpServletRequest) req;
-        if (!request.isSecure() && !isLocalHost(request)) {
+        if (!isSecure(request) && !isLocalHost(request)) {
             String redirectTo = redirectUrl;
             if (redirectTo == null) {
                 redirectTo = HttpUtils.getRequestURL(request).toString().replace("http", "https");
@@ -23,6 +23,17 @@ public class SimpleHttpsRestrictFilter implements Filter {
             return;
         }
         chain.doFilter(req, res);
+    }
+
+    private boolean isSecure(HttpServletRequest request) {
+        if (request.isSecure()) {
+            return true;
+        }
+        String proto = request.getHeader("X-Forwarded-Proto");
+        if (proto != null && proto.equalsIgnoreCase("https")) {
+            return true;
+        }
+        return false;
     }
 
     private boolean isLocalHost(HttpServletRequest request) {
