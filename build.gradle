@@ -67,7 +67,7 @@ dependencies {
 heroku {
     buildpack = 'https://github.com/heroku/heroku-buildpack-gradle.git'
 
-    appName = 'aptitudcvonlinerest'
+    appName = 'aptitudcvonline'
 
     //get this from heroku
     apiKey = herokuApiKey
