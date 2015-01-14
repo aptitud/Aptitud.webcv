@@ -40,22 +40,20 @@ public class EmployeeRepository {
                 .replace(")", "\\)")
                 .replace("^", "\\^")
                 .replace("$", "\\$")
+                .replace("\"", "\\\"")
+                .replace("'", "\\'")
                 .replace("[", "\\[")
                 .replace("]", "\\]")
                 .replace("{", "\\{")
                 .replace("}", "\\}");
     }
 
-    public void saveEmployee(Employee employee) {
+    public Employee saveEmployee(Employee employee) {
         if (StringUtils.isEmpty(employee.getName())) {
             throw new IllegalArgumentException("Employee name can not be null");
         }
         Employee found = null;
-        if (StringUtils.isEmpty(employee.getId())) {
-            Query query = new Query();
-            query.addCriteria(Criteria.where("name").is(employee.getName()));
-            found = mongoTemplate.findOne(query, Employee.class);
-        } else {
+        if (!StringUtils.isEmpty(employee.getId())) {
             found = mongoTemplate.findById(employee.getId(), Employee.class);
         }
         if (found != null) {
@@ -65,19 +63,19 @@ public class EmployeeRepository {
             found.setRole(employee.getRole());
             found.setImg(employee.getImg());
             mongoTemplate.save(found);
+            return found;
         } else {
             Employee newEmployee = new Employee();
             newEmployee.setImg(employee.getImg());
             newEmployee.setName(employee.getName());
             newEmployee.setRole(employee.getRole());
             mongoTemplate.insert(newEmployee);
+            return newEmployee;
         }
 
     }
 
     public Employee getEmployee(String employeeid) {
-        Query query = new Query();
-        query.addCriteria(Criteria.where("id").is(employeeid));
-        return mongoTemplate.findOne(query, Employee.class);
+        return mongoTemplate.findById(employeeid, Employee.class);
     }
 }

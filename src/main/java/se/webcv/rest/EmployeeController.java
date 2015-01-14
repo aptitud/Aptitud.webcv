@@ -40,10 +40,10 @@ public class EmployeeController {
     @RequestMapping(produces = "application/json", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.CREATED)
     public HttpHeaders createEmployee(@RequestBody Employee employee) {
-        employeeRepository.saveEmployee(employee);
+        Employee saved = employeeRepository.saveEmployee(employee);
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("location", "/app/employees/" + employee.getId());
-        httpHeaders.add("X-createdId", employee.getId());
+        httpHeaders.add("location", "/app/employees/" + saved.getId());
+        httpHeaders.add("X-createdId", saved.getId());
         return httpHeaders;
     }
 

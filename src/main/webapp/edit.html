@@ -65,7 +65,7 @@
                       ng-model="selectedCV.method"></textarea>
                     </div>
                 </div>
-                <div class="panel panel-default">
+                <div class="panel panel-default" ng-if="selectedCV.assignments.length > 0">
                     <div class="panel-heading"><i class="fa fa-edit"></i>&nbsp;Uppdrag</div>
                     <div class="panel-body">
                         <button class="btn btn-default pull-right" ng-click="addAssignmentFirst()"><i

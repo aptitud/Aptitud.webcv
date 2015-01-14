@@ -64,7 +64,9 @@ app.controller('EditController', function ($scope, $rootScope, EmployeeService, 
             $scope.employeeForEdit = data;
             $scope.$broadcast('loadimg', data);
             $scope.showCVBox = true;
-            CVService.getCV($scope.employeeForEdit.id, "SE").success(applyCV);
+            CVService.getCV(createdId, "SE").success(function (data) {
+                $scope.selectedCV = data;
+            });
             Loader.end();
         });
     }
