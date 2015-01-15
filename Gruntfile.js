@@ -4,7 +4,7 @@
 // npm install grunt
 // cd .; npm install
 // grunt server
-// open browser http://localhost:8080
+// open browser http://localhost:8080/?local=true
 // change a file and watch the browser
 module.exports = function (grunt) {
 

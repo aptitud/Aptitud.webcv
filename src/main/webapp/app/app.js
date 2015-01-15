@@ -102,7 +102,11 @@ app.config(['$httpProvider', function ($httpProvider) {
     $httpProvider.interceptors.push('authInterceptor');
 }]);
 
-app.controller('HomeController', function ($scope) {
+app.controller('HomeController', function ($scope, $location) {
+    if (!sessionStorage.user) {
+        $location.path('login');
+        return;
+    }
     $scope.user = sessionStorage.user;
 });
 
