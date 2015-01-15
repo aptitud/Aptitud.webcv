@@ -25,6 +25,7 @@ public class DatabaseConfig extends AbstractMongoConfiguration {
     }
 
     private String url() {
+        // The hardcoded default is only used for development, prod uses other mongo
         return ConfigUtils.systemOrEnv("mongodb.url", () -> "mongodb://admin:Passw0rd@kahana.mongohq.com:10092/web_cv");
     }
 

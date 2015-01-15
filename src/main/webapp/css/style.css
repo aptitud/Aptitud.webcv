@@ -5,6 +5,13 @@ body {
     background-position: 0px 0px, center;
     background-size: 50%; */
 }
+
+.aptitud-navbar {
+    background-color: #aaaaaa;
+    border-color: #999999;
+    color: #000;
+}
+
 .file-upload-box {
     display: inline-block;
     background-color: #FFFFFF;
@@ -57,6 +64,7 @@ body {
     font-weight: bold;
     border-radius: 1em;
 }
+
 /*
 #actions {
     width: 10em;

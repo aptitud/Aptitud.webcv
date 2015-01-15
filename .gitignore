@@ -1,6 +1,10 @@
-/.idea
 /build
+/.idea
+.gradle
+.settings
+.project
+*.pub
+/bin
 *.iml
-/.gradle
 gradle.properties
-/node_modues
+/node_modules
