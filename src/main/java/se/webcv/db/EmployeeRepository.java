@@ -1,16 +1,19 @@
 package se.webcv.db;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import se.webcv.model.Employee;
+import se.webcv.utils.ConfigUtils;
 
 @Repository
 public class EmployeeRepository {
@@ -18,12 +21,17 @@ public class EmployeeRepository {
     @Autowired
     private MongoTemplate mongoTemplate;
 
+    final int maxResults = Integer.parseInt(ConfigUtils.systemOrEnv("defaultMaxResult", () -> "30"));
+
     public List<Employee> getEmployees(Optional<String> searchText) {
-        return searchText
-                .map(s -> mongoTemplate.find(Query
+        Query query = searchText
+                .map(s -> Query
                         .query(Criteria.where("name")
-                                .regex(toRegex(s), "i")), Employee.class))
-                .orElseGet(() -> mongoTemplate.findAll(Employee.class));
+                                .regex(toRegex(s), "i")))
+                .orElseGet(() -> new Query());
+        return mongoTemplate.find(query
+                .with(new Sort(Sort.Direction.ASC, "name"))
+                .limit(maxResults), Employee.class);
     }
 
     private String toRegex(String searchText) {

@@ -8,10 +8,10 @@ app.controller('SearchController', function ($scope, EmployeeService, $location)
     });
 
     $scope.load = function(searchText) {
-        if (!searchText || searchText == '') {
+/*        if (!searchText || searchText == '') {
             $scope.employees = [];
             return;
-        }
+        } */
         EmployeeService.listEmployees(searchText).success(function (data) {
             $scope.employees = data;
         });
