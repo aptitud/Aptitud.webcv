@@ -1,9 +1,5 @@
 package se.webcv.db;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -11,9 +7,10 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
-
 import se.webcv.model.Employee;
 import se.webcv.utils.ConfigUtils;
+
+import java.util.List;
 
 @Repository
 public class EmployeeRepository {
@@ -21,14 +18,14 @@ public class EmployeeRepository {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    final int maxResults = Integer.parseInt(ConfigUtils.systemOrEnv("defaultMaxResult", () -> "30"));
+    final int maxResults = Integer.parseInt(ConfigUtils.systemOrEnv("defaultMaxResult", "30"));
 
-    public List<Employee> getEmployees(Optional<String> searchText) {
-        Query query = searchText
-                .map(s -> Query
+    public List<Employee> getEmployees(String searchText) {
+        Query query = searchText != null ?
+                Query
                         .query(Criteria.where("name")
-                                .regex(toRegex(s), "i")))
-                .orElseGet(() -> new Query());
+                                .regex(toRegex(searchText), "i"))
+                : new Query();
         return mongoTemplate.find(query
                 .with(new Sort(Sort.Direction.ASC, "name"))
                 .limit(maxResults), Employee.class);

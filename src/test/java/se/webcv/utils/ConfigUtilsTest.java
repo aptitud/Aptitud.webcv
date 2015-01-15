@@ -9,13 +9,13 @@ public class ConfigUtilsTest {
     @Test
     public void shouldGetSystem() {
         System.setProperty("dummy", "value");
-        assertEquals(ConfigUtils.systemOrEnv("dummy", () -> "default"), "value");
+        assertEquals(ConfigUtils.systemOrEnv("dummy", "default"), "value");
     }
 
     @Test
     public void shouldGetDefaultIfNoSystemOrEnvFound() {
         System.setProperty("dummy", "value");
-        assertEquals(ConfigUtils.systemOrEnv("dummy1", () -> "default"), "default");
+        assertEquals(ConfigUtils.systemOrEnv("dummy1", "default"), "default");
     }
 
 }

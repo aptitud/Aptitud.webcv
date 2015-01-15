@@ -1,16 +1,14 @@
 package se.webcv.rest;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import se.webcv.db.EmployeeRepository;
 import se.webcv.model.Employee;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/employees")
@@ -23,11 +21,11 @@ public class EmployeeController {
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
     public List<Employee> getEmployees(@RequestParam(required = false) String searchText) {
-        return employeeRepository.getEmployees(asOptional(searchText));
+        return employeeRepository.getEmployees(nullIfEmpty(searchText));
     }
 
-    private Optional<String> asOptional(String searchText) {
-        return Optional.ofNullable(searchText == null || searchText.trim().length() == 0 ? null : searchText.trim());
+    private String nullIfEmpty(String searchText) {
+        return searchText == null || searchText.trim().length() == 0 ? null : searchText.trim();
     }
 
     @RequestMapping(value = "/{id}", produces = "application/json", method = RequestMethod.GET)
