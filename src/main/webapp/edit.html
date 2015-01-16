@@ -13,30 +13,42 @@
             </span>
             </div>
             <div class="panel-body">
-                <form>
+                <form name="employeeForm">
                     <div class="row">
                         <div class="form-group col-lg-4">
                             <div id="fileupload" class="file-upload-box" ng-controller="FileUploadController">
                                 <div id="filedrag" file-input="file" file-drag="uploadFile()">
                                     <h3><i class="fa fa-file-image-o"></i></h3>
+
                                     <p>Släpp en bild</p>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group col-lg-8">
-                            <label>Namn</label>
-                            <input class="form-control" placeholder="Namn" type='text'
-                                   ng-model='employeeForEdit.name'
-                                    />
-                            <label style="margin-top: 0.5em;">Roll</label>
-                            <input class="form-control" placeholder="Övergripande roll" type='text'
-                                   ng-model='employeeForEdit.role'
-                                    />
+                        <div class="col-lg-8">
+                            <div class="form-group"
+                                 ng-class="{ 'has-error': employeeForm.name.$dirty && employeeForm.name.$invalid }">
+                                <label>Namn</label>
+                                <input class="form-control" name="name" placeholder="Namn" type='text'
+                                       ng-model='employeeForEdit.name' required/>
+
+                                <div class="help-block"
+                                     ng-show="employeeForm.name.$dirty && employeeForm.name.$invalid">
+                                    <span ng-show="employeeForm.name.$error.required">Namn måste anges</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 0.5em;">Roll</label>
+                                <input class="form-control" placeholder="Övergripande roll" type='text'
+                                       ng-model='employeeForEdit.role'
+                                        />
+                            </div>
                         </div>
                         <div class="col-lg-12">
                             <button ng-hide="showCVBox"
                                     class="btn btn-primary pull-right"
-                                    ng-click="createEmployee()"><i class="fa fa-plus"></i>&nbsp;Skapa konsult
+                                    ng-click="createEmployee()"
+                                    ng-disabled="employeeForm.$invalid">
+                                <i class="fa fa-plus"></i>&nbsp;Skapa konsult
                             </button>
                         </div>
                     </div>
@@ -139,6 +151,9 @@
                 </div>
                 <button class="btn btn-primary" ng-click="saveChanges()"><i class="fa fa-save"></i>&nbsp;Spara
                     ändringarna
+                </button>
+                <button class="btn btn-danger" ng-click="deleteEmployee()">
+                    <i class="fa fa-times-circle"></i>&nbsp;Arkivera
                 </button>
                 <a class="btn btn-default pull-right" id="msdoclink"
                    onclick="alert('The document generation will take a few sec. Click ok to start the download')"

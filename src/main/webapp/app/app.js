@@ -83,7 +83,11 @@ app.factory('Alerts', function () {
                 type: 'ERROR',
                 status: response.status,
                 reason: response.data && response.data.reason,
-                message: response.data && response.data.message
+                message: response.data && response.data.message,
+                url: response.config.url,
+                messageOrUrl : function() {
+                    return this.message || this.url;
+                }
             });
         },
         alerts: function () {

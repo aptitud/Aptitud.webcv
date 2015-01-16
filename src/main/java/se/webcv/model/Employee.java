@@ -1,5 +1,6 @@
 package se.webcv.model;
 
+import org.joda.time.DateTime;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -13,7 +14,8 @@ public class Employee {
 	private String phonenr;
 	private String role;
 	private String img;
-	
+	private DateTime archivedAt;
+
 	public String getId(){
 		return id;
 	}
@@ -62,6 +64,17 @@ public class Employee {
 	public void setImg(String img) {
 		this.img = img;
 	}
-	
-	
+
+	public DateTime getArchivedAt() {
+		return archivedAt;
+	}
+
+	public void setArchivedAt(DateTime archivedAt) {
+		this.archivedAt = archivedAt;
+	}
+
+	public Employee archive(DateTime at) {
+		this.archivedAt = at;
+		return this;
+	}
 }

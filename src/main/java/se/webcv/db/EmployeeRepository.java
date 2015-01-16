@@ -21,9 +21,13 @@ public class EmployeeRepository {
 
     final int maxResults = Integer.parseInt(ConfigUtils.systemOrEnv("defaultMaxResult", "30"));
 
-    public List<Employee> findEmployees(String searchText) {
-        Query query = withNameSortAndLimit(queryFor(searchText));
+    public List<Employee> findActiveEmployees(String searchText) {
+        Query query = withNameSortAndLimit(withActive(queryFor(searchText)));
         return mongoTemplate.find(query, Employee.class);
+    }
+
+    private Query withActive(Query query) {
+        return query.addCriteria(Criteria.where("archivedAt").exists(false));
     }
 
     private Query withNameSortAndLimit(Query query) {
@@ -39,8 +43,8 @@ public class EmployeeRepository {
                 : new Query();
     }
 
-    public List<EmployeeDto> findEmployeesNoImage(String searchText) {
-        Query query = withNameSortAndLimit(queryFor(searchText));
+    public List<EmployeeDto> findActiveEmployeesNoImage(String searchText) {
+        Query query = withNameSortAndLimit(withActive(queryFor(searchText)));
         query.fields().exclude("img");
         return mongoTemplate.find(query, EmployeeDto.class);
     }
@@ -81,6 +85,7 @@ public class EmployeeRepository {
             found.setPhonenr(employee.getPhonenr());
             found.setRole(employee.getRole());
             found.setImg(employee.getImg());
+            found.setArchivedAt(employee.getArchivedAt());
             mongoTemplate.save(found);
             return found;
         } else {

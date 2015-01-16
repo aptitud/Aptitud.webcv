@@ -1,4 +1,5 @@
-app.controller('EditController', function ($scope, $rootScope, EmployeeService, CVService, Loader, API_END_POINT, $routeParams) {
+app.controller('EditController', function ($scope, $rootScope, EmployeeService, CVService, Loader,
+                                           API_END_POINT, $routeParams, $location, $window) {
 
     $scope.showCVBox = false;
     $scope.endpoint = API_END_POINT;
@@ -40,16 +41,18 @@ app.controller('EditController', function ($scope, $rootScope, EmployeeService, 
         $scope.textBoxLayout.language = toTextBoxRows($scope.selectedCV.language);
         $scope.textBoxLayout.framework = toTextBoxRows($scope.selectedCV.framework);
         $scope.textBoxLayout.method = toTextBoxRows($scope.selectedCV.method);
-        $scope.selectedCV.assignments.forEach(function (a) {
-            // no real id on a, but fake one if needed
-            if (!a.id) {
-                a.id = Math.floor(Math.random() * 100000000000);
-            }
-            $scope.textBoxLayout.assignments[a.id] = {
-                'description': toTextBoxRows(a.description),
-                'techniques': toTextBoxRows(a.techniques)
-            };
-        });
+        if ($scope.selectedCV.assignments) {
+            $scope.selectedCV.assignments.forEach(function (a) {
+                // no real id on a, but fake one if needed
+                if (!a.id) {
+                    a.id = Math.floor(Math.random() * 100000000000);
+                }
+                $scope.textBoxLayout.assignments[a.id] = {
+                    'description': toTextBoxRows(a.description),
+                    'techniques': toTextBoxRows(a.techniques)
+                };
+            });
+        }
     }
 
     $scope.createEmployee = function () {
@@ -60,13 +63,8 @@ app.controller('EditController', function ($scope, $rootScope, EmployeeService, 
     function openCreatedEmployee(data, status, headers) {
         var location = headers('location');
         var createdId = headers('X-createdId');
-        EmployeeService.getEmployeeById(createdId).success(function (data) {
-            $scope.employeeForEdit = data;
-            $scope.$broadcast('loadimg', data);
-            $scope.showCVBox = true;
-            CVService.getCV(createdId, "SE").success(function (data) {
-                $scope.selectedCV = data;
-            });
+        CVService.createCVIfNotFound(createdId, "SE").success(function (cv) {
+            $location.path('/edit/' + createdId);
             Loader.end();
         });
     }
@@ -83,12 +81,24 @@ app.controller('EditController', function ($scope, $rootScope, EmployeeService, 
         CVService.saveCV(cv).success(Loader.end);
     };
 
+    $scope.deleteEmployee = function () {
+        if ($window.confirm('Är du säker på att du vill arkivera ' + $scope.employeeForEdit.name + '?')) {
+            var employee = $scope.employeeForEdit;
+            Loader.start();
+            EmployeeService.deleteEmployee(employee.id).success(function () {
+                CVService.deleteCVsForEmployee(employee.id).success(Loader.end);
+                $rootScope.$broadcast('resetSelected');
+                $location.path('/new');
+            });
+        }
+    };
+
     $scope.changeLang = function (lang) {
         $scope.selectedLang = lang || $scope.selectedLang;
         if ($scope.selectedCV.lang != $scope.selectedLang) {
             var employeeID = $scope.employeeForEdit.id;
             $scope.showCVBox = true;
-            CVService.getCV(employeeID, $scope.selectedLang).success(function (data) {
+            CVService.createCVIfNotFound(employeeID, $scope.selectedLang).success(function (data) {
                 $scope.selectedCV = data;
             });
         }
@@ -98,7 +108,11 @@ app.controller('EditController', function ($scope, $rootScope, EmployeeService, 
         $scope.employeeForEdit.img = args;
     });
 
-    $scope.addNewEmployee = function () {
+    $scope.$on('resetSelected', function () {
+        $scope.resetInput();
+    });
+
+    $scope.resetInput = function () {
         $scope.showCVBox = false;
         $scope.employeeForEdit = {};
         $scope.selectedCV = null;
@@ -106,10 +120,16 @@ app.controller('EditController', function ($scope, $rootScope, EmployeeService, 
     }
 
     $scope.addAssignmentFirst = function () {
+        if (!$scope.selectedCV.assignments) {
+            $scope.selectedCV.assignments = [];
+        }
         $scope.selectedCV.assignments.unshift({'customer': '', 'role': '', 'techniques': '', 'description': ''});
     }
 
     $scope.addAssignment = function () {
+        if (!$scope.selectedCV.assignments) {
+            $scope.selectedCV.assignments = [];
+        }
         $scope.selectedCV.assignments.push({'customer': '', 'role': '', 'techniques': '', 'description': ''});
     }
 

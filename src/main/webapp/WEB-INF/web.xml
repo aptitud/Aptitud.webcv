@@ -15,8 +15,16 @@
             <param-value>http://localhost:8080,https://localhost:8081,https://aptitudcvonline.herokuapp.com</param-value>
         </init-param>
         <init-param>
+            <param-name>allowedMethods</param-name>
+            <param-value>GET,POST,HEAD,PUT,DELETE</param-value>
+        </init-param>
+        <init-param>
             <param-name>allowedHeaders</param-name>
             <param-value>X-Requested-With,Content-Type,Accept,Origin,Authorization</param-value>
+        </init-param>
+        <init-param>
+            <param-name>exposedHeaders</param-name>
+            <param-value>Location, X-createdid</param-value>
         </init-param>
         <init-param>
             <param-name>allowCredentials</param-name>

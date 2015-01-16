@@ -2,6 +2,8 @@ package se.webcv.db;
 
 import java.util.List;
 
+import org.apache.commons.lang.Validate;
+import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -16,90 +18,60 @@ import se.webcv.model.HeadLines;
 @Repository
 public class CVRepository {
 
-	@Autowired
-	private MongoTemplate mongoTemplate;
-	  
-	public CV findCV(String employeeID, String lang) {
-		List<CV> cv = mongoTemplate.find(getQuery(employeeID, lang) , CV.class);
-		if(cv == null || cv.isEmpty()){
-			CV newcv = new CV();
-			newcv.getDynamicSections().add(new DynamicSection(HeadLines.EDUCATION));
-			newcv.getDynamicSections().add(new DynamicSection(HeadLines.COURSES));
-			newcv.getDynamicSections().add(new DynamicSection(HeadLines.LECTIURES));
-			newcv.getDynamicSections().add(new DynamicSection(HeadLines.OTHER));
-			return newcv;
-		}
-    	return cv.get(0);
-	}
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
-	private Query getQuery(String employeeID, String lang) {
-		if(employeeID == null || employeeID.isEmpty()){
-			throw new IllegalArgumentException("Employee id can nto be null");
-		}
-		Query query = new Query();
-		if(lang == null || lang.isEmpty()){
-			query.addCriteria(Criteria.where("employeeId").is(employeeID));
-		}else{
-			query.addCriteria(Criteria.where("employeeId").is(employeeID).and("lang").is(lang));
-		}
-		return query;
-	}
-	
-	public void saveCV(CV cv){
-		CV found = mongoTemplate.findOne(getQuery(cv.getEmployeeId(), cv.getLang()) , CV.class);
-		if(found != null){
-			found.setEmployeeId(cv.getEmployeeId());
-			found.setFramework(cv.getFramework());;
-			found.setIntroduction(cv.getIntroduction());
-			found.setLanguage(cv.getLanguage());;
-			found.setMethod(cv.getMethod());
-			found.setAssignments(cv.getAssignments());
-			found.setDynamicSections(getSections(cv));
-			found.setModified(LocalDate.now());
-			mongoTemplate.save(found);
-		}else{
-			mongoTemplate.insert(cv);
-		}
-	}
+    private Query withActive(Query query) {
+        return query.addCriteria(Criteria.where("archivedAt").exists(false));
+    }
 
-	private List<DynamicSection> getSections(CV cv) {
-		if(cv.getDynamicSections().isEmpty()){
-			cv.getDynamicSections().add(new DynamicSection(HeadLines.EDUCATION));
-			cv.getDynamicSections().add(new DynamicSection(HeadLines.COURSES));
-			cv.getDynamicSections().add(new DynamicSection(HeadLines.LECTIURES));
-			cv.getDynamicSections().add(new DynamicSection(HeadLines.OTHER));
-		}
-		return cv.getDynamicSections();
-	}
+    public List<CV> findActiveCVs(String employeeID) {
+        return mongoTemplate.find(withActive(queryFor(employeeID, null)), CV.class);
+    }
 
-	public List<CV> listCVs() {
-		return mongoTemplate.findAll(CV.class, "cV");
-	}
-	
-	public void backupCVList(){
-		if(isCreateBackup()){
-			mongoTemplate.dropCollection("cvbackup");
-			mongoTemplate.createCollection("cvbackup");;
-			for(CV cv : listCVs()){
-				cv.setModified(LocalDate.now());
-				mongoTemplate.save(cv, "cvbackup");
-			}
-		}
-	}
+    public CV findActiveCV(String employeeID, String lang) {
+        Validate.notEmpty(lang, "lang must be set");
+        return mongoTemplate.findOne(withActive(queryFor(employeeID, lang)), CV.class);
+    }
 
-	private boolean isCreateBackup() {
-		List<CV> findAll = mongoTemplate.findAll(CV.class, "cvbackup");
-		if(!findAll.isEmpty()){
-			LocalDate modified = findAll.get(0).getModified();
-			if(modified != null && !modified.isBefore(getLastSunday())){
-				return false;
-			}
-		}
-		return true;
-	}
+    public CV findCV(String employeeID, String lang) {
+        Validate.notEmpty(lang, "lang must be set");
+        return mongoTemplate.findOne(queryFor(employeeID, lang), CV.class);
+    }
 
-	private LocalDate getLastSunday() {
-		return  LocalDate.now().withDayOfWeek(7).plusWeeks(-1);
-	}
+    private Query queryFor(String employeeID, String lang) {
+        if (employeeID == null || employeeID.isEmpty()) {
+            throw new IllegalArgumentException("Employee id can nto be null");
+        }
+        Query query = new Query();
+        if (lang == null || lang.isEmpty()) {
+            query.addCriteria(Criteria.where("employeeId").is(employeeID));
+        } else {
+            query.addCriteria(Criteria.where("employeeId").is(employeeID).and("lang").is(lang));
+        }
+        return query;
+    }
+
+    public CV saveCV(CV cv) {
+        CV found = mongoTemplate.findOne(queryFor(cv.getEmployeeId(), cv.getLang()), CV.class);
+        if (found != null) {
+            found.setFramework(cv.getFramework());
+            found.setIntroduction(cv.getIntroduction());
+            found.setMethod(cv.getMethod());
+            found.setAssignments(cv.getAssignments());
+            found.setDynamicSections(cv.getDynamicSections());
+            found.setModified(DateTime.now());
+            found.setArchivedAt(cv.getArchivedAt());
+            mongoTemplate.save(found);
+            return found;
+        } else {
+            mongoTemplate.insert(cv);
+            return cv;
+        }
+    }
+
+    public List<CV> listCVs() {
+        return mongoTemplate.findAll(CV.class, "cV");
+    }
 
 }

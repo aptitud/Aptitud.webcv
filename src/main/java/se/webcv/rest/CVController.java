@@ -1,16 +1,14 @@
 package se.webcv.rest;
 
+import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.lang.Validate;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 
 import se.webcv.db.CVRepository;
 import se.webcv.model.CV;
@@ -19,27 +17,47 @@ import se.webcv.model.CV;
 @RequestMapping("/cv")
 public class CVController {
 
-	@Autowired
-	private CVRepository cvRepository;
-	
-	@RequestMapping(produces = "application/json", method = RequestMethod.GET)
+    @Autowired
+    private CVRepository cvRepository;
+
+    @RequestMapping(produces = "application/json", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
-    public CV findCV(@RequestParam(required = true) String employeeID, @RequestParam(required = false) String lang) {
-        return cvRepository.findCV(employeeID, lang);
+    public CV findCV(@RequestParam(required = true) String employeeId, @RequestParam(required = false) String lang) {
+        return cvRepository.findActiveCV(employeeId, lang);
     }
-	
-	@RequestMapping(produces = "application/json", method = RequestMethod.POST)
+
+    @RequestMapping(produces = "application/json", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void saveCV(@RequestBody CV cv) {
-         cvRepository.saveCV(cv);
+    @ResponseBody
+    public CV createCVIfNotFound(@RequestBody CV cv) {
+        return cvRepository.saveCV(cv.createDynamicSectionsIfNotFound());
     }
-	
-	@RequestMapping(value = "/list", produces = "application/json", method = RequestMethod.GET)
+
+    @RequestMapping(produces = "application/json", method = RequestMethod.PUT)
+    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
+    public CV saveCV(@RequestBody CV cv) {
+        return cvRepository.saveCV(cv);
+    }
+
+    @RequestMapping(value = "/{employeeId}", method = RequestMethod.DELETE)
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void deleteCVsForEmployee(@PathVariable String employeeId) {
+        Collection<CV> cvs = cvRepository.findActiveCVs(employeeId);
+        if (cvs.isEmpty()) {
+            throw new ResourceNotFoundException();
+        }
+        for (CV cv : cvs) {
+            cvRepository.saveCV(cv.archive(DateTime.now()));
+        }
+    }
+
+    @RequestMapping(value = "/list", produces = "application/json", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
     public List<CV> findCVList() {
-		//cvRepository.backupCVList();
+        //cvRepository.backupCVList();
         return cvRepository.listCVs();
     }
 

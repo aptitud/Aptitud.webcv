@@ -43,6 +43,10 @@ public class DocumentServlet extends HttpServlet {
         String gentype = request.getParameter("gentype");
         String lang = request.getParameter("lang");
         CV cv = cvRepository.findCV(employeeid, lang);
+        if (cv == null) {
+            response.sendError(404);
+            return;
+        }
         Employee employee = employeeRepository.findEmployee(employeeid);
         if (generatePdf(gentype)) {
             processRequestPDF(employee, cv, request, response);

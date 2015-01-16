@@ -4,7 +4,7 @@ app.controller('NavbarController', function ($scope, $rootScope, $location) {
     $scope.user = sessionStorage.user;
 
     $scope.newConsultant = function () {
-        $scope.$broadcast("resetSelected");
+        $rootScope.$broadcast("resetSelected");
         $location.path("/new");
     };
 
