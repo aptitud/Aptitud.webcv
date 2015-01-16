@@ -42,7 +42,7 @@ app.controller('LoginController', function ($scope, $rootScope, $routeParams, $l
         sessionStorage.removeItem('access_token');
         sessionStorage.removeItem('domain');
         sessionStorage.removeItem('user');
-        $rootScope.$broadcast('logout');
+        $rootScope.$broadcast('notauthenticated');
     }
 
     $scope.hasState = function (state) {
@@ -65,7 +65,7 @@ app.controller('LoginController', function ($scope, $rootScope, $routeParams, $l
         sessionStorage.removeItem('access_token');
         sessionStorage.removeItem('domain');
         sessionStorage.removeItem('user');
-        $rootScope.$broadcast('logout');
+        $rootScope.$broadcast('notauthenticated');
         $scope.isLogout = true;
         $scope.isUnauth = false;
         $scope.error = undefined;
@@ -97,6 +97,8 @@ app.controller('LoginController', function ($scope, $rootScope, $routeParams, $l
             $location.url('/home');
         }
     }
+
+    $rootScope.$broadcast('notauthenticated');
 
     if (!$scope.isLogout && !$scope.isUnauth) {
         startLogin();

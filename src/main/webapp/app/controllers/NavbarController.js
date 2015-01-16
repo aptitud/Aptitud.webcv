@@ -13,7 +13,7 @@ app.controller('NavbarController', function ($scope, $rootScope, $location) {
         $scope.user = sessionStorage.user;
     });
 
-    $rootScope.$on('logout', function (event, data) {
+    $rootScope.$on('notauthenticated', function (event, data) {
         $scope.isAuthenticated = false;
     });
 
@@ -21,7 +21,7 @@ app.controller('NavbarController', function ($scope, $rootScope, $location) {
         sessionStorage.removeItem('access_token');
         sessionStorage.removeItem('domain');
         sessionStorage.removeItem('user');
-        $rootScope.$broadcast('logout');
+        $rootScope.$broadcast('notauthenticated');
         gapi.auth.signOut();
         $location.url('/login?state=logout')
     }

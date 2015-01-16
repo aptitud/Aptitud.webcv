@@ -103,10 +103,6 @@ app.config(['$httpProvider', function ($httpProvider) {
 }]);
 
 app.controller('HomeController', function ($scope, $location) {
-    if (!sessionStorage.user) {
-        $location.path('login');
-        return;
-    }
     $scope.user = sessionStorage.user;
 });
 
@@ -120,3 +116,20 @@ app.factory('Loader', function () {
         }
     };
 });
+
+// Redirect to login page on navigation in case that there us no token..
+app.run(function ($rootScope, $location) {
+    $rootScope.$on('$routeChangeStart', function (e) {
+        if ($location.path() != 'login' && !sessionStorage.access_token) {
+            e.preventDefault();
+            $location.path('login');
+        }
+    });
+});
+
+app.run(function($location) {
+        if ($location.path() != 'login' && !sessionStorage.access_token) {
+            $location.path('login');
+        }
+    }
+);
