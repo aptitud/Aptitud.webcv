@@ -24,7 +24,11 @@ public class CVController {
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
     public CV findCV(@RequestParam(required = true) String employeeId, @RequestParam(required = false) String lang) {
-        return cvRepository.findActiveCV(employeeId, lang);
+        CV cv = cvRepository.findActiveCV(employeeId, lang);
+        if (cv == null) {
+            throw new ResourceNotFoundException();
+        }
+        return cv;
     }
 
     @RequestMapping(produces = "application/json", method = RequestMethod.POST)

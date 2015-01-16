@@ -1,3 +1,12 @@
+var httpUtils = {
+    statusCodes: {
+        OK: 200,
+        CREATED: 201,
+        UNAUTHORIZED: 401,
+        NOT_FOUND: 404,
+        GONE: 410
+    }
+};
 var urlUtils = {
     getParameterByName: function (name) {
         name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -5,7 +14,7 @@ var urlUtils = {
             results = regex.exec(location.search);
         return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
     }
-}
+};
 var useLocalEndPoint = urlUtils.getParameterByName('local');
 var endPoint = useLocalEndPoint ? 'http://localhost:8000/rest' : '/rest';
 angular.module('configuration', ['ui.select'])
@@ -52,7 +61,7 @@ app.factory('authInterceptor', function ($q, $location, Alerts) {
             if (response.config.url.indexOf('/auth', response.config.url.length - 5) > -1) {
                 return $q.reject(response);
             }
-            if (response.status == 410 || response.status == 401) {
+            if (response.status == httpUtils.statusCodes.GONE || response.status == httpUtils.statusCodes.UNAUTHORIZED) {
                 var deferred = $q.defer();
                 deferred.promise.finally(function () {
                     $location.url("/login?state=auth&status=" + response.status);
@@ -60,10 +69,12 @@ app.factory('authInterceptor', function ($q, $location, Alerts) {
                 deferred.reject(response);
                 return deferred.promise;
             }
+            // not found considers normal in rest cases
+            if (response.status == httpUtils.statusCodes.NOT_FOUND) {
+                return $q.reject(response);
+            }
 
             Alerts.handleError(response);
-
-            return response;
         }
     };
 });
@@ -85,7 +96,7 @@ app.factory('Alerts', function () {
                 reason: response.data && response.data.reason,
                 message: response.data && response.data.message,
                 url: response.config.url,
-                messageOrUrl : function() {
+                messageOrUrl: function () {
                     return this.message || this.url;
                 }
             });
@@ -131,7 +142,7 @@ app.run(function ($rootScope, $location) {
     });
 });
 
-app.run(function($location) {
+app.run(function ($location) {
         if ($location.path() != 'login' && !sessionStorage.access_token) {
             $location.path('login');
         }

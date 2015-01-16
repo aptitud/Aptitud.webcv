@@ -1,7 +1,10 @@
 <div class="row" ng-controller='EditController'>
     <div class="col-lg-offset-2 col-md-offset-1 col-md-8 col-lg-6">
         <div id="loader"></div>
-        <div id="consultantinfo" class="panel panel-default">
+        <div ng-if="error">
+            <H3 ng-if="error == 'not_found'">Kan inte hitta konsulten. Kanske borttagen?</H3>
+        </div>
+        <div id="consultantinfo" class="panel panel-default" ng-if="!error">
             <div class="panel-heading">
                 <h4 style="display: inline"><i class="fa fa-user"></i>&nbsp;Konsult info</h4>
             <span ng-show="showCVBox" class="pull-right">

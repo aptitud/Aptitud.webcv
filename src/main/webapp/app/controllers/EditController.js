@@ -7,16 +7,20 @@ app.controller('EditController', function ($scope, $rootScope, EmployeeService, 
     $scope.employeeForEdit = {};
 
     if (!angular.isUndefined($routeParams.id)) {
-        $scope.showCVBox = true;
         $scope.employeeIdForEdit = $routeParams.id;
         EmployeeService.getEmployeeById($routeParams.id).success(function (data) {
             $scope.employeeForEdit = data;
             $scope.$broadcast('loadimg', data);
-        })
-        CVService.getCV($routeParams.id, "SE").success(function (data) {
-            $scope.selectedCV = data;
-            updateTextBoxLayoutData();
-        })
+            $scope.showCVBox = true;
+            CVService.getCV($routeParams.id, "SE").success(function (data) {
+                $scope.selectedCV = data;
+                updateTextBoxLayoutData();
+            });
+        }).error(function(data, status) {
+            if (status == httpUtils.statusCodes.NOT_FOUND) {
+                $scope.error = 'not_found';
+            }
+        });
     }
 
     $scope.textBoxLayout = {

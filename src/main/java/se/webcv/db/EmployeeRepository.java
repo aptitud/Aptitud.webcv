@@ -99,7 +99,8 @@ public class EmployeeRepository {
 
     }
 
-    public Employee findEmployee(String employeeid) {
-        return mongoTemplate.findById(employeeid, Employee.class);
+    public Employee findActiveEmployee(String employeeid) {
+        return mongoTemplate.findOne(withActive(
+                Query.query(Criteria.where("id").is(employeeid))), Employee.class);
     }
 }

@@ -47,7 +47,7 @@ public class DocumentServlet extends HttpServlet {
             response.sendError(404);
             return;
         }
-        Employee employee = employeeRepository.findEmployee(employeeid);
+        Employee employee = employeeRepository.findActiveEmployee(employeeid);
         if (generatePdf(gentype)) {
             processRequestPDF(employee, cv, request, response);
         } else {
