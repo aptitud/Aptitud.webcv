@@ -5,6 +5,7 @@ app.controller('SearchController', function ($scope, EmployeeService, $location)
 
     $scope.$on('resetSelected', function() {
         $scope.selected = {};
+        $scope.employees = [];
     });
 
     $scope.load = function(searchText) {
