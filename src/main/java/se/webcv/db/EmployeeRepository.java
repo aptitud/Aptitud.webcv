@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 import se.webcv.model.Employee;
+import se.webcv.model.EmployeeDto;
 import se.webcv.utils.ConfigUtils;
 
 import java.util.List;
@@ -20,15 +21,28 @@ public class EmployeeRepository {
 
     final int maxResults = Integer.parseInt(ConfigUtils.systemOrEnv("defaultMaxResult", "30"));
 
-    public List<Employee> getEmployees(String searchText) {
-        Query query = searchText != null ?
+    public List<Employee> findEmployees(String searchText) {
+        Query query = withNameSortAndLimit(queryFor(searchText));
+        return mongoTemplate.find(query, Employee.class);
+    }
+
+    private Query withNameSortAndLimit(Query query) {
+        return query.with(new Sort(Sort.Direction.ASC, "name"))
+                .limit(maxResults);
+    }
+
+    private Query queryFor(String searchText) {
+        return searchText != null ?
                 Query
                         .query(Criteria.where("name")
                                 .regex(toRegex(searchText), "i"))
                 : new Query();
-        return mongoTemplate.find(query
-                .with(new Sort(Sort.Direction.ASC, "name"))
-                .limit(maxResults), Employee.class);
+    }
+
+    public List<EmployeeDto> findEmployeesNoImage(String searchText) {
+        Query query = withNameSortAndLimit(queryFor(searchText));
+        query.fields().exclude("img");
+        return mongoTemplate.find(query, EmployeeDto.class);
     }
 
     private String toRegex(String searchText) {
@@ -80,7 +94,7 @@ public class EmployeeRepository {
 
     }
 
-    public Employee getEmployee(String employeeid) {
+    public Employee findEmployee(String employeeid) {
         return mongoTemplate.findById(employeeid, Employee.class);
     }
 }

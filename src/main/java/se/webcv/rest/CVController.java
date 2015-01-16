@@ -25,8 +25,8 @@ public class CVController {
 	@RequestMapping(produces = "application/json", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
-    public CV getCV(@RequestParam(required = true) String employeeID, @RequestParam(required = false) String lang) {
-        return cvRepository.getCV(employeeID, lang);
+    public CV findCV(@RequestParam(required = true) String employeeID, @RequestParam(required = false) String lang) {
+        return cvRepository.findCV(employeeID, lang);
     }
 	
 	@RequestMapping(produces = "application/json", method = RequestMethod.POST)
@@ -38,7 +38,7 @@ public class CVController {
 	@RequestMapping(value = "/list", produces = "application/json", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
-    public List<CV> getCVList() {
+    public List<CV> findCVList() {
 		//cvRepository.backupCVList();
         return cvRepository.listCVs();
     }

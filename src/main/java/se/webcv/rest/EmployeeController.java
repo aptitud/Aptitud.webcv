@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import se.webcv.db.EmployeeRepository;
 import se.webcv.model.Employee;
+import se.webcv.model.EmployeeDto;
 
 import java.util.List;
 
@@ -20,8 +21,8 @@ public class EmployeeController {
     @RequestMapping(produces = "application/json", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
-    public List<Employee> getEmployees(@RequestParam(required = false) String searchText) {
-        return employeeRepository.getEmployees(nullIfEmpty(searchText));
+    public List<EmployeeDto> findEmployees(@RequestParam(required = false) String searchText) {
+        return employeeRepository.findEmployeesNoImage(nullIfEmpty(searchText));
     }
 
     private String nullIfEmpty(String searchText) {
@@ -32,7 +33,7 @@ public class EmployeeController {
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
     public Employee getEmployee(@PathVariable String id) {
-        return employeeRepository.getEmployee(id);
+        return employeeRepository.findEmployee(id);
     }
 
     @RequestMapping(produces = "application/json", method = RequestMethod.POST)

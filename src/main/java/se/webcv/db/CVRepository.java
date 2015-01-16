@@ -19,7 +19,7 @@ public class CVRepository {
 	@Autowired
 	private MongoTemplate mongoTemplate;
 	  
-	public CV getCV(String employeeID, String lang) {
+	public CV findCV(String employeeID, String lang) {
 		List<CV> cv = mongoTemplate.find(getQuery(employeeID, lang) , CV.class);
 		if(cv == null || cv.isEmpty()){
 			CV newcv = new CV();
