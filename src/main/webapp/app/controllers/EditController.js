@@ -3,7 +3,9 @@ app.controller('EditController', function ($scope, $rootScope, EmployeeService, 
 
     $scope.showCVBox = false;
     $scope.endpoint = API_END_POINT;
-    $scope.selectedLang = "SE";
+    $scope.selectedLang = {
+        value: "SE"
+    };
     $scope.employeeForEdit = {};
 
     if (!angular.isUndefined($routeParams.id)) {
@@ -76,7 +78,7 @@ app.controller('EditController', function ($scope, $rootScope, EmployeeService, 
     $scope.saveChanges = function () {
         var employee = $scope.employeeForEdit;
         var cv = $scope.selectedCV;
-        cv.lang = $scope.selectedLang;
+        cv.lang = $scope.selectedLang.value;
         cv.employeeId = employee.id;
         Loader.start();
         EmployeeService.saveEmployee(employee).success(function () {
@@ -98,11 +100,11 @@ app.controller('EditController', function ($scope, $rootScope, EmployeeService, 
     };
 
     $scope.changeLang = function (lang) {
-        $scope.selectedLang = lang || $scope.selectedLang;
-        if ($scope.selectedCV.lang != $scope.selectedLang) {
+        $scope.selectedLang.value = lang || $scope.selectedLang.value;
+        if ($scope.selectedCV.lang != $scope.selectedLang.value) {
             var employeeID = $scope.employeeForEdit.id;
             $scope.showCVBox = true;
-            CVService.createCVIfNotFound(employeeID, $scope.selectedLang).success(function (data) {
+            CVService.createCVIfNotFound(employeeID, $scope.selectedLang.value).success(function (data) {
                 $scope.selectedCV = data;
             });
         }

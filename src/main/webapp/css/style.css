@@ -79,3 +79,11 @@ body {
 .button-margin {
     margin-top: 1em;
 }
+
+select.local-input-sm {
+    height: 2em;
+    line-height: 2em;
+    border-radius: 3px;
+    padding: 5px 10px;
+    font-size: 10px;
+}
