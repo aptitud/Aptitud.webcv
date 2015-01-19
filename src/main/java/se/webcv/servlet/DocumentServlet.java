@@ -23,10 +23,10 @@ public class DocumentServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     @Autowired
-    private CVRepository cvRepository;
+    CVRepository cvRepository;
 
     @Autowired
-    private EmployeeRepository employeeRepository;
+    EmployeeRepository employeeRepository;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -42,7 +42,7 @@ public class DocumentServlet extends HttpServlet {
         String employeeid = request.getParameter("employeeid");
         String gentype = request.getParameter("gentype");
         String lang = request.getParameter("lang");
-        CV cv = cvRepository.findCV(employeeid, lang);
+        CV cv = cvRepository.findActiveCV(employeeid, lang);
         if (cv == null) {
             response.sendError(404);
             return;

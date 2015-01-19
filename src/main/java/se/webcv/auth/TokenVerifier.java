@@ -1,10 +1,5 @@
 package se.webcv.auth;
 
-import org.codehaus.jackson.JsonNode;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
-
 /**
  * Created by marcus on 10/01/15.
  */
