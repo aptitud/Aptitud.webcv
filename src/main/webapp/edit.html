@@ -53,7 +53,7 @@
                                     class="btn btn-primary pull-right"
                                     ng-click="createEmployee()"
                                     ng-disabled="employeeForm.$invalid">
-                                <i class="fa fa-plus"></i>&nbsp;Skapa konsult
+                                <i class="fa fa-plus-circle"></i>&nbsp;Skapa konsult
                             </button>
                         </div>
                     </div>
@@ -114,7 +114,7 @@
                                     <a ng-if="!$last" href="" ng-click="moveDown(assignment)" class="btn btn-default"><i
                                             class="fa fa-arrow-down" title="Flytta ner"></i></a>
                                     <a href="" ng-click="removeAssignment(assignment)" class="btn btn-default"><i
-                                            class="fa fa-remove" title="Ta bort"></i></a>
+                                            class="fa fa-trash" title="Ta bort"></i></a>
                                 </span>
                     </div>
                     <div class="panel-body">
@@ -178,7 +178,7 @@
                         ändringarna
                     </button>
                     <button class="btn btn-danger" ng-click="deleteEmployee()">
-                        <i class="fa fa-times-circle"></i>&nbsp;Arkivera
+                        <i class="fa fa-trash"></i>&nbsp;Arkivera
                     </button>
                     <a class="btn btn-default pull-right" id="msdoclink"
                        onclick="alert('The document generation will take a few sec. Click ok to start the download')"
