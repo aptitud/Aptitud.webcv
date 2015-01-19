@@ -1,11 +1,11 @@
 package se.webcv.model;
 
+import org.apache.commons.lang.Validate;
+import org.joda.time.DateTime;
+import org.springframework.data.annotation.Id;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
-import org.springframework.data.annotation.Id;
 
 public class CV {
 
@@ -21,6 +21,14 @@ public class CV {
     private List<DynamicSection> dynamicSections = new ArrayList<DynamicSection>();
     private List<Assignment> assignments = new ArrayList<Assignment>();
     private DateTime archivedAt;
+
+    public CV() {
+    }
+
+    public CV(String employeeId, String lang) {
+        setEmployeeId(employeeId);
+        setLang(lang);
+    }
 
     public String getId() {
         return id;
@@ -39,6 +47,7 @@ public class CV {
     }
 
     public void setEmployeeId(String employeeId) {
+        Validate.notEmpty(employeeId);
         this.employeeId = employeeId;
     }
 
@@ -87,6 +96,7 @@ public class CV {
     }
 
     public void setLang(String lang) {
+        Validate.notEmpty(lang);
         this.lang = lang;
     }
 
@@ -119,5 +129,10 @@ public class CV {
             getDynamicSections().add(new DynamicSection(HeadLines.OTHER));
         }
         return this;
+    }
+
+    public void setId(String id) {
+        Validate.notEmpty(id);
+        this.id = id;
     }
 }

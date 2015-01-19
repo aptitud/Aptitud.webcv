@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.commons.lang.Validate;
 import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -12,8 +11,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import se.webcv.model.CV;
-import se.webcv.model.DynamicSection;
-import se.webcv.model.HeadLines;
 
 @Repository
 public class CVRepository {
@@ -39,22 +36,21 @@ public class CVRepository {
         return mongoTemplate.findOne(queryFor(employeeID, lang), CV.class);
     }
 
-    private Query queryFor(String employeeID, String lang) {
-        if (employeeID == null || employeeID.isEmpty()) {
-            throw new IllegalArgumentException("Employee id can nto be null");
-        }
+    private Query queryFor(String employeeId, String lang) {
+        Validate.notEmpty(employeeId, "Employee id can not be null");
         Query query = new Query();
         if (lang == null || lang.isEmpty()) {
-            query.addCriteria(Criteria.where("employeeId").is(employeeID));
+            query.addCriteria(Criteria.where("employeeId").is(employeeId));
         } else {
-            query.addCriteria(Criteria.where("employeeId").is(employeeID).and("lang").is(lang));
+            query.addCriteria(Criteria.where("employeeId").is(employeeId).and("lang").is(lang));
         }
         return query;
     }
 
     public CV saveCV(CV cv) {
-        CV found = mongoTemplate.findOne(queryFor(cv.getEmployeeId(), cv.getLang()), CV.class);
+        CV found = findExisting(cv);
         if (found != null) {
+            found.setLanguage(cv.getLanguage());
             found.setFramework(cv.getFramework());
             found.setIntroduction(cv.getIntroduction());
             found.setMethod(cv.getMethod());
@@ -64,14 +60,19 @@ public class CVRepository {
             found.setArchivedAt(cv.getArchivedAt());
             mongoTemplate.save(found);
             return found;
-        } else {
-            mongoTemplate.insert(cv);
-            return cv;
         }
+        mongoTemplate.save(cv);
+        return cv;
     }
 
-    public List<CV> listCVs() {
-        return mongoTemplate.findAll(CV.class, "cV");
+    private CV findExisting(CV cv) {
+        CV found = null;
+        if (cv.getId() != null) {
+            found = mongoTemplate.findById(cv.getId(), CV.class);
+        }
+        if (found == null) {
+            found = mongoTemplate.findOne(queryFor(cv.getEmployeeId(), cv.getLang()), CV.class);
+        }
+        return found;
     }
-
 }

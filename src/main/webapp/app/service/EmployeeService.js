@@ -14,6 +14,10 @@ app.service('EmployeeService', function ($http, API_END_POINT) {
         },
 
         saveEmployee: function (data) {
+            return $http.put(API_END_POINT + '/employees/' + data.id, data);
+        },
+
+        createEmployee: function (data) {
             return $http.post(API_END_POINT + '/employees', data);
         }
     };

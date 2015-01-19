@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 import se.webcv.model.Employee;
-import se.webcv.model.EmployeeDto;
+import se.webcv.model.EmployeeSearchResultDto;
 import se.webcv.utils.ConfigUtils;
 
 import java.util.List;
@@ -43,10 +43,10 @@ public class EmployeeRepository {
                 : new Query();
     }
 
-    public List<EmployeeDto> findActiveEmployeesNoImage(String searchText) {
+    public List<EmployeeSearchResultDto> findActiveEmployeesNoImage(String searchText) {
         Query query = withNameSortAndLimit(withActive(queryFor(searchText)));
         query.fields().exclude("img");
-        return mongoTemplate.find(query, EmployeeDto.class);
+        return mongoTemplate.find(query, EmployeeSearchResultDto.class);
     }
 
     private String toRegex(String searchText) {
@@ -72,31 +72,24 @@ public class EmployeeRepository {
     }
 
     public Employee saveEmployee(Employee employee) {
-        if (StringUtils.isEmpty(employee.getName())) {
-            throw new IllegalArgumentException("Employee name can not be null");
-        }
-        Employee found = null;
         if (!StringUtils.isEmpty(employee.getId())) {
-            found = mongoTemplate.findById(employee.getId(), Employee.class);
+            Employee found = mongoTemplate.findById(employee.getId(), Employee.class);
+            if (found != null) {
+                found.setMail(employee.getMail());
+                found.setName(employee.getName());
+                found.setPhonenr(employee.getPhonenr());
+                found.setRole(employee.getRole());
+                found.setImg(employee.getImg());
+                found.setArchivedAt(employee.getArchivedAt());
+                mongoTemplate.save(found);
+                return found;
+            }
         }
-        if (found != null) {
-            found.setMail(employee.getMail());
-            found.setName(employee.getName());
-            found.setPhonenr(employee.getPhonenr());
-            found.setRole(employee.getRole());
-            found.setImg(employee.getImg());
-            found.setArchivedAt(employee.getArchivedAt());
-            mongoTemplate.save(found);
-            return found;
-        } else {
-            Employee newEmployee = new Employee();
-            newEmployee.setImg(employee.getImg());
-            newEmployee.setName(employee.getName());
-            newEmployee.setRole(employee.getRole());
-            mongoTemplate.insert(newEmployee);
-            return newEmployee;
-        }
-
+        Employee newEmployee = new Employee(employee.getName());
+        newEmployee.setImg(employee.getImg());
+        newEmployee.setRole(employee.getRole());
+        mongoTemplate.insert(newEmployee);
+        return newEmployee;
     }
 
     public Employee findActiveEmployee(String employeeid) {
