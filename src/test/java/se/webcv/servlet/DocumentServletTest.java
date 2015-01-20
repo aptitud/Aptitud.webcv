@@ -3,8 +3,8 @@ package se.webcv.servlet;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import se.webcv.db.CVRepository;
-import se.webcv.db.EmployeeRepository;
+import se.webcv.repository.CVRepository;
+import se.webcv.repository.EmployeeRepository;
 import se.webcv.model.Assignment;
 import se.webcv.model.CV;
 import se.webcv.model.Employee;
@@ -58,7 +58,7 @@ public class DocumentServletTest {
             }
         });
         documentServlet.doGet(request, response);
-        Assert.assertTrue(bos.size( ) > 0);
+        Assert.assertTrue(bos.size() > 0);
     }
 
     private CV newCV(String employeeId, String lang) {

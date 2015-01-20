@@ -3,11 +3,13 @@ package se.webcv.auth;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.util.concurrent.UncheckedExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.Resource;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -17,7 +19,8 @@ import java.util.concurrent.ExecutionException;
 @Primary
 public class CachingTokenVerifier implements TokenVerifier, LogoutHandler {
     @Autowired
-    private GoogleTokenVerifier tokenVerifier;
+    @Resource(name = "tokenVerifier")
+    private TokenVerifier tokenVerifier;
 
     private final LoadingCache<String, UserAndDomain> cachedVerifier = CacheBuilder.from(System.getProperty("caching.token.verifier.spec", "maximumSize=1000,expireAfterWrite=5m"))
             .build(new CacheLoader<String, UserAndDomain>() {
@@ -30,7 +33,7 @@ public class CachingTokenVerifier implements TokenVerifier, LogoutHandler {
     public UserAndDomain verify(String token) {
         try {
             return cachedVerifier.get(token);
-        } catch (ExecutionException e) {
+        } catch (ExecutionException | UncheckedExecutionException e) {
             if (e.getCause() instanceof RuntimeException) {
                 throw (RuntimeException) e.getCause();
             }

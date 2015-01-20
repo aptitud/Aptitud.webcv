@@ -1,19 +1,21 @@
-package se.webcv.db;
-
-import java.util.List;
+package se.webcv.repository.mongo;
 
 import org.apache.commons.lang.Validate;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
-
 import se.webcv.model.CV;
+import se.webcv.repository.CVRepository;
+
+import java.util.List;
 
 @Repository
-public class CVRepository {
+@Profile("!in-mem")
+public class MongoCVRepository extends AbstractMongoRepository implements CVRepository {
 
     @Autowired
     private MongoTemplate mongoTemplate;
@@ -22,13 +24,13 @@ public class CVRepository {
         return query.addCriteria(Criteria.where("archivedAt").exists(false));
     }
 
-    public List<CV> findActiveCVs(String employeeID) {
-        return mongoTemplate.find(withActive(queryFor(employeeID, null)), CV.class);
+    public List<CV> findActiveCVs(String employeeId) {
+        return mongoTemplate.find(withActive(queryFor(employeeId, null)), CV.class);
     }
 
-    public CV findActiveCV(String employeeID, String lang) {
+    public CV findActiveCV(String employeeId, String lang) {
         Validate.notEmpty(lang, "lang must be set");
-        return mongoTemplate.findOne(withActive(queryFor(employeeID, lang)), CV.class);
+        return mongoTemplate.findOne(withActive(queryFor(employeeId, lang)), CV.class);
     }
 
     public CV findCV(String employeeID, String lang) {

@@ -2,13 +2,15 @@ package se.webcv.auth;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 /**
  * Created by marcus on 10/01/15.
  */
-@Component
+@Component("tokenVerifier")
+@Profile("!unit-test")
 public class GoogleTokenVerifier implements TokenVerifier {
     @Autowired
     private RestTemplate restTemplate;

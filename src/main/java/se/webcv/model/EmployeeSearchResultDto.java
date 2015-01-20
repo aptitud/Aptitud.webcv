@@ -47,4 +47,7 @@ public class EmployeeSearchResultDto {
 		this.role = role;
 	}
 
+	public void setId(String id) {
+		this.id = id;
+	}
 }

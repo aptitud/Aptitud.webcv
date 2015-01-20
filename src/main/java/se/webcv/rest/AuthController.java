@@ -21,7 +21,6 @@ import javax.servlet.http.HttpSession;
 public class AuthController {
 
     private static final String APTITUD_SE = "aptitud.se";
-    public static final String SESSION_KEY = "webcv.auth";
 
     @Autowired
     TokenVerifier tokenVerifier;

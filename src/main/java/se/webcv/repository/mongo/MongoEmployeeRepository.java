@@ -1,7 +1,8 @@
-package se.webcv.db;
+package se.webcv.repository.mongo;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -9,12 +10,14 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 import se.webcv.model.Employee;
 import se.webcv.model.EmployeeSearchResultDto;
+import se.webcv.repository.EmployeeRepository;
 import se.webcv.utils.ConfigUtils;
 
 import java.util.List;
 
 @Repository
-public class EmployeeRepository {
+@Profile("!in-mem")
+public class MongoEmployeeRepository extends AbstractMongoRepository implements EmployeeRepository {
 
     @Autowired
     private MongoTemplate mongoTemplate;

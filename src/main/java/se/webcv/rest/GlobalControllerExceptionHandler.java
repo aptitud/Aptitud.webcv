@@ -24,6 +24,10 @@ public class GlobalControllerExceptionHandler {
             response.setStatus(responseStatus.value().value());
             return new ErrorResponse(responseStatus.reason(), ex.getMessage());
         }
+        if (ex instanceof IllegalArgumentException) {
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
+            return new ErrorResponse(ex.getMessage());
+        }
         logger.error("Unexpected exception", ex);
         if (ex instanceof HttpStatusCodeException) {
             response.setStatus(((HttpStatusCodeException) ex).getStatusCode().value());

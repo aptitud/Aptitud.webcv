@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-import se.webcv.db.CVRepository;
-import se.webcv.db.EmployeeRepository;
+import se.webcv.repository.CVRepository;
+import se.webcv.repository.EmployeeRepository;
 import se.webcv.model.CV;
 import se.webcv.model.Employee;
 import se.webcv.utils.DocumentGenerator;
