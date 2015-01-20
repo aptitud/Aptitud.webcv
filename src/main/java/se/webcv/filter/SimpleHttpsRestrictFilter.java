@@ -38,8 +38,9 @@ public class SimpleHttpsRestrictFilter implements Filter {
 
     private boolean isLocalHost(HttpServletRequest request) {
         String serverName = request.getServerName();
-        return serverName.equalsIgnoreCase("localhost")
-                || serverName.equals("127.0.0.1");
+        return serverName != null
+                && (serverName.equalsIgnoreCase("localhost")
+                || serverName.equals("127.0.0.1"));
     }
 
     public void destroy() {
