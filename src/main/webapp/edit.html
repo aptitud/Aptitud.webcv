@@ -1,109 +1,112 @@
 <div class="row" ng-controller='EditController'>
-    <div class="col-lg-offset-2 col-md-offset-1 col-md-8 col-lg-6">
-        <div id="loader"></div>
-        <div ng-if="error">
-            <H3 ng-if="error == 'not_found'">Kan inte hitta konsulten. Kanske borttagen?</H3>
-        </div>
-        <div id="consultantinfo" class="panel panel-default" ng-if="!error">
-            <div class="panel-heading">
-                <h3 style="display: inline"><i class="fa fa-user"></i>&nbsp;Konsult info</h3>
+    <ng-form name="editForm">
+        <div class="col-lg-offset-2 col-md-offset-1 col-md-8 col-lg-6">
+            <div id="loader"></div>
+            <div ng-if="error">
+                <H3 ng-if="error == 'not_found'">Kan inte hitta konsulten. Kanske borttagen?</H3>
+            </div>
+            <div id="consultantinfo" class="panel panel-default" ng-if="!error">
+                <div class="panel-heading">
+                    <h3 style="display: inline"><i class="fa fa-user"></i>&nbsp;Konsult info</h3>
                 <span ng-show="showCVBox" class="pull-right">
                     <span style="vertical-align: middle"><i class="fa fa-language"></i>&nbsp;Språk:</span>
-                    <select class="form-control local-input-sm" ng-model="selectedLang.value"
+                    <select name="changeLang"
+                            class="form-control local-input-sm"
+                            ng-model="selectedLang.value"
                             style="display: inline; width:9em;"
                             ng-change="changeLang()">
                         <option value="SE">Svenskt CV</option>
                         <option value="EN">Engelskt CV</option>
                     </select>
                 </span>
-            </div>
-            <div class="panel-body">
-                <form name="employeeForm">
-                    <div class="row">
-                        <div class="form-group col-lg-4">
-                            <div id="fileupload" class="file-upload-box" ng-controller="FileUploadController">
-                                <div id="filedrag" file-input="file" file-drag="uploadFile()">
-                                    <h3><i class="fa fa-file-image-o"></i></h3>
+                </div>
+                <div class="panel-body">
+                    <form name="employeeForm">
+                        <div class="row">
+                            <div class="form-group col-lg-4">
+                                <div id="fileupload" class="file-upload-box" ng-controller="FileUploadController">
+                                    <div id="filedrag" file-input="file" file-drag="uploadFile()">
+                                        <h3><i class="fa fa-file-image-o"></i></h3>
 
-                                    <p>Släpp en bild</p>
+                                        <p>Släpp en bild</p>
+                                    </div>
                                 </div>
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="form-group"
+                                     ng-class="{ 'has-error': employeeForm.name.$dirty && employeeForm.name.$invalid }">
+                                    <label>Namn</label>
+                                    <input class="form-control" name="name" placeholder="Namn" type='text'
+                                           ng-model='employeeForEdit.name' required/>
+
+                                    <div class="help-block"
+                                         ng-show="employeeForm.name.$dirty && employeeForm.name.$invalid">
+                                        <span ng-show="employeeForm.name.$error.required">Namn måste anges</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label style="margin-top: 0.5em;">Roll</label>
+                                    <input class="form-control" placeholder="Övergripande roll" type='text'
+                                           ng-model='employeeForEdit.role'
+                                            />
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <button ng-hide="showCVBox"
+                                        class="btn btn-primary pull-right"
+                                        ng-click="createEmployee()"
+                                        ng-disabled="employeeForm.$invalid">
+                                    <i class="fa fa-plus-circle"></i>&nbsp;Skapa konsult
+                                </button>
                             </div>
                         </div>
-                        <div class="col-lg-8">
-                            <div class="form-group"
-                                 ng-class="{ 'has-error': employeeForm.name.$dirty && employeeForm.name.$invalid }">
-                                <label>Namn</label>
-                                <input class="form-control" name="name" placeholder="Namn" type='text'
-                                       ng-model='employeeForEdit.name' required/>
-
-                                <div class="help-block"
-                                     ng-show="employeeForm.name.$dirty && employeeForm.name.$invalid">
-                                    <span ng-show="employeeForm.name.$error.required">Namn måste anges</span>
-                                </div>
-                            </div>
+                    </form>
+                </div>
+            </div>
+            <div ng-show="showCVBox">
+                <form name="cvForm">
+                    <div id="introductioncontainer" class="panel panel-default form-group">
+                        <div class="panel-heading"><i class="fa fa-edit"></i>&nbsp;Introduktionssida</div>
+                        <div class="panel-body">
                             <div class="form-group">
-                                <label style="margin-top: 0.5em;">Roll</label>
-                                <input class="form-control" placeholder="Övergripande roll" type='text'
-                                       ng-model='employeeForEdit.role'
-                                        />
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <button ng-hide="showCVBox"
-                                    class="btn btn-primary pull-right"
-                                    ng-click="createEmployee()"
-                                    ng-disabled="employeeForm.$invalid">
-                                <i class="fa fa-plus-circle"></i>&nbsp;Skapa konsult
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div ng-show="showCVBox">
-            <form>
-                <div id="introductioncontainer" class="panel panel-default form-group">
-                    <div class="panel-heading"><i class="fa fa-edit"></i>&nbsp;Introduktionssida</div>
-                    <div class="panel-body">
-                        <div class="form-group">
 
-                            <label>Introduktion</label>
+                                <label>Introduktion</label>
                             <textarea placeholder="Edit" onpaste="pasteSort(this)" class="form-control"
                                       ng-model="selectedCV.introduction" rows="{{textBoxLayout.introduction}}"
                                       cols="70"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>Språk</label>
+                            </div>
+                            <div class="form-group">
+                                <label>Språk</label>
                             <textarea placeholder="Edit" onpaste="pasteSort(this)" class="form-control"
                                       rows="{{textBoxLayout.language}}" cols="70"
                                       ng-model="selectedCV.language"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>Produkter, Verktyg, Ramverk</label>
+                            </div>
+                            <div class="form-group">
+                                <label>Produkter, Verktyg, Ramverk</label>
                             <textarea placeholder="Edit" onpaste="pasteSort(this)" class="form-control"
                                       rows="{{textBoxLayout.framework}}" cols="70"
                                       ng-model="selectedCV.framework"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>Metoder</label>
+                            </div>
+                            <div class="form-group">
+                                <label>Metoder</label>
                             <textarea placeholder="Edit" onpaste="pasteSort(this)" class="form-control"
                                       rows="{{textBoxLayout.method}}" cols="70"
                                       ng-model="selectedCV.method"></textarea>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="panel panel-default" ng-if="selectedCV.assignments.length > 0">
-                    <div class="panel-heading"><i class="fa fa-edit"></i>&nbsp;Uppdrag</div>
-                    <div class="panel-body">
-                        <button class="btn btn-default pull-right" ng-click="addAssignmentFirst()"><i
-                                class="fa fa-plus"></i>&nbsp;Lägg
-                            till uppdrag
-                        </button>
+                    <div class="panel panel-default" ng-if="selectedCV.assignments.length > 0">
+                        <div class="panel-heading"><i class="fa fa-edit"></i>&nbsp;Uppdrag</div>
+                        <div class="panel-body">
+                            <button class="btn btn-default pull-right" ng-click="addAssignmentFirst()"><i
+                                    class="fa fa-plus"></i>&nbsp;Lägg
+                                till uppdrag
+                            </button>
+                        </div>
                     </div>
-                </div>
-                <div class="panel panel-default form-group" ng-repeat="assignment in selectedCV.assignments">
-                    <div class="panel-heading" style="line-height: 2em;">
-                        <i class="fa fa-edit"></i>&nbsp;Uppdrag - {{assignment.customer}}
+                    <div class="panel panel-default form-group" ng-repeat="assignment in selectedCV.assignments">
+                        <div class="panel-heading" style="line-height: 2em;">
+                            <i class="fa fa-edit"></i>&nbsp;Uppdrag - {{assignment.customer}}
                         <span class="include-text">
                                     (Inkludera <input type="checkbox"
                                                       ng-model="assignment.include"/> )
@@ -116,77 +119,107 @@
                                     <a href="" ng-click="removeAssignment(assignment)" class="btn btn-default"><i
                                             class="fa fa-trash" title="Ta bort"></i></a>
                                 </span>
-                    </div>
-                    <div class="panel-body">
-                        <div class="form-group">
-                            <label>Kund</label>
-                            <input placeholder="Edit" class="form-control" type='text'
-                                   ng-model='assignment.customer'/>
                         </div>
-                        <div class="form-group">
-                            <label>Roller</label>
-                            <input placeholder="Edit" class="form-control" type='text'
-                                   ng-model='assignment.role'/>
-                        </div>
-                        <div class="form-group">
-                            <label>Datum</label>
-                            <input placeholder="Edit" class="form-control" type='text'
-                                   ng-model='assignment.date'/>
-                        </div>
-                        <div class="form-group">
-                            <label>Beskrivning</label>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label>Kund</label>
+                                <input placeholder="Edit" class="form-control" type='text'
+                                       ng-model='assignment.customer'/>
+                            </div>
+                            <div class="form-group">
+                                <label>Roller</label>
+                                <input placeholder="Edit" class="form-control" type='text'
+                                       ng-model='assignment.role'/>
+                            </div>
+                            <div class="form-group">
+                                <label>Datum</label>
+                                <input placeholder="Edit" class="form-control" type='text'
+                                       ng-model='assignment.date'/>
+                            </div>
+                            <div class="form-group">
+                                <label>Beskrivning</label>
                                     <textarea placeholder="Edit" onpaste="pasteSort(this)" placeholder="Edit"
                                               class="form-control row-spacing"
                                               rows="{{textBoxLayout.forAssignment(assignment, 'description')}}"
                                               cols="70" ng-model="assignment.description"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>Tekniker</label>
+                            </div>
+                            <div class="form-group">
+                                <label>Tekniker</label>
                                     <textarea placeholder="Edit" onpaste="pasteSort(this)"
                                               class="form-control row-spacing"
                                               rows="{{textBoxLayout.forAssignment(assignment, 'techniques')}}"
                                               cols="70" ng-model="assignment.techniques"></textarea>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading"><i class="fa fa-edit"></i>&nbsp;Uppdrag</div>
-                    <div class="panel-body">
-                        <button class="btn btn-default pull-right" ng-click="addAssignment()"><i
-                                class="fa fa-plus"></i>&nbsp;Lägg
-                            till uppdrag
-                        </button>
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><i class="fa fa-edit"></i>&nbsp;Uppdrag</div>
+                        <div class="panel-body">
+                            <button class="btn btn-default pull-right" ng-click="addAssignment()"><i
+                                    class="fa fa-plus"></i>&nbsp;Lägg
+                                till uppdrag
+                            </button>
+                        </div>
                     </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading"><i class="fa fa-edit"></i>&nbsp;Ytterligare information</div>
-                    <div class="panel-body">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><i class="fa fa-edit"></i>&nbsp;Ytterligare information</div>
+                        <div class="panel-body">
 
-                        <div ng-repeat="section in selectedCV.dynamicSections" class="form-group">
-                            <label>{{section.headlinese}} <span class="include-text">(inkludera <input
-                                    type="checkbox" ng-model="section.include"/>)</span>
-                            </label>
+                            <div ng-repeat="section in selectedCV.dynamicSections" class="form-group">
+                                <label>{{section.headlinese}} <span class="include-text">(inkludera <input
+                                        type="checkbox" ng-model="section.include"/>)</span>
+                                </label>
                                     <textarea placeholder="Skriv text" onpaste="pasteSort(this)"
                                               class="form-control row-spacing" rows="5"
                                               cols="70"
                                               ng-model="section.content"></textarea>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div>
-                    <button class="btn btn-primary" ng-click="saveChanges()"><i class="fa fa-save"></i>&nbsp;Spara
-                        ändringarna
-                    </button>
-                    <button class="btn btn-danger" ng-click="deleteEmployee()">
-                        <i class="fa fa-trash"></i>&nbsp;Arkivera
-                    </button>
-                    <a class="btn btn-default pull-right" id="msdoclink"
-                       onclick="alert('The document generation will take a few sec. Click ok to start the download')"
-                       href="{{endpoint}}/document?employeeid={{employeeForEdit.id}}&lang={{selectedLang.value}}"
-                       download>
-                        <i class="fa fa-download"></i>&nbsp;Download docx</a>
-                </div>
-            </form>
+                    <div>
+                        <button class="btn btn-primary"
+                                ng-disabled="editForm.$invalid || editForm.$pristine"
+                                ng-click="saveChanges()">
+                            <i class="fa fa-save"></i>&nbsp;Spara ändringarna
+                        </button>
+                        <button class="btn btn-danger" ng-click="deleteEmployee()">
+                            <i class="fa fa-trash"></i>&nbsp;Arkivera
+                        </button>
+                        <a class="btn btn-default pull-right" id="msdoclink"
+                           ng-disabled="editForm.$invalid"
+                           onclick="alert('The document generation will take a few sec. Click ok to start the download')"
+                           href="{{endpoint}}/document?employeeid={{employeeForEdit.id}}&lang={{selectedLang.value}}"
+                           download>
+                            <i class="fa fa-download"></i>&nbsp;Download docx</a>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
+        <div class="col-md-2 col-lg-2">
+            <div class="panel panel-default affix" id="edit-action-bar">
+                <div class="panel-heading">
+                    <h4><i class="fa fa-medkit"></i>&nbsp;Hjälpmedel</h4>
+                </div>
+                <div class="panel-body">
+                    <div style="margin-bottom: 1em;">
+                        <button style="width: 12em;"
+                                class="btn btn-primary"
+                                ng-disabled="editForm.$invalid || editForm.$pristine"
+                                ng-click="saveChanges()">
+                            <i class="fa fa-save"></i>&nbsp;Spara ändringarna
+                        </button>
+                    </div>
+                    <div>
+                        <a class="btn btn-default"
+                           style="width: 12em;"
+                           ng-disabled="editForm.$invalid"
+                           onclick="alert('The document generation will take a few sec. Click ok to start the download')"
+                           href="{{endpoint}}/document?employeeid={{employeeForEdit.id}}&lang={{selectedLang.value}}"
+                           download>
+                            <i class="fa fa-download"></i>&nbsp;Download docx</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-form>
 </div>

@@ -77,6 +77,7 @@ app.controller('EditController', function ($scope, $rootScope, EmployeeService, 
         employee.cvs[$scope.selectedLang.value] = cv;
         Loader.start();
         EmployeeService.saveEmployee(employee).success(function () {
+            $scope.editForm.$setPristine();
             $rootScope.$broadcast('employeeChanged', employee);
         }).finally(Loader.end);
     };
