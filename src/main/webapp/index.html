@@ -61,7 +61,8 @@
         var box = $(element);
         setTimeout(function () {
             var str = box.val();
-            str = str.replace(/(?:\r\n|\r|\n)/g, " ");
+            // remove duplicate newlines, plus replace tab and control chars with space
+            str = str.replace(/(?:([\r\n])[\r\n]*)/g, "$1").replace(/[\x00-\x09\x0b\x0c\x0e-\x1f\t]+/g, " ");
             box.val(str);
             angular.element(box).triggerHandler('input')
         }, 100);
