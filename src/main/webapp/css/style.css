@@ -6,12 +6,6 @@ body {
     background-size: 50%; */
 }
 
-.aptitud-navbar {
-    background-color: #aaaaaa;
-    border-color: #999999;
-    color: #000;
-}
-
 .file-upload-box {
     display: inline-block;
     background-color: #FFFFFF;
@@ -86,4 +80,114 @@ select.local-input-sm {
     border-radius: 3px;
     padding: 5px 10px;
     font-size: 10px;
+}
+
+.aptitud-navbar {
+    background-color: #aaaaaa;
+    border-color: #999999;
+    color: #000;
+}
+
+.aptitud-navbar .navbar-brand {
+    color: #777;
+}
+.aptitud-navbar .navbar-brand:hover,
+.aptitud-navbar .navbar-brand:focus {
+    color: #5e5e5e;
+    background-color: transparent;
+}
+.aptitud-navbar .navbar-text {
+    color: #777;
+}
+.aptitud-navbar .navbar-nav > li > a {
+    color: #777;
+}
+.aptitud-navbar .navbar-nav > li > a:hover,
+.aptitud-navbar .navbar-nav > li > a:focus {
+    color: #333;
+    background-color: transparent;
+}
+.aptitud-navbar .navbar-nav > .active > a,
+.aptitud-navbar .navbar-nav > .active > a:hover,
+.aptitud-navbar .navbar-nav > .active > a:focus {
+    color: #555;
+    background-color: #e7e7e7;
+}
+.aptitud-navbar .navbar-nav > .disabled > a,
+.aptitud-navbar .navbar-nav > .disabled > a:hover,
+.aptitud-navbar .navbar-nav > .disabled > a:focus {
+    color: #ccc;
+    background-color: transparent;
+}
+.aptitud-navbar .navbar-toggle {
+    border-color: #ddd;
+}
+.aptitud-navbar .navbar-toggle:hover,
+.aptitud-navbar .navbar-toggle:focus {
+    background-color: #ddd;
+}
+.aptitud-navbar .navbar-toggle .icon-bar {
+    background-color: #888;
+}
+.aptitud-navbar .navbar-collapse,
+.aptitud-navbar .navbar-form {
+    border-color: #e7e7e7;
+}
+.aptitud-navbar .navbar-nav > .open > a,
+.aptitud-navbar .navbar-nav > .open > a:hover,
+.aptitud-navbar .navbar-nav > .open > a:focus {
+    color: #555;
+    background-color: #e7e7e7;
+}
+@media (max-width: 767px) {
+    .aptitud-navbar .navbar-nav .open .dropdown-menu > li > a {
+        color: #777;
+    }
+    .aptitud-navbar .navbar-nav .open .dropdown-menu > li > a:hover,
+    .aptitud-navbar .navbar-nav .open .dropdown-menu > li > a:focus {
+        color: #333;
+        background-color: transparent;
+    }
+    .aptitud-navbar .navbar-nav .open .dropdown-menu > .active > a,
+    .aptitud-navbar .navbar-nav .open .dropdown-menu > .active > a:hover,
+    .aptitud-navbar .navbar-nav .open .dropdown-menu > .active > a:focus {
+        color: #555;
+        background-color: #e7e7e7;
+    }
+    .aptitud-navbar .navbar-nav .open .dropdown-menu > .disabled > a,
+    .aptitud-navbar .navbar-nav .open .dropdown-menu > .disabled > a:hover,
+    .aptitud-navbar .navbar-nav .open .dropdown-menu > .disabled > a:focus {
+        color: #ccc;
+        background-color: transparent;
+    }
+
+    .aptitud-navbar .navbar-form {
+        border: 0px;
+        box-shadow : none;
+        border-top: none;
+        border-bottom: none;
+    }
+
+    .aptitud-navbar .navbar-nav {
+        margin: 0px;
+    }
+}
+.aptitud-navbar .navbar-link {
+    color: #777;
+}
+.aptitud-navbar .navbar-link:hover {
+    color: #333;
+}
+.aptitud-navbar .btn-link {
+    color: #777;
+}
+.aptitud-navbar .btn-link:hover,
+.aptitud-navbar .btn-link:focus {
+    color: #333;
+}
+.aptitud-navbar .btn-link[disabled]:hover,
+fieldset[disabled] .aptitud-navbar .btn-link:hover,
+.aptitud-navbar .btn-link[disabled]:focus,
+fieldset[disabled] .aptitud-navbar .btn-link:focus {
+    color: #ccc;
 }
