@@ -1,8 +1,9 @@
-app.controller('LoginController', function ($scope, $rootScope, $routeParams, $location, $http, AuthService, Loader, CLIENT_ID) {
+app.controller('LoginController', function ($scope, $rootScope, $routeParams, $location, $http, AuthService, Loader, CLIENT_ID, Idle) {
 
     $scope.processAuth = function (authResult) {
         if (authResult['status']['signed_in']) {
             Loader.start();
+            Idle.watch();
             var token = authResult.access_token;
             AuthService.auth(token)
                 .success(function (data) {
