@@ -22,7 +22,7 @@ angular.module('configuration', ['ui.select'])
     //.constant('API_END_POINT', '/rest')
     .constant('API_END_POINT', endPoint)
     .constant('CLIENT_ID', '853597222975-dpjpp1tselrldr1dmg9qj95pd5dar7e7.apps.googleusercontent.com');
-var app = angular.module('WebCVApplication', ['configuration', 'ngRoute']);
+var app = angular.module('WebCVApplication', ['configuration', 'ngRoute', 'ngIdle', 'ui.bootstrap']);
 
 app.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.
@@ -116,6 +116,12 @@ app.factory('Alerts', function () {
 app.config(['$httpProvider', function ($httpProvider) {
     $httpProvider.interceptors.push('authInterceptor');
 }]);
+
+app.config(['KeepaliveProvider', 'IdleProvider', function(KeepaliveProvider, IdleProvider) {
+	  IdleProvider.idle(10);
+	  IdleProvider.timeout(600);
+	  KeepaliveProvider.interval(10);
+	}]);
 
 app.controller('HomeController', function ($scope, $location) {
     $scope.user = sessionStorage.user;
