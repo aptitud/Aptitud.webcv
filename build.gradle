@@ -47,8 +47,8 @@ dependencies {
             [group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-joda', version: jacksonVersion],
             [group: 'javax.validation', name: 'validation-api', version: '1.1.0.Final'],
     )
-    compile 'org.mongodb:mongo-java-driver:2.12.3'
-    compile 'org.springframework.data:spring-data-mongodb:1.5.2.RELEASE'
+    compile 'org.mongodb:mongo-java-driver:3.3.0'
+    compile 'org.springframework.data:spring-data-mongodb:1.9.4.RELEASE'
     testCompile(
             [group: 'junit', name: 'junit', version: junitVersion],
             [group: 'org.springframework', name: 'spring-test', version: springVersion],
