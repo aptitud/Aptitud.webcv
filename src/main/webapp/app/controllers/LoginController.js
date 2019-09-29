@@ -1,10 +1,10 @@
 app.controller('LoginController', function ($scope, $rootScope, $routeParams, $location, $http, AuthService, Loader, CLIENT_ID, Idle) {
 
     $scope.processAuth = function (authResult) {
-        if (authResult['status']['signed_in']) {
+        if (authResult.getBasicProfile()) {
             Loader.start();
             Idle.watch();
-            var token = authResult.access_token;
+            var token = authResult.getAuthResponse().id_token;
             AuthService.auth(token)
                 .success(function (data) {
                     sessionStorage.setItem('access_token', token);
@@ -23,7 +23,7 @@ app.controller('LoginController', function ($scope, $rootScope, $routeParams, $l
                     }
                     Loader.end();
                 });
-        } else if (authResult['error']) {
+        } else {
             var token = sessionStorage.access_token;
             resetUserSession();
             $scope.error = authResult['error'];
@@ -102,6 +102,22 @@ app.controller('LoginController', function ($scope, $rootScope, $routeParams, $l
     $rootScope.$broadcast('notauthenticated');
 
     if (!$scope.isLogout && !$scope.isUnauth) {
-        startLogin();
+        //startLogin();
     }
+
+    function renderButton() {
+        gapi.signin2.render('my-signin2', {
+                'scope': 'profile email',
+                'width': 240,
+                'height': 50,
+                'longtitle': true,
+                'theme': 'dark',
+                'onsuccess': (googleUser) => $scope.processAuth(googleUser),
+                'onfailure': () => console.log('fail')
+              });
+    }
+
+renderButton();
+
+
 });

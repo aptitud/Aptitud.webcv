@@ -16,13 +16,13 @@ public class GoogleTokenVerifier implements TokenVerifier {
     private RestTemplate restTemplate;
 
     public UserAndDomain verify(String token) {
-        JsonNode peopleData = restTemplate.getForObject("https://www.googleapis.com/plus/v1/people/me?access_token={token}", JsonNode.class, token);
+        JsonNode peopleData = restTemplate.getForObject("https://oauth2.googleapis.com/tokeninfo?id_token={token}", JsonNode.class, token);
         if (peopleData == null) {
             throw new NotAuthenticatedException("No data returned from verification provider");
         }
-        if (peopleData.get("domain") == null) {
+        if (peopleData.get("hd") == null) {
             throw new NotAuthenticatedException("No domain provided");
         }
-        return new UserAndDomain(token, peopleData.get("domain").asText(), peopleData.get("displayName") != null ? peopleData.get("displayName").asText() : null);
+        return new UserAndDomain(token, peopleData.get("hd").asText(), peopleData.get("name") != null ? peopleData.get("name").asText() : null);
     }
 }
